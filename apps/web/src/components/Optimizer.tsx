@@ -22,6 +22,7 @@ import {
 } from '@/lib/queue';
 import { calculateSavings } from '@/lib/savings';
 import { loadQualityLevel, saveQualityLevel } from '@/lib/settings';
+import { buildZip, type ZipEntry } from '@/lib/zip';
 import styled from '@emotion/styled';
 import { Button, DownloadLink, Stack, Text } from '@/components/ui';
 
@@ -168,6 +169,7 @@ export default function Optimizer() {
   const [items, setItems] = useState<QueueItem[]>([]);
   const [quality, setQuality] = useState<QualityLevel>(DEFAULT_QUALITY_LEVEL);
   const [isDragging, setIsDragging] = useState(false);
+  const [isZipping, setIsZipping] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
   // Source files by item id, kept so we can re-optimize (quality change) or retry.
@@ -331,6 +333,41 @@ export default function Optimizer() {
     filesRef.current.clear();
     setItems([]);
   }, [revokeItemUrls]);
+
+  const handleDownloadAll = useCallback(async () => {
+    const done = itemsRef.current.filter((item) => item.status === 'done' && item.optimizedUrl);
+    if (done.length === 0) return;
+
+    setIsZipping(true);
+    try {
+      const entries = (
+        await Promise.all(
+          done.map(async (item): Promise<ZipEntry | null> => {
+            const src = item.optimizedUrl;
+            if (!src) return null;
+            const buffer = await (await fetch(src)).arrayBuffer();
+            return { name: item.downloadName ?? item.fileName, data: new Uint8Array(buffer) };
+          }),
+        )
+      ).filter((entry): entry is ZipEntry => entry !== null);
+
+      const bytes = buildZip(entries);
+      // fflate returns a Uint8Array that owns its buffer exactly; using .buffer
+      // satisfies the stricter BlobPart typing (a plain ArrayBuffer at runtime).
+      const blob = new Blob([bytes.buffer as ArrayBuffer], { type: 'application/zip' });
+      const zipUrl = URL.createObjectURL(blob);
+      const anchor = document.createElement('a');
+      anchor.href = zipUrl;
+      anchor.download = 'optimized-images.zip';
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      // Keep the URL alive briefly so the download can start, then release it.
+      window.setTimeout(() => URL.revokeObjectURL(zipUrl), 1000);
+    } finally {
+      setIsZipping(false);
+    }
+  }, []);
 
   const handleInputChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -517,7 +554,18 @@ export default function Optimizer() {
               ))}
             </QueueList>
 
-            <Stack direction="row">
+            <Stack direction="row" gap={2} wrap>
+              {summary.done >= 2 ? (
+                <Button
+                  type="button"
+                  variant="primary"
+                  onClick={() => void handleDownloadAll()}
+                  disabled={isZipping}
+                  data-testid="download-all"
+                >
+                  {isZipping ? 'Preparing ZIP…' : 'Download all as ZIP'}
+                </Button>
+              ) : null}
               <Button type="button" variant="ghost" onClick={clearAll}>
                 Clear all
               </Button>

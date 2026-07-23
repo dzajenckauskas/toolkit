@@ -25,11 +25,11 @@ for that slice only; full multi-format, batch, and controls remain open. See
 - [x] Drag-and-drop upload (JPEG slice)
 - [x] File picker (JPEG slice)
 - [ ] Clipboard paste
-- [ ] Multiple-image queue
-- [ ] Compression controls
+- [x] Multiple-image queue
+- [x] Compression controls
 - [x] Before/after size comparison (JPEG slice)
 - [x] Download single output (JPEG slice)
-- [ ] Download all as ZIP
+- [x] Download all as ZIP
 - [x] Responsive interface (JPEG slice)
 - [x] Error and unsupported-file handling (JPEG slice)
 - [x] Privacy explanation for client-side processing (JPEG slice)
