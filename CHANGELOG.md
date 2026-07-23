@@ -6,6 +6,9 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 
 ### Added
 
+- **Clipboard paste:** paste an image anywhere on `/optimize` (Cmd/Ctrl+V) to
+  add it to the queue, same as dropping or picking a file. Non-image content is
+  ignored; pasted non-JPEGs get the normal per-file error (#18).
 - **Download all as ZIP:** when a batch has 2+ optimized images, a single
   "Download all as ZIP" action packages them in the browser (via `fflate`,
   stored not re-compressed) with de-duplicated filenames — no upload (#8,
