@@ -9,7 +9,7 @@ This roadmap describes direction, not fixed deadlines.
 - [x] Include image cropping as a core utility
 - [x] Establish repository documentation structure
 - [ ] Define product naming and visual direction
-- [ ] Define the first implementation stack
+- [x] Define the first implementation stack (Next.js + strict TypeScript; ADR-005 — Sprint 001)
 - [ ] Create the initial GitHub Project board
 - [ ] Create MVP issues and labels
 
@@ -17,17 +17,22 @@ This roadmap describes direction, not fixed deadlines.
 
 Goal: users can optimize one or many product images with minimal effort.
 
-- [ ] Drag-and-drop upload
-- [ ] File picker
+Sprint 001 delivered a deliberately narrow first slice: **one JPEG in, one
+optimized JPEG out**, in the browser. Items below marked "(JPEG slice)" are done
+for that slice only; full multi-format, batch, and controls remain open. See
+`docs/sprints/sprint-001-foundation.md`.
+
+- [x] Drag-and-drop upload (JPEG slice)
+- [x] File picker (JPEG slice)
 - [ ] Clipboard paste
 - [ ] Multiple-image queue
 - [ ] Compression controls
-- [ ] Before/after size comparison
-- [ ] Download single output
+- [x] Before/after size comparison (JPEG slice)
+- [x] Download single output (JPEG slice)
 - [ ] Download all as ZIP
-- [ ] Responsive interface
-- [ ] Error and unsupported-file handling
-- [ ] Privacy explanation for client-side processing
+- [x] Responsive interface (JPEG slice)
+- [x] Error and unsupported-file handling (JPEG slice)
+- [x] Privacy explanation for client-side processing (JPEG slice)
 
 ## Phase 2 — Core standalone image tools
 
