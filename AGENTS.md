@@ -60,6 +60,33 @@ Do not create duplicate documents with overlapping authority.
 6. Open a pull request referencing the issue.
 7. Summarize tradeoffs and remaining risks.
 
+## Agent operating loop (issue-driven)
+
+GitHub is the source of truth for work. A coding agent operates under a strict,
+label-gated loop defined in
+[`docs/project-management/agent-workflow.md`](docs/project-management/agent-workflow.md).
+The essentials:
+
+- **Only start an open issue that carries the `agent:ready` label.** That label
+  is the owner's explicit permission and is the single gate. Never implement an
+  issue without it unless the owner directly instructs otherwise.
+- On start: apply `agent:working`, move the item to **In progress**, branch.
+- One focused branch and one PR per issue; the PR body includes `Closes #<n>`.
+- On PR open: move to **In review**, apply `agent:review-needed`.
+- **Never merge your own PR** without explicit instruction.
+- Out-of-scope discoveries become **new Inbox issues** — never `agent:ready`
+  automatically, never folded into the current PR.
+- If blocked, apply `agent:blocked`, move to **Blocked**, and comment the exact
+  decision or dependency needed.
+
+Owner-approval-required actions (scope expansion, new dependencies/infra,
+accounts, billing, backend uploads, AI providers, databases, reprioritizing
+P0/P1, deleting issues, rewriting accepted ADRs) are listed in that document.
+The state model is in
+[`docs/project-management/issue-lifecycle.md`](docs/project-management/issue-lifecycle.md)
+and board/automation setup in
+[`docs/project-management/github-project-setup.md`](docs/project-management/github-project-setup.md).
+
 ## Preferred issue states
 
 `Discovery → Specification → Design → Development → Testing → Release`

@@ -1,7 +1,7 @@
 name: Research
 description: Investigate an unknown before committing to implementation
 title: "[Research]: "
-labels: ["research"]
+labels: ["type:research"]
 body:
   - type: textarea
     id: question

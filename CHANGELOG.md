@@ -25,6 +25,15 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 - Unit tests for validation, filename generation, size math, and formatting;
   browser tests for the optimize-and-download flow and failure handling.
 - `docs/sprints/sprint-001-foundation.md` sprint definition.
+- **Issue-driven project workflow:** canonical label set (`.github/labels.yml`)
+  with a `label-sync` workflow, CI workflow (guarded on `apps/web`),
+  `agent:ready` readiness-validation workflow, and an optional PR→Project status
+  workflow.
+- Project-management docs: `agent-workflow.md` (agent operating rules and the
+  `agent:ready` gate), `issue-lifecycle.md` (state model), and
+  `github-project-setup.md` (one-time board/field/view/automation setup).
+- Issue forms updated to the `type:*` label scheme; the feature form now
+  captures Dependencies and Definition of done.
 
 ### Decisions
 
@@ -36,3 +45,5 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 - **Optimize JPEGs client-side with the Canvas API** (ADR-005): browser-local,
   zero image-processing dependencies. Evidence: a 609 KB fixture re-encoded to
   232 KB (61.8% smaller) at the balanced default.
+- GitHub is the source of truth for work; a coding agent runs a label-gated,
+  issue-driven loop and starts work only on `agent:ready` issues (owner-gated).

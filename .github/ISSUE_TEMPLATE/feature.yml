@@ -1,7 +1,7 @@
 name: Feature
 description: Define a focused product or technical feature
 title: "[Feature]: "
-labels: ["feature"]
+labels: ["type:feature"]
 body:
   - type: textarea
     id: problem
@@ -51,6 +51,33 @@ body:
       placeholder: |
         - [ ] ...
         - [ ] ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      description: Other issues, decisions, or ADRs this depends on. Write "None" if there are none.
+      placeholder: |
+        - Depends on #...
+        - Blocked by decision: ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: definition-of-done
+    attributes:
+      label: Definition of done
+      description: Completion criteria. Check the ones that apply.
+      value: |
+        - [ ] Acceptance criteria met
+        - [ ] Error states handled
+        - [ ] Relevant tests added or updated and passing
+        - [ ] Mobile behavior considered
+        - [ ] Accessibility considered
+        - [ ] Documentation updated
+        - [ ] No unrelated scope added
     validations:
       required: true
 
