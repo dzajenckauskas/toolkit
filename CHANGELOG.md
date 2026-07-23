@@ -6,6 +6,11 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 
 ### Added
 
+- **Component architecture + CSS-in-JS styling (Emotion):** reusable, themed UI
+  primitives (`Button`, `Stack`, `Card`, `Text`, `Page`, `Heading`,
+  `VisuallyHidden`) under `src/components/ui/`, a typed theme with light/dark
+  tokens, and an App Router SSR registry. Removed `app/globals.css`; the
+  optimizer UI is now composed from styled components (ADR-006, #13).
 - **Optimizer compression control:** choose Low / Balanced / High quality on
   `/optimize`; changing the level re-optimizes the current image and updates the
   size saved. Balanced remains the default, so the fast path is unchanged (#6).
