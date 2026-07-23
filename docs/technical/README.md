@@ -9,13 +9,45 @@ The web application lives in `apps/web`.
   `noUnusedLocals`, and `noUnusedParameters`.
 - **Routing:** one route per standalone tool. The first is `/optimize`.
 - **Processing:** client-side only. No backend, no database, no uploads.
+- **Styling:** CSS-in-JS via Emotion, MUI-style `styled` API with a typed theme
+  (ADR-006). Reusable primitives in `src/components/ui/`; design tokens in
+  `src/theme/`. No global stylesheet — a single Emotion `<Global>` holds the
+  reset and the light/dark color tokens.
 - **Linting/formatting:** ESLint (`next/core-web-vitals`, `next/typescript`)
   and Prettier.
 - **Unit tests:** Vitest + Testing Library (jsdom) for pure logic.
 - **Browser tests:** Playwright driving Chromium for the real optimize flow.
 
 No shared `packages/*` exist yet. Per ADR-001, shared foundations are extracted
-only after a second tool creates a concrete reuse case.
+only after a second tool creates a concrete reuse case; `src/components/ui/` is
+structured so that extraction is a move, not a rewrite (ADR-006).
+
+## Naming conventions
+
+- **React components** — `PascalCase.tsx`, one primary component per file, file
+  name equal to the component (e.g. `Button.tsx`, `Page.tsx`, `Heading.tsx`).
+- **Non-component modules** (logic, hooks, style helpers) — `camelCase.ts`
+  (e.g. `validation.ts`, `buttonStyles.ts`). Hooks are `useThing.ts`.
+- **Tests** — co-located `*.test.ts(x)`. **Type declarations** — `*.d.ts`.
+- **Next.js files** — framework-reserved lowercase names (`page.tsx`,
+  `layout.tsx`) as required.
+- **Directories** — lowercase (`components`, `ui`, `lib`, `theme`).
+- **Identifiers** — components/types `PascalCase`; variables/functions
+  `camelCase`; module constants `UPPER_SNAKE_CASE`. Booleans read as predicates
+  (`isDragging`, `hasItems`). Event-handler props are `onX`; their handler
+  implementations are `handleX`.
+- **Docs/ADRs** — `kebab-case.md` (`ADR-00N-short-title.md`).
+
+## UI components & theming
+
+- `src/theme/theme.ts` — typed design tokens (colors reference CSS variables).
+- `src/theme/GlobalStyles.tsx` — the only global CSS: reset + `:root` tokens
+  with a `prefers-color-scheme` dark block (zero-JS dark mode).
+- `src/theme/EmotionRegistry.tsx` — App Router SSR registry
+  (`useServerInsertedHTML`) so first paint is styled and hydration matches.
+- `src/components/ui/` — primitives (`Button`/`ButtonLink`/`DownloadLink`,
+  `Stack`, `Card`, `Text`, `Page`, `Heading`, `VisuallyHidden`). The barrel is
+  pure re-exports so unused primitives tree-shake away.
 
 ### Structure
 
@@ -44,7 +76,18 @@ rationale, alternatives, and limitations are in
 [ADR-005](../decisions/ADR-005-client-side-image-processing.md).
 
 Pipeline: decode file → `HTMLImageElement` → draw to `<canvas>` →
-`canvas.toBlob('image/jpeg', 0.8)`.
+`canvas.toBlob('image/jpeg', quality)`.
+
+Quality is chosen via a small set of named levels (`src/lib/quality.ts`): Low
+(0.6), Balanced (0.8, the default), High (0.92). Balanced reuses the original
+Sprint 001 default so the untouched fast path is unchanged. Changing the level
+re-optimizes every queued image in place.
+
+Multiple images are handled as a queue (`src/lib/queue.ts` holds the pure shape
+and aggregate math; the component owns files and object URLs). Each item decodes
+and encodes independently, so one corrupt file fails on its own without
+affecting the batch. Per-item object URLs are revoked on remove, on re-optimize
+(swap-then-revoke), on clear, and on unmount.
 
 ### Findings
 
@@ -61,7 +104,6 @@ Pipeline: decode file → `HTMLImageElement` → draw to `<canvas>` →
 
 ### Known limitations / risks
 
-- One balanced quality only; no user-facing compression control yet.
 - JPEG input only. PNG/WebP are deferred (different encoder tradeoffs).
 - Very large images may hit canvas memory limits, **notably on Mobile Safari**,
   which can silently down-scale or fail. Not reproducible in this environment;

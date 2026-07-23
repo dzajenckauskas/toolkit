@@ -1,17 +1,19 @@
-import Link from 'next/link';
+import { ButtonLink, Heading, Page, Stack, Text } from '@/components/ui';
 
 export default function HomePage() {
   return (
-    <main className="page">
-      <header className="hero">
-        <h1>Ecommerce Toolkit</h1>
-        <p>Prepare product images quickly, right in your browser.</p>
-      </header>
-      <p>
-        <Link className="button button--primary" href="/optimize">
-          Open the Image Optimizer
-        </Link>
-      </p>
-    </main>
+    <Page>
+      <Stack gap={4}>
+        <header>
+          <Heading>Ecommerce Toolkit</Heading>
+          <Text tone="muted">Prepare product images quickly, right in your browser.</Text>
+        </header>
+        <div>
+          <ButtonLink href="/optimize" variant="primary">
+            Open the Image Optimizer
+          </ButtonLink>
+        </div>
+      </Stack>
+    </Page>
   );
 }

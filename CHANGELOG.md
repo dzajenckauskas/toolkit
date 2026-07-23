@@ -6,6 +6,18 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 
 ### Added
 
+- **Component architecture + CSS-in-JS styling (Emotion):** reusable, themed UI
+  primitives (`Button`, `Stack`, `Card`, `Text`, `Page`, `Heading`,
+  `VisuallyHidden`) under `src/components/ui/`, a typed theme with light/dark
+  tokens, and an App Router SSR registry. Removed `app/globals.css`; the
+  optimizer UI is now composed from styled components (ADR-006, #13).
+- **Optimizer compression control:** choose Low / Balanced / High quality on
+  `/optimize`; changing the level re-optimizes the current image and updates the
+  size saved. Balanced remains the default, so the fast path is unchanged (#6).
+- **Optimizer batch:** add and optimize multiple JPEGs in one session. A queue
+  shows each file's preview, dimensions, size, and % saved, with per-file remove
+  and retry, an overall batch summary, and per-file error handling so one bad
+  file never breaks the batch. Quality applies across the whole queue (#7).
 - Initial Project OS documentation structure
 - Product vision and MVP boundaries
 - AI agent operating instructions
