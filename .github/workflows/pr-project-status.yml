@@ -1,0 +1,79 @@
+name: PR project status
+
+# OPTIONAL. Moves a PR's card on the "Ecommerce Toolkit Development" Project as
+# the PR changes state. GitHub's built-in Project workflows already cover
+# "item added -> Inbox", "issue closed -> Done", and "PR merged -> Done";
+# configure those first (see docs/project-management/github-project-setup.md).
+# This workflow adds the "PR opened -> In review" transition that the built-ins
+# do not cover as cleanly.
+#
+# Writing to a *user* Project (v2) requires a token with the `project` scope;
+# the built-in GITHUB_TOKEN cannot do it. So this workflow is fully guarded:
+# it no-ops (green) unless BOTH are configured:
+#   - secret  PROJECTS_TOKEN  (a fine-grained/classic PAT with project scope)
+#   - variable PROJECT_NUMBER (the Project's number, e.g. 1)
+# Field/option IDs are resolved by name at runtime, so no IDs are hardcoded.
+
+on:
+  pull_request:
+    types: [opened, reopened, ready_for_review, converted_to_draft, closed]
+
+permissions:
+  contents: read
+
+jobs:
+  update-status:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update Project status
+        env:
+          GH_TOKEN: ${{ secrets.PROJECTS_TOKEN }}
+          PROJECT_NUMBER: ${{ vars.PROJECT_NUMBER }}
+          OWNER: ${{ github.repository_owner }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          MERGED: ${{ github.event.pull_request.merged }}
+          ACTION: ${{ github.event.action }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${GH_TOKEN:-}" ] || [ -z "${PROJECT_NUMBER:-}" ]; then
+            echo "PROJECTS_TOKEN secret or PROJECT_NUMBER variable not set — skipping (no-op)."
+            echo "See docs/project-management/github-project-setup.md to enable."
+            exit 0
+          fi
+
+          # Decide the target Status option name from the PR event.
+          if [ "$ACTION" = "closed" ]; then
+            if [ "$MERGED" = "true" ]; then TARGET="Done"; else TARGET="Ready"; fi
+          elif [ "$ACTION" = "converted_to_draft" ]; then
+            TARGET="In progress"
+          else
+            TARGET="In review"
+          fi
+          echo "Target status: $TARGET"
+
+          # Resolve the Project node id and the Status field + option ids by name.
+          PROJECT_ID=$(gh project view "$PROJECT_NUMBER" --owner "$OWNER" --format json --jq '.id')
+          FIELDS=$(gh project field-list "$PROJECT_NUMBER" --owner "$OWNER" --format json)
+          FIELD_ID=$(echo "$FIELDS" | jq -r '.fields[] | select(.name=="Status") | .id')
+          OPTION_ID=$(echo "$FIELDS" | jq -r --arg t "$TARGET" \
+            '.fields[] | select(.name=="Status") | .options[] | select(.name==$t) | .id')
+
+          if [ -z "$FIELD_ID" ] || [ -z "$OPTION_ID" ]; then
+            echo "Could not resolve Status field/option '$TARGET' — check the Project field setup. Skipping."
+            exit 0
+          fi
+
+          # Ensure the PR is an item on the board, then read back its item id.
+          gh project item-add "$PROJECT_NUMBER" --owner "$OWNER" --url "$PR_URL" >/dev/null 2>&1 || true
+          ITEM_ID=$(gh project item-list "$PROJECT_NUMBER" --owner "$OWNER" --format json --limit 200 \
+            | jq -r --arg u "$PR_URL" '.items[] | select(.content.url==$u) | .id' | head -1)
+
+          if [ -z "$ITEM_ID" ]; then
+            echo "PR not found on the board and could not be added — skipping."
+            exit 0
+          fi
+
+          gh project item-edit --project-id "$PROJECT_ID" --id "$ITEM_ID" \
+            --field-id "$FIELD_ID" --single-select-option-id "$OPTION_ID"
+          echo "Moved PR card to '$TARGET'."
