@@ -21,6 +21,147 @@ import {
   type QueueItem,
 } from '@/lib/queue';
 import { calculateSavings } from '@/lib/savings';
+import styled from '@emotion/styled';
+import { Button, DownloadLink, Stack, Text } from '@/components/ui';
+
+const HiddenFileInput = styled('input')({
+  position: 'absolute',
+  width: 1,
+  height: 1,
+  padding: 0,
+  margin: -1,
+  overflow: 'hidden',
+  clip: 'rect(0, 0, 0, 0)',
+  whiteSpace: 'nowrap',
+  border: 0,
+});
+
+const Dropzone = styled('div', {
+  shouldForwardProp: (prop) => prop !== 'active',
+})<{ active?: boolean }>(({ theme, active }) => ({
+  border: `2px dashed ${active ? theme.color.accent : theme.color.borderStrong}`,
+  borderRadius: theme.radius.md,
+  background: active
+    ? `color-mix(in srgb, ${theme.color.accent} 8%, ${theme.color.surface})`
+    : theme.color.surface,
+  padding: '2.5rem 1.5rem',
+  textAlign: 'center',
+  cursor: 'pointer',
+  transition: 'border-color 0.15s ease, background 0.15s ease',
+  '&:hover': { borderColor: theme.color.accent },
+  '&:focus-visible': {
+    borderColor: theme.color.accent,
+    outline: 'none',
+    boxShadow: `0 0 0 3px color-mix(in srgb, ${theme.color.accent} 35%, transparent)`,
+  },
+}));
+
+const QualityFieldset = styled('fieldset')(({ theme }) => ({
+  margin: 0,
+  padding: theme.space(4),
+  border: `1px solid ${theme.color.border}`,
+  borderRadius: theme.radius.md,
+  background: theme.color.surface,
+  '&:disabled': { opacity: 0.6 },
+  '& legend': {
+    padding: `0 ${theme.space(1)}`,
+    fontSize: '0.85rem',
+    fontWeight: 600,
+    color: theme.color.muted,
+  },
+}));
+
+const QualityOptions = styled('div')(({ theme }) => ({
+  display: 'flex',
+  flexWrap: 'wrap',
+  gap: theme.space(2),
+}));
+
+const QualityOption = styled('label')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  gap: theme.space(2),
+  flex: '1 1 8rem',
+  minWidth: '8rem',
+  padding: '0.6rem 0.75rem',
+  border: `1px solid ${theme.color.borderStrong}`,
+  borderRadius: '8px',
+  cursor: 'pointer',
+  '&:focus-within': {
+    borderColor: theme.color.accent,
+    boxShadow: `0 0 0 3px color-mix(in srgb, ${theme.color.accent} 35%, transparent)`,
+  },
+  '&:has(input:checked)': {
+    borderColor: theme.color.accent,
+    background: `color-mix(in srgb, ${theme.color.accent} 8%, ${theme.color.surface})`,
+  },
+  '& input': {
+    width: '1.1rem',
+    height: '1.1rem',
+    accentColor: theme.color.accent,
+    flex: 'none',
+  },
+}));
+
+const OptionText = styled('span')({
+  display: 'flex',
+  flexDirection: 'column',
+  lineHeight: 1.2,
+});
+
+const StatusLine = styled('div')(({ theme }) => ({
+  minHeight: '1.5rem',
+  color: theme.color.muted,
+}));
+
+const QueueList = styled('ul')(({ theme }) => ({
+  listStyle: 'none',
+  margin: 0,
+  padding: 0,
+  display: 'flex',
+  flexDirection: 'column',
+  gap: theme.space(3),
+}));
+
+const QueueItemRow = styled('li', {
+  shouldForwardProp: (prop) => prop !== 'tone',
+})<{ tone?: 'default' | 'danger' }>(({ theme, tone = 'default' }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  gap: theme.space(3),
+  padding: theme.space(3),
+  border: `1px solid ${tone === 'danger' ? theme.color.dangerBorder : theme.color.border}`,
+  borderRadius: theme.radius.md,
+  background: tone === 'danger' ? theme.color.dangerBg : theme.color.surface,
+}));
+
+const Thumb = styled('img')(({ theme }) => ({
+  width: 56,
+  height: 56,
+  objectFit: 'cover',
+  borderRadius: theme.radius.sm,
+  border: `1px solid ${theme.color.border}`,
+  flex: 'none',
+}));
+
+const ThumbEmpty = styled('div')(({ theme }) => ({
+  width: 56,
+  height: 56,
+  borderRadius: theme.radius.sm,
+  flex: 'none',
+  background: `color-mix(in srgb, ${theme.color.muted} 20%, ${theme.color.surface})`,
+}));
+
+const QueueBody = styled('div')({ flex: '1 1 auto', minWidth: 0 });
+
+const QueueName = styled('p')(({ theme }) => ({
+  margin: 0,
+  fontWeight: 600,
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+  color: theme.color.text,
+}));
 
 export default function Optimizer() {
   const [items, setItems] = useState<QueueItem[]>([]);
@@ -210,168 +351,176 @@ export default function Optimizer() {
   const hasItems = items.length > 0;
 
   return (
-    <section className="optimizer" aria-labelledby="optimizer-heading">
-      <input
+    <section aria-labelledby="optimizer-heading">
+      <HiddenFileInput
         ref={inputRef}
         type="file"
         multiple
         accept={`image/jpeg,${ACCEPTED_EXTENSIONS.join(',')}`}
-        className="visually-hidden"
         onChange={onInputChange}
         data-testid="file-input"
       />
 
-      <div
-        className={`dropzone${isDragging ? ' dropzone--active' : ''}`}
-        role="button"
-        tabIndex={0}
-        aria-label="Add JPEG images by choosing files or dropping them here"
-        onClick={openPicker}
-        onKeyDown={(event) => {
-          if (event.key === 'Enter' || event.key === ' ') {
+      <Stack gap={4}>
+        <Dropzone
+          active={isDragging}
+          role="button"
+          tabIndex={0}
+          aria-label="Add JPEG images by choosing files or dropping them here"
+          onClick={openPicker}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              openPicker();
+            }
+          }}
+          onDragOver={(event) => {
             event.preventDefault();
-            openPicker();
-          }
-        }}
-        onDragOver={(event) => {
-          event.preventDefault();
-          setIsDragging(true);
-        }}
-        onDragLeave={() => setIsDragging(false)}
-        onDrop={onDrop}
-        data-testid="dropzone"
-      >
-        <p className="dropzone__lead">Drop product photos here, or choose JPEGs.</p>
-        <p className="dropzone__hint">Add one or many. They are optimized in your browser.</p>
-      </div>
+            setIsDragging(true);
+          }}
+          onDragLeave={() => setIsDragging(false)}
+          onDrop={onDrop}
+          data-testid="dropzone"
+        >
+          <Text weight={600}>Drop product photos here, or choose JPEGs.</Text>
+          <Text tone="muted" size="sm">
+            Add one or many. They are optimized in your browser.
+          </Text>
+        </Dropzone>
 
-      <fieldset className="quality" data-testid="quality" disabled={!summary.settled}>
-        <legend>Compression level</legend>
-        <div className="quality__options">
-          {QUALITY_LEVELS.map((level) => (
-            <label key={level} className="quality__option">
-              <input
-                type="radio"
-                name="quality"
-                value={level}
-                checked={quality === level}
-                onChange={() => onQualityChange(level)}
-                data-testid={`quality-${level}`}
-              />
-              <span className="quality__text">
-                <span className="quality__label">{qualityLabel(level)}</span>
-                <span className="quality__hint">{qualityHint(level)}</span>
-              </span>
-            </label>
-          ))}
-        </div>
-      </fieldset>
-
-      <div className="status" aria-live="polite" role="status" data-testid="status">
-        {hasItems
-          ? summary.settled
-            ? summary.done > 0
-              ? `${summary.done} image${summary.done === 1 ? '' : 's'} optimized` +
-                (summary.totalSavedPercent > 0
-                  ? ` · ${summary.totalSavedPercent}% smaller overall`
-                  : '') +
-                (summary.errored > 0 ? ` · ${summary.errored} failed` : '')
-              : `${summary.errored} file${summary.errored === 1 ? '' : 's'} could not be used`
-            : `Optimizing… (${summary.done}/${summary.total})`
-          : ''}
-      </div>
-
-      {hasItems ? (
-        <>
-          <ul className="queue" data-testid="results">
-            {items.map((item) => (
-              <li key={item.id} className={`queue__item queue__item--${item.status}`}>
-                {item.previewUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    className="queue__thumb"
-                    src={item.previewUrl}
-                    alt={`Preview of ${item.fileName}`}
-                  />
-                ) : (
-                  <div className="queue__thumb queue__thumb--empty" aria-hidden="true" />
-                )}
-
-                <div className="queue__body">
-                  <p className="queue__name" title={item.fileName}>
-                    {item.fileName}
-                  </p>
-
-                  {item.status === 'optimizing' ? <p className="queue__meta">Optimizing…</p> : null}
-
-                  {item.status === 'error' ? (
-                    <p className="queue__meta queue__meta--error" data-testid="item-error">
-                      {item.error}
-                    </p>
-                  ) : null}
-
-                  {item.status === 'done' ? (
-                    <p className="queue__meta" data-testid="item-meta">
-                      {item.width}×{item.height} ·{' '}
-                      <span data-testid="item-original">{formatBytes(item.fileSize)}</span> →{' '}
-                      <span data-testid="item-optimized">
-                        {formatBytes(item.optimizedSize ?? item.fileSize)}
-                      </span>{' '}
-                      ·{' '}
-                      <span data-testid="item-savings">
-                        {calculateSavings(item.fileSize, item.optimizedSize ?? item.fileSize)
-                          .isSmaller
-                          ? `${calculateSavings(item.fileSize, item.optimizedSize ?? item.fileSize).savedPercent}% smaller`
-                          : 'already optimized'}
-                      </span>
-                    </p>
-                  ) : null}
-                </div>
-
-                <div className="queue__actions">
-                  {item.status === 'done' && item.optimizedUrl ? (
-                    <a
-                      className="button button--primary button--small"
-                      href={item.optimizedUrl}
-                      download={item.downloadName}
-                      data-testid="item-download"
-                    >
-                      Download
-                    </a>
-                  ) : null}
-                  {item.status === 'error' ? (
-                    <button
-                      type="button"
-                      className="button button--ghost button--small"
-                      onClick={() => retryItem(item.id)}
-                    >
-                      Retry
-                    </button>
-                  ) : null}
-                  <button
-                    type="button"
-                    className="button button--ghost button--small"
-                    aria-label={`Remove ${item.fileName}`}
-                    onClick={() => removeItem(item.id)}
-                  >
-                    Remove
-                  </button>
-                </div>
-              </li>
+        <QualityFieldset data-testid="quality" disabled={!summary.settled}>
+          <legend>Compression level</legend>
+          <QualityOptions>
+            {QUALITY_LEVELS.map((level) => (
+              <QualityOption key={level}>
+                <input
+                  type="radio"
+                  name="quality"
+                  value={level}
+                  checked={quality === level}
+                  onChange={() => onQualityChange(level)}
+                  data-testid={`quality-${level}`}
+                />
+                <OptionText>
+                  <Text as="span" weight={600}>
+                    {qualityLabel(level)}
+                  </Text>
+                  <Text as="span" tone="muted" size="sm">
+                    {qualityHint(level)}
+                  </Text>
+                </OptionText>
+              </QualityOption>
             ))}
-          </ul>
+          </QualityOptions>
+        </QualityFieldset>
 
-          <div className="actions">
-            <button type="button" className="button button--ghost" onClick={clearAll}>
-              Clear all
-            </button>
-          </div>
+        <StatusLine aria-live="polite" role="status" data-testid="status">
+          {hasItems
+            ? summary.settled
+              ? summary.done > 0
+                ? `${summary.done} image${summary.done === 1 ? '' : 's'} optimized` +
+                  (summary.totalSavedPercent > 0
+                    ? ` · ${summary.totalSavedPercent}% smaller overall`
+                    : '') +
+                  (summary.errored > 0 ? ` · ${summary.errored} failed` : '')
+                : `${summary.errored} file${summary.errored === 1 ? '' : 's'} could not be used`
+              : `Optimizing… (${summary.done}/${summary.total})`
+            : ''}
+        </StatusLine>
 
-          <p className="privacy">
-            Your images never leave your device. Optimization runs entirely in your browser.
-          </p>
-        </>
-      ) : null}
+        {hasItems ? (
+          <>
+            <QueueList data-testid="results">
+              {items.map((item) => (
+                <QueueItemRow key={item.id} tone={item.status === 'error' ? 'danger' : 'default'}>
+                  {item.previewUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <Thumb src={item.previewUrl} alt={`Preview of ${item.fileName}`} />
+                  ) : (
+                    <ThumbEmpty aria-hidden="true" />
+                  )}
+
+                  <QueueBody>
+                    <QueueName title={item.fileName}>{item.fileName}</QueueName>
+
+                    {item.status === 'optimizing' ? (
+                      <Text tone="muted" size="sm">
+                        Optimizing…
+                      </Text>
+                    ) : null}
+
+                    {item.status === 'error' ? (
+                      <Text tone="danger" size="sm" data-testid="item-error">
+                        {item.error}
+                      </Text>
+                    ) : null}
+
+                    {item.status === 'done' ? (
+                      <Text tone="muted" size="sm" numeric data-testid="item-meta">
+                        {item.width}×{item.height} ·{' '}
+                        <span data-testid="item-original">{formatBytes(item.fileSize)}</span> →{' '}
+                        <span data-testid="item-optimized">
+                          {formatBytes(item.optimizedSize ?? item.fileSize)}
+                        </span>{' '}
+                        ·{' '}
+                        <span data-testid="item-savings">
+                          {calculateSavings(item.fileSize, item.optimizedSize ?? item.fileSize)
+                            .isSmaller
+                            ? `${calculateSavings(item.fileSize, item.optimizedSize ?? item.fileSize).savedPercent}% smaller`
+                            : 'already optimized'}
+                        </span>
+                      </Text>
+                    ) : null}
+                  </QueueBody>
+
+                  <Stack direction="row" gap={2} wrap justify="flex-end">
+                    {item.status === 'done' && item.optimizedUrl ? (
+                      <DownloadLink
+                        href={item.optimizedUrl}
+                        download={item.downloadName}
+                        variant="primary"
+                        size="sm"
+                        data-testid="item-download"
+                      >
+                        Download
+                      </DownloadLink>
+                    ) : null}
+                    {item.status === 'error' ? (
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => retryItem(item.id)}
+                      >
+                        Retry
+                      </Button>
+                    ) : null}
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      aria-label={`Remove ${item.fileName}`}
+                      onClick={() => removeItem(item.id)}
+                    >
+                      Remove
+                    </Button>
+                  </Stack>
+                </QueueItemRow>
+              ))}
+            </QueueList>
+
+            <Stack direction="row">
+              <Button type="button" variant="ghost" onClick={clearAll}>
+                Clear all
+              </Button>
+            </Stack>
+
+            <Text tone="muted" size="sm">
+              Your images never leave your device. Optimization runs entirely in your browser.
+            </Text>
+          </>
+        ) : null}
+      </Stack>
     </section>
   );
 }
