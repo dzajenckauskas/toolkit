@@ -6,6 +6,9 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 
 ### Added
 
+- **Optimizer compression control:** choose Low / Balanced / High quality on
+  `/optimize`; changing the level re-optimizes the current image and updates the
+  size saved. Balanced remains the default, so the fast path is unchanged (#6).
 - Initial Project OS documentation structure
 - Product vision and MVP boundaries
 - AI agent operating instructions
