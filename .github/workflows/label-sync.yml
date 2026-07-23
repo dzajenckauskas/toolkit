@@ -1,0 +1,43 @@
+name: Label sync
+
+# Creates/updates repository labels from .github/labels.yml so the label set is
+# reproducible and reviewed in git rather than clicked into the UI.
+#
+# Uses gh (authenticated with the built-in GITHUB_TOKEN) and yq, both
+# pre-installed on GitHub-hosted runners. No third-party actions.
+
+on:
+  push:
+    branches: [main, claude/ecommerce-toolkit-project-os-282zd7]
+    paths:
+      - '.github/labels.yml'
+      - '.github/workflows/label-sync.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read # required for actions/checkout to read this (private) repo
+  issues: write # required for label create/edit
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Sync labels from manifest
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          count=$(yq '. | length' .github/labels.yml)
+          echo "Syncing $count labels..."
+          for i in $(seq 0 $((count - 1))); do
+            name=$(yq -r ".[$i].name" .github/labels.yml)
+            color=$(yq -r ".[$i].color" .github/labels.yml)
+            desc=$(yq -r ".[$i].description // \"\"" .github/labels.yml)
+            # --force creates the label or updates it if it already exists.
+            gh label create "$name" --color "$color" --description "$desc" --force
+            echo "  ✓ $name"
+          done
+          echo "Label sync complete."

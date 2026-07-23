@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Agent operating workflow
+    url: https://github.com/dzajenckauskas/toolkit/blob/main/docs/project-management/agent-workflow.md
+    about: How coding agents pick up and work issues, and the agent:ready gate.
+  - name: Issue lifecycle
+    url: https://github.com/dzajenckauskas/toolkit/blob/main/docs/project-management/issue-lifecycle.md
+    about: The Inbox → Ready → In progress → In review → Done state model.

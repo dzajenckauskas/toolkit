@@ -43,6 +43,7 @@ Project-aware workflows, shared presets, image generation, and automation belong
 - [`docs/tools/image-tools-overview.md`](docs/tools/image-tools-overview.md) — initial tool definitions
 - [`docs/ux/design-principles.md`](docs/ux/design-principles.md) — UX rules
 - [`docs/decisions/`](docs/decisions/) — architecture and product decisions
+- [`docs/project-management/`](docs/project-management/) — issue-driven workflow, agent operating rules, and Project board setup
 
 ## Working method
 
@@ -51,6 +52,12 @@ Work should move through:
 `Discovery → Specification → Design → Development → Testing → Release`
 
 Use GitHub Issues for actionable work. Use ADRs for decisions that should remain understandable months later.
+
+Work is tracked on the **Ecommerce Toolkit Development** GitHub Project, and a
+coding agent operates under a label-gated loop — it starts an issue only when
+the owner marks it `agent:ready`. See
+[`docs/project-management/`](docs/project-management/) for the workflow, issue
+lifecycle, and one-time board setup.
 
 ## Next action
 
