@@ -93,6 +93,10 @@ and encodes independently, so one corrupt file fails on its own without
 affecting the batch. Per-item object URLs are revoked on remove, on re-optimize
 (swap-then-revoke), on clear, and on unmount.
 
+A batch of 2+ optimized images can be downloaded as a single ZIP
+(`src/lib/zip.ts`, via `fflate` — stored at level 0, not re-compressed; filenames
+de-duplicated). Built and downloaded entirely in the browser (ADR-007).
+
 ### Findings
 
 - **It works and it saves.** A 900×700 detailed JPEG fixture went from

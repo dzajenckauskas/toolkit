@@ -6,6 +6,10 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 
 ### Added
 
+- **Download all as ZIP:** when a batch has 2+ optimized images, a single
+  "Download all as ZIP" action packages them in the browser (via `fflate`,
+  stored not re-compressed) with de-duplicated filenames — no upload (#8,
+  ADR-007).
 - **Remember last-used optimizer settings:** the chosen compression level is
   saved to `localStorage` and restored on return. Privacy-safe (setting only,
   never image data) and defensive against disabled/private-mode storage (#9).

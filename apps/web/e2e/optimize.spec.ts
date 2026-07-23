@@ -67,6 +67,25 @@ test('quality control re-optimizes and changes the output size', async ({ page }
   await expect.poll(readKb).toBeLessThan(balancedKb);
 });
 
+test('downloads all optimized images as a single ZIP', async ({ page }) => {
+  await page.getByTestId('file-input').setInputFiles([sampleJpeg, sampleJpeg]);
+  await expect(page.getByTestId('item-download')).toHaveCount(2);
+
+  const download = page.getByTestId('download-all');
+  await expect(download).toBeVisible();
+
+  const downloadPromise = page.waitForEvent('download');
+  await download.click();
+  const zip = await downloadPromise;
+  expect(zip.suggestedFilename()).toBe('optimized-images.zip');
+});
+
+test('does not offer a ZIP for a single image', async ({ page }) => {
+  await page.getByTestId('file-input').setInputFiles(sampleJpeg);
+  await expect(page.getByTestId('item-download')).toBeVisible();
+  await expect(page.getByTestId('download-all')).toHaveCount(0);
+});
+
 test('remembers the last-used quality across a reload', async ({ page }) => {
   await expect(page.getByTestId('quality-balanced')).toBeChecked();
 
