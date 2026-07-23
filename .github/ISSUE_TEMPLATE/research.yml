@@ -1,0 +1,37 @@
+name: Research
+description: Investigate an unknown before committing to implementation
+title: "[Research]: "
+labels: ["research"]
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Decision question
+      description: What decision should this research enable?
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+    validations:
+      required: true
+
+  - type: textarea
+    id: options
+    attributes:
+      label: Options to evaluate
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Required evidence
+
+  - type: textarea
+    id: output
+    attributes:
+      label: Expected output
+      placeholder: Recommendation, tradeoffs, risks, and whether an ADR is needed.
+    validations:
+      required: true
