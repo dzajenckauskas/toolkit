@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//home/user/**)",
+      "Bash(git --version)",
+      "Bash(git checkout *)",
+      "Bash(grep -E '^\\(next|vitest|playwright|tsc|prettier|eslint\\)$')",
+      "Bash(node -e \"try{console.log\\('emotion', require\\('/Users/dan/code/toolkit/apps/web/node_modules/@emotion/styled/package.json'\\).version\\)}catch\\(e\\){console.log\\('emotion MISSING'\\)}\")",
+      "Bash(node -e \"try{console.log\\('fflate', require\\('/Users/dan/code/toolkit/apps/web/node_modules/fflate/package.json'\\).version\\)}catch\\(e\\){console.log\\('fflate MISSING'\\)}\")",
+      "Bash(npx tsc *)",
+      "Bash(npx vitest *)",
+      "Bash(npx next *)",
+      "Bash(npx prettier *)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(git fetch *)",
+      "Bash(git merge *)",
+      "Bash(npx playwright *)",
+      "Bash(echo \"EXIT=$?\")",
+      "Read(//tmp/**)"
+    ]
+  }
+}

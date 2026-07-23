@@ -33,6 +33,7 @@ test('resizing the SE handle shrinks the output dimensions', async ({ page }) =>
   const before = await readDims(page);
 
   const handle = page.getByTestId('crop-handle-se');
+  await handle.scrollIntoViewIfNeeded();
   const box = await handle.boundingBox();
   if (!box) throw new Error('SE handle not found');
   const cx = box.x + box.width / 2;
@@ -73,6 +74,22 @@ test('export size preset rescales the output dimensions', async ({ page }) => {
 
   await page.getByTestId('crop-export-original').check();
   expect(await readDims(page)).toEqual({ w: 720, h: 560 });
+});
+
+test('zoom magnifies the workspace without changing the crop output', async ({ page }) => {
+  await page.getByTestId('crop-file-input').setInputFiles(sampleJpeg);
+  await expect(page.getByTestId('crop-box')).toBeVisible();
+  const before = await readDims(page);
+
+  const image = page.getByTestId('crop-image');
+  const w1 = (await image.boundingBox())?.width ?? 0;
+
+  await page.getByTestId('crop-zoom-2').check();
+  const w2 = (await image.boundingBox())?.width ?? 0;
+  expect(w2).toBeGreaterThan(w1 * 1.5);
+
+  // The crop output is in source pixels, so zoom does not change it.
+  expect(await readDims(page)).toEqual(before);
 });
 
 test('downloads the cropped image as a JPEG', async ({ page }) => {

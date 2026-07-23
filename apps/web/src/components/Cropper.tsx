@@ -27,6 +27,7 @@ import { Button, Stack, Text } from '@/components/ui';
 
 const MAX_DISPLAY = 560;
 const KEY_STEP = 10;
+const ZOOM_LEVELS = [1, 1.5, 2, 3] as const;
 
 interface Source {
   url: string;
@@ -81,20 +82,26 @@ const Dropzone = styled('div', {
   },
 }));
 
+const Viewport = styled('div')(({ theme }) => ({
+  maxWidth: '100%',
+  overflow: 'auto',
+  border: `1px solid ${theme.color.border}`,
+  borderRadius: theme.radius.sm,
+  lineHeight: 0,
+}));
+
 const Stage = styled('div')({
   position: 'relative',
   lineHeight: 0,
   userSelect: 'none',
   touchAction: 'none',
-  maxWidth: '100%',
 });
 
-const StageImage = styled('img')(({ theme }) => ({
+const StageImage = styled('img')({
   display: 'block',
-  maxWidth: '100%',
+  width: '100%',
   height: 'auto',
-  borderRadius: theme.radius.sm,
-}));
+});
 
 const CropBox = styled('div')({
   position: 'absolute',
@@ -172,6 +179,7 @@ export default function Cropper() {
   const [isDragging, setIsDragging] = useState(false);
   const [ratioKey, setRatioKey] = useState<AspectKey>('free');
   const [exportKey, setExportKey] = useState<ExportSizeKey>('original');
+  const [zoom, setZoom] = useState(1);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
@@ -239,8 +247,9 @@ export default function Cropper() {
     return () => window.removeEventListener('paste', onPaste);
   }, [loadFile]);
 
-  const displayWidth =
+  const displayBase =
     source && source.naturalWidth > 0 ? Math.min(source.naturalWidth, MAX_DISPLAY) : 0;
+  const displayWidth = displayBase * zoom;
   const scale = source && source.naturalWidth > 0 ? displayWidth / source.naturalWidth : 1;
 
   const beginDrag = useCallback(
@@ -456,46 +465,67 @@ export default function Cropper() {
               </RatioOptions>
             </RatioFieldset>
 
-            <Stage style={{ width: displayWidth || undefined }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <StageImage
-                ref={imgRef}
-                src={source.url}
-                alt={`Crop ${source.fileName}`}
-                onLoad={onImageLoad}
-                onError={onImageError}
-                data-testid="crop-image"
-              />
-              {ready && crop ? (
-                <CropBox
-                  role="group"
-                  tabIndex={0}
-                  aria-label="Crop area — drag to move, use arrow keys to nudge"
-                  data-testid="crop-box"
-                  onPointerDown={beginDrag('move')}
-                  onPointerMove={onDragMove}
-                  onPointerUp={endDrag}
-                  onKeyDown={onBoxKeyDown}
-                  style={{
-                    left: crop.x * scale,
-                    top: crop.y * scale,
-                    width: crop.width * scale,
-                    height: crop.height * scale,
-                  }}
-                >
-                  {HANDLES.map((handle) => (
-                    <HandleDot
-                      key={handle}
-                      handle={handle}
-                      data-testid={`crop-handle-${handle}`}
-                      onPointerDown={beginDrag(handle)}
-                      onPointerMove={onDragMove}
-                      onPointerUp={endDrag}
+            <RatioFieldset data-testid="crop-zoom">
+              <legend>Zoom</legend>
+              <RatioOptions>
+                {ZOOM_LEVELS.map((level) => (
+                  <RatioOption key={level}>
+                    <input
+                      type="radio"
+                      name="zoom"
+                      value={level}
+                      checked={zoom === level}
+                      onChange={() => setZoom(level)}
+                      data-testid={`crop-zoom-${level}`}
                     />
-                  ))}
-                </CropBox>
-              ) : null}
-            </Stage>
+                    {level}×
+                  </RatioOption>
+                ))}
+              </RatioOptions>
+            </RatioFieldset>
+
+            <Viewport>
+              <Stage style={{ width: displayWidth || undefined }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <StageImage
+                  ref={imgRef}
+                  src={source.url}
+                  alt={`Crop ${source.fileName}`}
+                  onLoad={onImageLoad}
+                  onError={onImageError}
+                  data-testid="crop-image"
+                />
+                {ready && crop ? (
+                  <CropBox
+                    role="group"
+                    tabIndex={0}
+                    aria-label="Crop area — drag to move, use arrow keys to nudge"
+                    data-testid="crop-box"
+                    onPointerDown={beginDrag('move')}
+                    onPointerMove={onDragMove}
+                    onPointerUp={endDrag}
+                    onKeyDown={onBoxKeyDown}
+                    style={{
+                      left: crop.x * scale,
+                      top: crop.y * scale,
+                      width: crop.width * scale,
+                      height: crop.height * scale,
+                    }}
+                  >
+                    {HANDLES.map((handle) => (
+                      <HandleDot
+                        key={handle}
+                        handle={handle}
+                        data-testid={`crop-handle-${handle}`}
+                        onPointerDown={beginDrag(handle)}
+                        onPointerMove={onDragMove}
+                        onPointerUp={endDrag}
+                      />
+                    ))}
+                  </CropBox>
+                ) : null}
+              </Stage>
+            </Viewport>
 
             <Stack gap={1}>
               <Text tone="muted" size="sm" numeric data-testid="crop-source">
