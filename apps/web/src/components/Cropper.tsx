@@ -9,13 +9,17 @@ import { BALANCED_JPEG_QUALITY, ACCEPTED_EXTENSIONS } from '@/lib/constants';
 import {
   ASPECT_KEYS,
   ASPECT_RATIOS,
+  EXPORT_SIZES,
+  EXPORT_SIZE_KEYS,
   HANDLES,
   applyAspectRatio,
   defaultCrop,
   moveRect,
   outputSize,
   resizeRect,
+  scaleToLongEdge,
   type AspectKey,
+  type ExportSizeKey,
   type Handle,
   type Rect,
 } from '@/lib/crop';
@@ -167,6 +171,7 @@ export default function Cropper() {
   const [error, setError] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [ratioKey, setRatioKey] = useState<AspectKey>('free');
+  const [exportKey, setExportKey] = useState<ExportSizeKey>('original');
 
   const inputRef = useRef<HTMLInputElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
@@ -306,7 +311,7 @@ export default function Cropper() {
 
   const download = useCallback(() => {
     if (!crop || !source || !imgRef.current) return;
-    const out = outputSize(crop);
+    const out = scaleToLongEdge(outputSize(crop), EXPORT_SIZES[exportKey]);
     const canvas = document.createElement('canvas');
     canvas.width = out.width;
     canvas.height = out.height;
@@ -338,7 +343,7 @@ export default function Cropper() {
       'image/jpeg',
       BALANCED_JPEG_QUALITY,
     );
-  }, [crop, source]);
+  }, [crop, source, exportKey]);
 
   const reset = useCallback(() => {
     revokeUrl();
@@ -358,7 +363,7 @@ export default function Cropper() {
     [loadFile],
   );
 
-  const out = crop ? outputSize(crop) : null;
+  const out = crop ? scaleToLongEdge(outputSize(crop), EXPORT_SIZES[exportKey]) : null;
   const ready = source !== null && source.naturalWidth > 0 && crop !== null;
 
   return (
@@ -427,6 +432,25 @@ export default function Cropper() {
                       data-testid={`crop-ratio-${key}`}
                     />
                     {key === 'free' ? 'Free' : key}
+                  </RatioOption>
+                ))}
+              </RatioOptions>
+            </RatioFieldset>
+
+            <RatioFieldset data-testid="crop-export">
+              <legend>Export size (longest edge)</legend>
+              <RatioOptions>
+                {EXPORT_SIZE_KEYS.map((key) => (
+                  <RatioOption key={key}>
+                    <input
+                      type="radio"
+                      name="export-size"
+                      value={key}
+                      checked={exportKey === key}
+                      onChange={() => setExportKey(key)}
+                      data-testid={`crop-export-${key}`}
+                    />
+                    {key === 'original' ? 'Original' : `${key} px`}
                   </RatioOption>
                 ))}
               </RatioOptions>

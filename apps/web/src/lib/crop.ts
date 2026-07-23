@@ -132,6 +132,33 @@ export type AspectKey = keyof typeof ASPECT_RATIOS;
 
 export const ASPECT_KEYS = Object.keys(ASPECT_RATIOS) as AspectKey[];
 
+/** Export-size presets — the output's longest edge in pixels (`null` = native). */
+export const EXPORT_SIZES = {
+  original: null,
+  '2048': 2048,
+  '1600': 1600,
+  '1024': 1024,
+  '512': 512,
+} as const;
+
+export type ExportSizeKey = keyof typeof EXPORT_SIZES;
+
+export const EXPORT_SIZE_KEYS = Object.keys(EXPORT_SIZES) as ExportSizeKey[];
+
+/**
+ * Scale a size so its longest edge equals `longEdge`, preserving aspect ratio.
+ * `null` returns the size rounded to whole pixels (native output).
+ */
+export function scaleToLongEdge(size: Size, longEdge: number | null): Size {
+  if (!longEdge) {
+    return { width: Math.round(size.width), height: Math.round(size.height) };
+  }
+  const max = Math.max(size.width, size.height);
+  if (max === 0) return { width: 0, height: 0 };
+  const factor = longEdge / max;
+  return { width: Math.round(size.width * factor), height: Math.round(size.height * factor) };
+}
+
 /**
  * Re-fit a rect to the given aspect ratio (width / height), centered on the
  * current rect and clamped to bounds. Used when a preset is selected.

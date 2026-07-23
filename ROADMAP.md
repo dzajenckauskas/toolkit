@@ -42,7 +42,7 @@ for that slice only; full multi-format, batch, and controls remain open. See
 - [x] Common aspect ratios (Free, 1:1, 4:5, 4:3, 16:9)
 - [ ] Ecommerce presets (marketplace pixel sizes)
 - [ ] Reposition and zoom
-- [ ] Export settings
+- [x] Export settings (output longest-edge size)
 - [ ] Batch workflow exploration
 
 ### Image Converter

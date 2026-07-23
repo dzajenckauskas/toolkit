@@ -13,6 +13,8 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
   the shared UI primitives (#21, spec: `docs/tools/image-cropper-spec.md`).
 - **Cropper aspect-ratio presets:** Free, 1:1, 4:5, 4:3, 16:9 — selecting a
   ratio re-fits the crop and constrains resizing to it (#22).
+- **Cropper export size:** choose the output's longest edge (Original / 2048 /
+  1600 / 1024 / 512 px) to produce a marketplace-ready size on download.
 - **Clipboard paste:** paste an image anywhere on `/optimize` (Cmd/Ctrl+V) to
   add it to the queue, same as dropping or picking a file. Non-image content is
   ignored; pasted non-JPEGs get the normal per-file error (#18).

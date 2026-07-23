@@ -7,6 +7,7 @@ import {
   moveRect,
   outputSize,
   resizeRect,
+  scaleToLongEdge,
   type Size,
 } from './crop';
 
@@ -123,6 +124,36 @@ describe('applyAspectRatio', () => {
     expect(ASPECT_RATIOS['1:1']).toBe(1);
     expect(ASPECT_RATIOS['4:5']).toBeCloseTo(0.8);
     expect(ASPECT_RATIOS.free).toBeNull();
+  });
+});
+
+describe('scaleToLongEdge', () => {
+  it('returns the rounded native size when longEdge is null', () => {
+    expect(scaleToLongEdge({ width: 249.6, height: 189.2 }, null)).toEqual({
+      width: 250,
+      height: 189,
+    });
+  });
+
+  it('scales a landscape size so the long edge matches', () => {
+    expect(scaleToLongEdge({ width: 1000, height: 500 }, 2048)).toEqual({
+      width: 2048,
+      height: 1024,
+    });
+  });
+
+  it('scales a portrait size by its height (the long edge)', () => {
+    expect(scaleToLongEdge({ width: 500, height: 1000 }, 512)).toEqual({
+      width: 256,
+      height: 512,
+    });
+  });
+
+  it('keeps a square square', () => {
+    expect(scaleToLongEdge({ width: 800, height: 800 }, 1024)).toEqual({
+      width: 1024,
+      height: 1024,
+    });
   });
 });
 

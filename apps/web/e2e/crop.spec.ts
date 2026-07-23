@@ -62,6 +62,19 @@ test('aspect-ratio presets constrain the crop', async ({ page }) => {
   await page.getByTestId('crop-ratio-free').check();
 });
 
+test('export size preset rescales the output dimensions', async ({ page }) => {
+  await page.getByTestId('crop-file-input').setInputFiles(sampleJpeg);
+  await expect(page.getByTestId('crop-box')).toBeVisible();
+  expect(await readDims(page)).toEqual({ w: 720, h: 560 }); // Original
+
+  await page.getByTestId('crop-export-1024').check();
+  const scaled = await readDims(page);
+  expect(Math.max(scaled.w, scaled.h)).toBe(1024);
+
+  await page.getByTestId('crop-export-original').check();
+  expect(await readDims(page)).toEqual({ w: 720, h: 560 });
+});
+
 test('downloads the cropped image as a JPEG', async ({ page }) => {
   await page.getByTestId('crop-file-input').setInputFiles(sampleJpeg);
   await expect(page.getByTestId('crop-download')).toBeEnabled();
