@@ -7,6 +7,14 @@ import { formatBytes } from '@/lib/format';
 import { calculateSavings, type SizeComparison } from '@/lib/savings';
 import { ImageDecodeError, ImageEncodeError, optimizeJpeg } from '@/lib/optimize';
 import { ACCEPTED_EXTENSIONS } from '@/lib/constants';
+import {
+  DEFAULT_QUALITY_LEVEL,
+  QUALITY_LEVELS,
+  qualityHint,
+  qualityLabel,
+  qualityValue,
+  type QualityLevel,
+} from '@/lib/quality';
 
 type Status = 'idle' | 'ready' | 'optimizing' | 'done' | 'error';
 
@@ -31,8 +39,11 @@ export default function Optimizer() {
   const [original, setOriginal] = useState<OriginalInfo | null>(null);
   const [optimized, setOptimized] = useState<OptimizedInfo | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [quality, setQuality] = useState<QualityLevel>(DEFAULT_QUALITY_LEVEL);
 
   const inputRef = useRef<HTMLInputElement>(null);
+  // Keep the source file so changing the quality can re-optimize it in place.
+  const currentFileRef = useRef<File | null>(null);
 
   // Track every object URL we mint so we can revoke them precisely, both on
   // replacement and on unmount. (docs/ux: "clean up temporary resources".)
@@ -68,14 +79,16 @@ export default function Optimizer() {
     setOptimized(null);
   }, [revokeOriginalUrl, revokeOptimizedUrl]);
 
-  const handleFile = useCallback(
-    async (file: File) => {
+  // Core pipeline: validate, optimize at the given quality, and publish results.
+  // New object URLs are minted first and the previous ones revoked only after
+  // state is swapped, so the visible download never points at a revoked URL.
+  const runOptimize = useCallback(
+    async (file: File, level: QualityLevel) => {
       setError(null);
-      setOptimized(null);
-      revokeOptimizedUrl();
 
       const validation = validateFile(file);
       if (!validation.ok) {
+        currentFileRef.current = null;
         resetOutputs();
         setStatus('error');
         setError(validation.message ?? 'This file cannot be used.');
@@ -83,14 +96,14 @@ export default function Optimizer() {
       }
 
       try {
-        // Show original info + preview, then optimize with the one default.
         setStatus('optimizing');
-        const result = await optimizeJpeg(file);
+        const result = await optimizeJpeg(file, qualityValue(level));
 
-        revokeOriginalUrl();
+        const previousOriginalUrl = originalUrlRef.current;
+        const previousOptimizedUrl = optimizedUrlRef.current;
+
         const previewUrl = URL.createObjectURL(file);
         originalUrlRef.current = previewUrl;
-
         const downloadUrl = URL.createObjectURL(result.blob);
         optimizedUrlRef.current = downloadUrl;
 
@@ -110,7 +123,12 @@ export default function Optimizer() {
           comparison,
         });
         setStatus('done');
+
+        // Safe to release the superseded URLs now that state points at the new ones.
+        if (previousOriginalUrl) URL.revokeObjectURL(previousOriginalUrl);
+        if (previousOptimizedUrl) URL.revokeObjectURL(previousOptimizedUrl);
       } catch (caught) {
+        currentFileRef.current = null;
         resetOutputs();
         setStatus('error');
         if (caught instanceof ImageDecodeError || caught instanceof ImageEncodeError) {
@@ -120,7 +138,27 @@ export default function Optimizer() {
         }
       }
     },
-    [resetOutputs, revokeOptimizedUrl, revokeOriginalUrl],
+    [resetOutputs],
+  );
+
+  const handleFile = useCallback(
+    (file: File) => {
+      currentFileRef.current = file;
+      void runOptimize(file, quality);
+    },
+    [runOptimize, quality],
+  );
+
+  const onQualityChange = useCallback(
+    (level: QualityLevel) => {
+      setQuality(level);
+      // Re-optimize the current file immediately so the result reflects the choice.
+      const file = currentFileRef.current;
+      if (file) {
+        void runOptimize(file, level);
+      }
+    },
+    [runOptimize],
   );
 
   const onInputChange = useCallback(
@@ -150,6 +188,7 @@ export default function Optimizer() {
   const openPicker = useCallback(() => inputRef.current?.click(), []);
 
   const clearAll = useCallback(() => {
+    currentFileRef.current = null;
     resetOutputs();
     setError(null);
     setStatus('idle');
@@ -191,6 +230,28 @@ export default function Optimizer() {
         <p className="dropzone__lead">Drop a product photo here, or choose a JPEG.</p>
         <p className="dropzone__hint">One JPEG at a time. It is optimized in your browser.</p>
       </div>
+
+      <fieldset className="quality" data-testid="quality" disabled={isBusy}>
+        <legend>Compression level</legend>
+        <div className="quality__options">
+          {QUALITY_LEVELS.map((level) => (
+            <label key={level} className="quality__option">
+              <input
+                type="radio"
+                name="quality"
+                value={level}
+                checked={quality === level}
+                onChange={() => onQualityChange(level)}
+                data-testid={`quality-${level}`}
+              />
+              <span className="quality__text">
+                <span className="quality__label">{qualityLabel(level)}</span>
+                <span className="quality__hint">{qualityHint(level)}</span>
+              </span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
 
       <div className="status" aria-live="polite" role="status" data-testid="status">
         {isBusy ? 'Optimizing your image…' : ''}

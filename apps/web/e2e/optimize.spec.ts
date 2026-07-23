@@ -42,6 +42,35 @@ test('actually downloads the optimized file when clicked', async ({ page }) => {
   expect(download.suggestedFilename()).toBe('sample-optimized.jpg');
 });
 
+test('quality control re-optimizes and changes the output size', async ({ page }) => {
+  await page.getByTestId('file-input').setInputFiles(sampleJpeg);
+  await expect(page.getByTestId('results')).toBeVisible();
+
+  // Balanced is the default so the fast path is unchanged.
+  await expect(page.getByTestId('quality-balanced')).toBeChecked();
+
+  const readKb = async () => {
+    const text = (await page.getByTestId('optimized-size').textContent()) ?? '';
+    return parseFloat(text.replace(/[^0-9.]/g, ''));
+  };
+
+  const balancedKb = await readKb();
+  expect(balancedKb).toBeGreaterThan(0);
+
+  // Higher quality -> larger file.
+  await page.getByTestId('quality-high').check();
+  await expect(page.getByTestId('quality-high')).toBeChecked();
+  await expect.poll(readKb).toBeGreaterThan(balancedKb);
+
+  // Lower quality -> smaller file.
+  await page.getByTestId('quality-low').check();
+  await expect.poll(readKb).toBeLessThan(balancedKb);
+
+  // The download name is unaffected by the quality choice.
+  await expect(page.getByTestId('download')).toHaveAttribute('download', 'sample-optimized.jpg');
+  await expect(page.getByTestId('download')).toHaveAttribute('href', /^blob:/);
+});
+
 test('shows a clear error for a corrupt JPEG', async ({ page }) => {
   await page.getByTestId('file-input').setInputFiles({
     name: 'broken.jpg',

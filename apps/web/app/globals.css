@@ -118,6 +118,76 @@ body {
   font-size: 0.9rem;
 }
 
+/* Quality control --------------------------------------------------------- */
+.quality {
+  margin: 1rem 0 0;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.quality:disabled {
+  opacity: 0.6;
+}
+
+.quality legend {
+  padding: 0 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.quality__options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.quality__option {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex: 1 1 8rem;
+  min-width: 8rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.quality__option:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+.quality__option:has(input:checked) {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+}
+
+.quality__option input {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: var(--accent);
+  flex: none;
+}
+
+.quality__text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.quality__label {
+  font-weight: 600;
+}
+
+.quality__hint {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
 /* Status + alerts --------------------------------------------------------- */
 .status {
   min-height: 1.5rem;

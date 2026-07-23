@@ -44,7 +44,12 @@ rationale, alternatives, and limitations are in
 [ADR-005](../decisions/ADR-005-client-side-image-processing.md).
 
 Pipeline: decode file → `HTMLImageElement` → draw to `<canvas>` →
-`canvas.toBlob('image/jpeg', 0.8)`.
+`canvas.toBlob('image/jpeg', quality)`.
+
+Quality is chosen via a small set of named levels (`src/lib/quality.ts`): Low
+(0.6), Balanced (0.8, the default), High (0.92). Balanced reuses the original
+Sprint 001 default so the untouched fast path is unchanged. Changing the level
+re-optimizes the current image in place.
 
 ### Findings
 
@@ -61,7 +66,6 @@ Pipeline: decode file → `HTMLImageElement` → draw to `<canvas>` →
 
 ### Known limitations / risks
 
-- One balanced quality only; no user-facing compression control yet.
 - JPEG input only. PNG/WebP are deferred (different encoder tradeoffs).
 - Very large images may hit canvas memory limits, **notably on Mobile Safari**,
   which can silently down-scale or fail. Not reproducible in this environment;
