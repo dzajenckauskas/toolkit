@@ -1,10 +1,20 @@
+import { existsSync } from 'node:fs';
 import { defineConfig, devices } from '@playwright/test';
 
 /**
- * Playwright starts the Next.js production server and drives the real
- * Chromium that ships pre-installed in this environment.
+ * Playwright starts the Next.js production server and drives Chromium.
+ *
+ * Browser resolution, in order:
+ *   1. CHROMIUM_PATH, if set (CI points this at the browser it installed).
+ *   2. the sandbox's pre-installed Chromium, when that path exists.
+ *   3. otherwise `undefined` → Playwright's own managed browser, so a local
+ *      `npx playwright install && npx playwright test` just works.
  */
 const PORT = 3100;
+
+const SANDBOX_CHROMIUM = '/opt/pw-browsers/chromium';
+const executablePath =
+  process.env.CHROMIUM_PATH || (existsSync(SANDBOX_CHROMIUM) ? SANDBOX_CHROMIUM : undefined);
 
 export default defineConfig({
   testDir: './e2e',
@@ -21,12 +31,7 @@ export default defineConfig({
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
-        // The npm @playwright/test version may not match the browser build
-        // pre-installed in this environment, so point at it explicitly rather
-        // than downloading. Override with CHROMIUM_PATH when running elsewhere.
-        launchOptions: {
-          executablePath: process.env.CHROMIUM_PATH || '/opt/pw-browsers/chromium',
-        },
+        launchOptions: { executablePath },
       },
     },
   ],

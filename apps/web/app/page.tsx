@@ -8,11 +8,14 @@ export default function HomePage() {
           <Heading>Ecommerce Toolkit</Heading>
           <Text tone="muted">Prepare product images quickly, right in your browser.</Text>
         </header>
-        <div>
+        <Stack direction="row" gap={2} wrap>
           <ButtonLink href="/optimize" variant="primary">
             Open the Image Optimizer
           </ButtonLink>
-        </div>
+          <ButtonLink href="/crop" variant="ghost">
+            Open the Image Cropper
+          </ButtonLink>
+        </Stack>
       </Stack>
     </Page>
   );

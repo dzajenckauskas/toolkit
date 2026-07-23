@@ -7,7 +7,7 @@ The web application lives in `apps/web`.
 - **Framework:** Next.js (App Router).
 - **Language:** TypeScript in `strict` mode, plus `noUncheckedIndexedAccess`,
   `noUnusedLocals`, and `noUnusedParameters`.
-- **Routing:** one route per standalone tool. The first is `/optimize`.
+- **Routing:** one route per standalone tool — `/optimize` and `/crop`.
 - **Processing:** client-side only. No backend, no database, no uploads.
 - **Styling:** CSS-in-JS via Emotion, MUI-style `styled` API with a typed theme
   (ADR-006). Reusable primitives in `src/components/ui/`; design tokens in
@@ -96,6 +96,17 @@ affecting the batch. Per-item object URLs are revoked on remove, on re-optimize
 A batch of 2+ optimized images can be downloaded as a single ZIP
 (`src/lib/zip.ts`, via `fflate` — stored at level 0, not re-compressed; filenames
 de-duplicated). Built and downloaded entirely in the browser (ADR-007).
+
+## Image Cropper (`/crop`)
+
+The second tool (ADR-003, `docs/tools/image-cropper-spec.md`). Crop geometry is a
+pure, unit-tested library (`src/lib/crop.ts`): `clampRect`, `defaultCrop`,
+`moveRect`, `resizeRect` (corner handles, opposite corner fixed, min-size +
+bounds enforced), all in source-pixel space. The component maps pointer/keyboard
+input (display pixels) into source pixels via the display scale, so the
+interactive overlay stays thin. Export uses the same Canvas approach as the
+optimizer (`ctx.drawImage(source-rect → output canvas)` then `toBlob`). The
+foundation is single-image, free-crop; aspect-ratio presets are the next slice.
 
 ### Findings
 
