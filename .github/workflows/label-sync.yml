@@ -15,6 +15,7 @@ on:
   workflow_dispatch: {}
 
 permissions:
+  contents: read # required for actions/checkout to read this (private) repo
   issues: write # required for label create/edit
 
 jobs:
