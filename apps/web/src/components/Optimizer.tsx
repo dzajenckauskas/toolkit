@@ -289,7 +289,7 @@ export default function Optimizer() {
     [nextId, optimizeItem, quality],
   );
 
-  const onQualityChange = useCallback(
+  const handleQualityChange = useCallback(
     (level: QualityLevel) => {
       setQuality(level);
       // Re-optimize everything that has a source file so results reflect the choice.
@@ -324,7 +324,7 @@ export default function Optimizer() {
     setItems([]);
   }, [revokeItemUrls]);
 
-  const onInputChange = useCallback(
+  const handleInputChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       if (event.target.files && event.target.files.length > 0) {
         addFiles(event.target.files);
@@ -334,7 +334,7 @@ export default function Optimizer() {
     [addFiles],
   );
 
-  const onDrop = useCallback(
+  const handleDrop = useCallback(
     (event: React.DragEvent<HTMLDivElement>) => {
       event.preventDefault();
       setIsDragging(false);
@@ -357,7 +357,7 @@ export default function Optimizer() {
         type="file"
         multiple
         accept={`image/jpeg,${ACCEPTED_EXTENSIONS.join(',')}`}
-        onChange={onInputChange}
+        onChange={handleInputChange}
         data-testid="file-input"
       />
 
@@ -379,7 +379,7 @@ export default function Optimizer() {
             setIsDragging(true);
           }}
           onDragLeave={() => setIsDragging(false)}
-          onDrop={onDrop}
+          onDrop={handleDrop}
           data-testid="dropzone"
         >
           <Text weight={600}>Drop product photos here, or choose JPEGs.</Text>
@@ -398,7 +398,7 @@ export default function Optimizer() {
                   name="quality"
                   value={level}
                   checked={quality === level}
-                  onChange={() => onQualityChange(level)}
+                  onChange={() => handleQualityChange(level)}
                   data-testid={`quality-${level}`}
                 />
                 <OptionText>

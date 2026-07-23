@@ -10,4 +10,5 @@ export type { CardProps } from './Card';
 export { Text } from './Text';
 export type { TextProps } from './Text';
 export { VisuallyHidden } from './VisuallyHidden';
-export { Page, Heading } from './Layout';
+export { Page } from './Page';
+export { Heading } from './Heading';

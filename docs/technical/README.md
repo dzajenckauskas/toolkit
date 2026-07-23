@@ -22,6 +22,22 @@ No shared `packages/*` exist yet. Per ADR-001, shared foundations are extracted
 only after a second tool creates a concrete reuse case; `src/components/ui/` is
 structured so that extraction is a move, not a rewrite (ADR-006).
 
+## Naming conventions
+
+- **React components** — `PascalCase.tsx`, one primary component per file, file
+  name equal to the component (e.g. `Button.tsx`, `Page.tsx`, `Heading.tsx`).
+- **Non-component modules** (logic, hooks, style helpers) — `camelCase.ts`
+  (e.g. `validation.ts`, `buttonStyles.ts`). Hooks are `useThing.ts`.
+- **Tests** — co-located `*.test.ts(x)`. **Type declarations** — `*.d.ts`.
+- **Next.js files** — framework-reserved lowercase names (`page.tsx`,
+  `layout.tsx`) as required.
+- **Directories** — lowercase (`components`, `ui`, `lib`, `theme`).
+- **Identifiers** — components/types `PascalCase`; variables/functions
+  `camelCase`; module constants `UPPER_SNAKE_CASE`. Booleans read as predicates
+  (`isDragging`, `hasItems`). Event-handler props are `onX`; their handler
+  implementations are `handleX`.
+- **Docs/ADRs** — `kebab-case.md` (`ADR-00N-short-title.md`).
+
 ## UI components & theming
 
 - `src/theme/theme.ts` — typed design tokens (colors reference CSS variables).
