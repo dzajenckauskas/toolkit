@@ -21,6 +21,7 @@ import {
   type QueueItem,
 } from '@/lib/queue';
 import { calculateSavings } from '@/lib/savings';
+import { loadQualityLevel, saveQualityLevel } from '@/lib/settings';
 import styled from '@emotion/styled';
 import { Button, DownloadLink, Stack, Text } from '@/components/ui';
 
@@ -179,6 +180,12 @@ export default function Optimizer() {
     itemsRef.current = items;
   }, [items]);
 
+  useEffect(() => {
+    // Restore the last-used quality on mount (client-only, so no hydration
+    // mismatch). No files exist yet, so this triggers no re-optimization.
+    setQuality(loadQualityLevel());
+  }, []);
+
   const revokeItemUrls = useCallback((item: QueueItem | undefined) => {
     if (!item) return;
     if (item.previewUrl) URL.revokeObjectURL(item.previewUrl);
@@ -292,6 +299,7 @@ export default function Optimizer() {
   const handleQualityChange = useCallback(
     (level: QualityLevel) => {
       setQuality(level);
+      saveQualityLevel(level); // remember the choice for next time
       // Re-optimize everything that has a source file so results reflect the choice.
       for (const item of itemsRef.current) {
         if (filesRef.current.has(item.id)) {

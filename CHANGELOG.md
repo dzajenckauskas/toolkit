@@ -6,6 +6,9 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 
 ### Added
 
+- **Remember last-used optimizer settings:** the chosen compression level is
+  saved to `localStorage` and restored on return. Privacy-safe (setting only,
+  never image data) and defensive against disabled/private-mode storage (#9).
 - **Component architecture + CSS-in-JS styling (Emotion):** reusable, themed UI
   primitives (`Button`, `Stack`, `Card`, `Text`, `Page`, `Heading`,
   `VisuallyHidden`) under `src/components/ui/`, a typed theme with light/dark

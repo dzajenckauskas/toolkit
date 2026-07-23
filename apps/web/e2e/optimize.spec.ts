@@ -67,6 +67,19 @@ test('quality control re-optimizes and changes the output size', async ({ page }
   await expect.poll(readKb).toBeLessThan(balancedKb);
 });
 
+test('remembers the last-used quality across a reload', async ({ page }) => {
+  await expect(page.getByTestId('quality-balanced')).toBeChecked();
+
+  await page.getByTestId('quality-high').check();
+  await expect(page.getByTestId('quality-high')).toBeChecked();
+
+  await page.reload();
+
+  // The stored preference is restored on load.
+  await expect(page.getByTestId('quality-high')).toBeChecked();
+  await expect(page.getByTestId('quality-balanced')).not.toBeChecked();
+});
+
 test('shows a clear per-file error for a corrupt JPEG', async ({ page }) => {
   await page.getByTestId('file-input').setInputFiles({
     name: 'broken.jpg',
