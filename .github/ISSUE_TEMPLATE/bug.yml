@@ -1,0 +1,52 @@
+name: Bug
+description: Report incorrect or unexpected behavior
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and device
+
+  - type: textarea
+    id: files
+    attributes:
+      label: File details
+      description: Format, dimensions, approximate size, and whether the problem can be reproduced without sharing private content.
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Screenshots or logs
