@@ -39,8 +39,8 @@ for that slice only; full multi-format, batch, and controls remain open. See
 ### Image Cropper
 
 - [x] Free crop (foundation — `/crop`, move + resize, export)
-- [ ] Common aspect ratios
-- [ ] Ecommerce presets
+- [x] Common aspect ratios (Free, 1:1, 4:5, 4:3, 16:9)
+- [ ] Ecommerce presets (marketplace pixel sizes)
 - [ ] Reposition and zoom
 - [ ] Export settings
 - [ ] Batch workflow exploration

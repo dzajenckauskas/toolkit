@@ -59,8 +59,19 @@ export function moveRect(rect: Rect, dx: number, dy: number, bounds: Size): Rect
  * Resize by dragging a corner handle by (dx, dy). The opposite corner stays
  * fixed; dragging past it normalizes (no inversion), the minimum size is
  * enforced, and the result is clamped to bounds.
+ *
+ * When `ratio` (width / height) is given, the box keeps that aspect ratio:
+ * the width follows the drag and the height is derived, anchored at the fixed
+ * corner.
  */
-export function resizeRect(rect: Rect, handle: Handle, dx: number, dy: number, bounds: Size): Rect {
+export function resizeRect(
+  rect: Rect,
+  handle: Handle,
+  dx: number,
+  dy: number,
+  bounds: Size,
+  ratio: number | null = null,
+): Rect {
   const left = rect.x;
   const top = rect.y;
   const right = rect.x + rect.width;
@@ -85,13 +96,60 @@ export function resizeRect(rect: Rect, handle: Handle, dx: number, dy: number, b
     b = bottom + dy;
   }
 
-  return clampRect(
-    { x: Math.min(l, r), y: Math.min(t, b), width: Math.abs(r - l), height: Math.abs(b - t) },
-    bounds,
-  );
+  let x = Math.min(l, r);
+  let y = Math.min(t, b);
+  const width = Math.abs(r - l);
+  let height = Math.abs(b - t);
+
+  if (ratio) {
+    height = width / ratio;
+    const fixedRight = handle === 'nw' || handle === 'sw';
+    const fixedBottom = handle === 'nw' || handle === 'ne';
+    const anchorX = fixedRight ? right : left;
+    const anchorY = fixedBottom ? bottom : top;
+    x = fixedRight ? anchorX - width : anchorX;
+    y = fixedBottom ? anchorY - height : anchorY;
+  }
+
+  return clampRect({ x, y, width, height }, bounds);
 }
 
 /** Integer output dimensions for a crop rect. */
 export function outputSize(rect: Rect): Size {
   return { width: Math.round(rect.width), height: Math.round(rect.height) };
+}
+
+/** Aspect-ratio presets (value = width / height; `null` = free). */
+export const ASPECT_RATIOS = {
+  free: null,
+  '1:1': 1,
+  '4:5': 4 / 5,
+  '4:3': 4 / 3,
+  '16:9': 16 / 9,
+} as const;
+
+export type AspectKey = keyof typeof ASPECT_RATIOS;
+
+export const ASPECT_KEYS = Object.keys(ASPECT_RATIOS) as AspectKey[];
+
+/**
+ * Re-fit a rect to the given aspect ratio (width / height), centered on the
+ * current rect and clamped to bounds. Used when a preset is selected.
+ */
+export function applyAspectRatio(rect: Rect, ratio: number, bounds: Size): Rect {
+  const cx = rect.x + rect.width / 2;
+  const cy = rect.y + rect.height / 2;
+
+  let width = rect.width;
+  let height = width / ratio;
+  if (height > bounds.height) {
+    height = bounds.height;
+    width = height * ratio;
+  }
+  if (width > bounds.width) {
+    width = bounds.width;
+    height = width / ratio;
+  }
+
+  return clampRect({ x: cx - width / 2, y: cy - height / 2, width, height }, bounds);
 }

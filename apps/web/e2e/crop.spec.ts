@@ -47,6 +47,21 @@ test('resizing the SE handle shrinks the output dimensions', async ({ page }) =>
   expect(after.h).toBeLessThan(before.h);
 });
 
+test('aspect-ratio presets constrain the crop', async ({ page }) => {
+  await page.getByTestId('crop-file-input').setInputFiles(sampleJpeg);
+  await expect(page.getByTestId('crop-box')).toBeVisible();
+
+  await page.getByTestId('crop-ratio-1:1').check();
+  const square = await readDims(page);
+  expect(square.w).toBe(square.h);
+
+  await page.getByTestId('crop-ratio-16:9').check();
+  const wide = await readDims(page);
+  expect(wide.w / wide.h).toBeCloseTo(16 / 9, 1);
+
+  await page.getByTestId('crop-ratio-free').check();
+});
+
 test('downloads the cropped image as a JPEG', async ({ page }) => {
   await page.getByTestId('crop-file-input').setInputFiles(sampleJpeg);
   await expect(page.getByTestId('crop-download')).toBeEnabled();

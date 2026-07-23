@@ -9,9 +9,10 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 - **Image Cropper (foundation):** new `/crop` tool — load a JPEG (picker /
   drag-drop / paste), frame it with an interactive crop box (drag to move,
   corner handles to resize, arrow keys to nudge), see live output dimensions,
-  and download the cropped JPEG. Browser-only, single image, free-crop
-  (aspect-ratio presets are next). Second consumer of the shared UI primitives
-  (#21, spec: `docs/tools/image-cropper-spec.md`).
+  and download the cropped JPEG. Browser-only, single image. Second consumer of
+  the shared UI primitives (#21, spec: `docs/tools/image-cropper-spec.md`).
+- **Cropper aspect-ratio presets:** Free, 1:1, 4:5, 4:3, 16:9 — selecting a
+  ratio re-fits the crop and constrains resizing to it (#22).
 - **Clipboard paste:** paste an image anywhere on `/optimize` (Cmd/Ctrl+V) to
   add it to the queue, same as dropping or picking a file. Non-image content is
   ignored; pasted non-JPEGs get the normal per-file error (#18).

@@ -7,11 +7,15 @@ import { generateOutputFilename } from '@/lib/filename';
 import { clipboardImageFiles } from '@/lib/clipboard';
 import { BALANCED_JPEG_QUALITY, ACCEPTED_EXTENSIONS } from '@/lib/constants';
 import {
+  ASPECT_KEYS,
+  ASPECT_RATIOS,
   HANDLES,
+  applyAspectRatio,
   defaultCrop,
   moveRect,
   outputSize,
   resizeRect,
+  type AspectKey,
   type Handle,
   type Rect,
 } from '@/lib/crop';
@@ -116,11 +120,53 @@ const HandleDot = styled('span')<{ handle: Handle }>(({ handle }) => ({
   right: handle === 'ne' || handle === 'se' ? -7 : undefined,
 }));
 
+const RatioFieldset = styled('fieldset')(({ theme }) => ({
+  margin: 0,
+  padding: theme.space(3),
+  border: `1px solid ${theme.color.border}`,
+  borderRadius: theme.radius.md,
+  background: theme.color.surface,
+  '& legend': {
+    padding: `0 ${theme.space(1)}`,
+    fontSize: '0.85rem',
+    fontWeight: 600,
+    color: theme.color.muted,
+  },
+}));
+
+const RatioOptions = styled('div')(({ theme }) => ({
+  display: 'flex',
+  flexWrap: 'wrap',
+  gap: theme.space(2),
+}));
+
+const RatioOption = styled('label')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  gap: theme.space(2),
+  padding: '0.5rem 0.75rem',
+  border: `1px solid ${theme.color.borderStrong}`,
+  borderRadius: '8px',
+  cursor: 'pointer',
+  fontSize: '0.9rem',
+  fontWeight: 600,
+  '&:focus-within': {
+    borderColor: theme.color.accent,
+    boxShadow: `0 0 0 3px color-mix(in srgb, ${theme.color.accent} 35%, transparent)`,
+  },
+  '&:has(input:checked)': {
+    borderColor: theme.color.accent,
+    background: `color-mix(in srgb, ${theme.color.accent} 8%, ${theme.color.surface})`,
+  },
+  '& input': { width: '1rem', height: '1rem', accentColor: theme.color.accent },
+}));
+
 export default function Cropper() {
   const [source, setSource] = useState<Source | null>(null);
   const [crop, setCrop] = useState<Rect | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [ratioKey, setRatioKey] = useState<AspectKey>('free');
 
   const inputRef = useRef<HTMLInputElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
@@ -154,13 +200,19 @@ export default function Cropper() {
     [revokeUrl],
   );
 
-  const onImageLoad = useCallback((event: React.SyntheticEvent<HTMLImageElement>) => {
-    const img = event.currentTarget;
-    const naturalWidth = img.naturalWidth;
-    const naturalHeight = img.naturalHeight;
-    setSource((current) => (current ? { ...current, naturalWidth, naturalHeight } : current));
-    setCrop(defaultCrop({ width: naturalWidth, height: naturalHeight }));
-  }, []);
+  const onImageLoad = useCallback(
+    (event: React.SyntheticEvent<HTMLImageElement>) => {
+      const img = event.currentTarget;
+      const naturalWidth = img.naturalWidth;
+      const naturalHeight = img.naturalHeight;
+      setSource((current) => (current ? { ...current, naturalWidth, naturalHeight } : current));
+      const bounds = { width: naturalWidth, height: naturalHeight };
+      const base = defaultCrop(bounds);
+      const ratio = ASPECT_RATIOS[ratioKey];
+      setCrop(ratio ? applyAspectRatio(base, ratio, bounds) : base);
+    },
+    [ratioKey],
+  );
 
   const onImageError = useCallback(() => {
     revokeUrl();
@@ -207,10 +259,22 @@ export default function Cropper() {
       setCrop(
         drag.mode === 'move'
           ? moveRect(drag.startRect, dx, dy, bounds)
-          : resizeRect(drag.startRect, drag.mode, dx, dy, bounds),
+          : resizeRect(drag.startRect, drag.mode, dx, dy, bounds, ASPECT_RATIOS[ratioKey]),
       );
     },
-    [source, scale],
+    [source, scale, ratioKey],
+  );
+
+  const handleRatioChange = useCallback(
+    (key: AspectKey) => {
+      setRatioKey(key);
+      const ratio = ASPECT_RATIOS[key];
+      if (ratio && source && crop) {
+        const bounds = { width: source.naturalWidth, height: source.naturalHeight };
+        setCrop(applyAspectRatio(crop, ratio, bounds));
+      }
+    },
+    [source, crop],
   );
 
   const endDrag = useCallback((event: React.PointerEvent) => {
@@ -349,6 +413,25 @@ export default function Cropper() {
 
         {source ? (
           <Stack gap={3} align="flex-start">
+            <RatioFieldset data-testid="crop-ratio">
+              <legend>Aspect ratio</legend>
+              <RatioOptions>
+                {ASPECT_KEYS.map((key) => (
+                  <RatioOption key={key}>
+                    <input
+                      type="radio"
+                      name="aspect-ratio"
+                      value={key}
+                      checked={ratioKey === key}
+                      onChange={() => handleRatioChange(key)}
+                      data-testid={`crop-ratio-${key}`}
+                    />
+                    {key === 'free' ? 'Free' : key}
+                  </RatioOption>
+                ))}
+              </RatioOptions>
+            </RatioFieldset>
+
             <Stage style={{ width: displayWidth || undefined }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <StageImage

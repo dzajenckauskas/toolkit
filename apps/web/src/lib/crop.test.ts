@@ -1,5 +1,14 @@
 import { describe, expect, it } from 'vitest';
-import { clampRect, defaultCrop, moveRect, outputSize, resizeRect, type Size } from './crop';
+import {
+  ASPECT_RATIOS,
+  applyAspectRatio,
+  clampRect,
+  defaultCrop,
+  moveRect,
+  outputSize,
+  resizeRect,
+  type Size,
+} from './crop';
 
 const bounds: Size = { width: 1000, height: 800 };
 
@@ -84,5 +93,53 @@ describe('outputSize', () => {
       width: 250,
       height: 189,
     });
+  });
+});
+
+describe('applyAspectRatio', () => {
+  it('makes a square for 1:1, centered on the original', () => {
+    const r = applyAspectRatio({ x: 100, y: 100, width: 400, height: 200 }, 1, bounds);
+    expect(r.width).toBe(r.height);
+    // centered on original center (300, 200)
+    expect(r.x + r.width / 2).toBeCloseTo(300);
+    expect(r.y + r.height / 2).toBeCloseTo(200);
+  });
+
+  it('derives height from width for a wide ratio and stays in bounds', () => {
+    const r = applyAspectRatio({ x: 0, y: 0, width: 800, height: 800 }, 16 / 9, bounds);
+    expect(r.width / r.height).toBeCloseTo(16 / 9, 3);
+    expect(r.x).toBeGreaterThanOrEqual(0);
+    expect(r.x + r.width).toBeLessThanOrEqual(bounds.width);
+    expect(r.y + r.height).toBeLessThanOrEqual(bounds.height);
+  });
+
+  it('shrinks to fit when the derived height exceeds bounds (tall ratio)', () => {
+    const r = applyAspectRatio({ x: 0, y: 0, width: 900, height: 780 }, 0.5, bounds);
+    expect(r.height).toBeLessThanOrEqual(bounds.height);
+    expect(r.width / r.height).toBeCloseTo(0.5, 2);
+  });
+
+  it('exposes the expected presets', () => {
+    expect(ASPECT_RATIOS['1:1']).toBe(1);
+    expect(ASPECT_RATIOS['4:5']).toBeCloseTo(0.8);
+    expect(ASPECT_RATIOS.free).toBeNull();
+  });
+});
+
+describe('resizeRect with a ratio', () => {
+  it('keeps the aspect ratio while resizing from the SE handle', () => {
+    const r = resizeRect({ x: 100, y: 100, width: 300, height: 300 }, 'se', 60, 0, bounds, 1);
+    expect(r.width).toBeCloseTo(r.height);
+    // anchored at the top-left
+    expect(r).toMatchObject({ x: 100, y: 100 });
+  });
+
+  it('anchors the bottom-right when resizing from the NW handle', () => {
+    const start = { x: 100, y: 100, width: 300, height: 300 };
+    const r = resizeRect(start, 'nw', -60, 0, bounds, 1);
+    expect(r.width).toBeCloseTo(r.height);
+    // bottom-right corner stays at (400, 400)
+    expect(r.x + r.width).toBeCloseTo(400);
+    expect(r.y + r.height).toBeCloseTo(400);
   });
 });
