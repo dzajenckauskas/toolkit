@@ -24,7 +24,7 @@ for that slice only; full multi-format, batch, and controls remain open. See
 
 - [x] Drag-and-drop upload (JPEG slice)
 - [x] File picker (JPEG slice)
-- [ ] Clipboard paste
+- [x] Clipboard paste
 - [x] Multiple-image queue
 - [x] Compression controls
 - [x] Before/after size comparison (JPEG slice)

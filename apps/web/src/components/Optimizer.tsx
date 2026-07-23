@@ -23,6 +23,7 @@ import {
 import { calculateSavings } from '@/lib/savings';
 import { loadQualityLevel, saveQualityLevel } from '@/lib/settings';
 import { buildZip, type ZipEntry } from '@/lib/zip';
+import { clipboardImageFiles } from '@/lib/clipboard';
 import styled from '@emotion/styled';
 import { Button, DownloadLink, Stack, Text } from '@/components/ui';
 
@@ -298,6 +299,19 @@ export default function Optimizer() {
     [nextId, optimizeItem, quality],
   );
 
+  useEffect(() => {
+    // Paste an image anywhere on the page to add it (Cmd/Ctrl+V).
+    const onPaste = (event: ClipboardEvent) => {
+      const files = clipboardImageFiles(event.clipboardData);
+      if (files.length > 0) {
+        event.preventDefault();
+        addFiles(files);
+      }
+    };
+    window.addEventListener('paste', onPaste);
+    return () => window.removeEventListener('paste', onPaste);
+  }, [addFiles]);
+
   const handleQualityChange = useCallback(
     (level: QualityLevel) => {
       setQuality(level);
@@ -427,9 +441,9 @@ export default function Optimizer() {
           onDrop={handleDrop}
           data-testid="dropzone"
         >
-          <Text weight={600}>Drop product photos here, or choose JPEGs.</Text>
+          <Text weight={600}>Drop product photos here, paste, or choose JPEGs.</Text>
           <Text tone="muted" size="sm">
-            Add one or many. They are optimized in your browser.
+            Add one or many, or paste with Cmd/Ctrl+V. They are optimized in your browser.
           </Text>
         </Dropzone>
 

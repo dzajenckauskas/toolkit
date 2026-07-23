@@ -86,6 +86,29 @@ test('does not offer a ZIP for a single image', async ({ page }) => {
   await expect(page.getByTestId('download-all')).toHaveCount(0);
 });
 
+test('accepts a JPEG pasted from the clipboard', async ({ page }) => {
+  await page.evaluate(async () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 48;
+    canvas.height = 32;
+    const ctx = canvas.getContext('2d')!;
+    ctx.fillStyle = '#c33';
+    ctx.fillRect(0, 0, 48, 32);
+    const blob: Blob = await new Promise((resolve) =>
+      canvas.toBlob((b) => resolve(b!), 'image/jpeg', 0.9),
+    );
+    const file = new File([blob], 'pasted.jpg', { type: 'image/jpeg' });
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    window.dispatchEvent(
+      new ClipboardEvent('paste', { clipboardData: dt, bubbles: true, cancelable: true }),
+    );
+  });
+
+  await expect(page.getByTestId('item-download')).toBeVisible();
+  await expect(page.getByTestId('item-meta')).toContainText('48×32');
+});
+
 test('remembers the last-used quality across a reload', async ({ page }) => {
   await expect(page.getByTestId('quality-balanced')).toBeChecked();
 
