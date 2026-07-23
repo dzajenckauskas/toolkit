@@ -9,6 +9,10 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 - **Optimizer compression control:** choose Low / Balanced / High quality on
   `/optimize`; changing the level re-optimizes the current image and updates the
   size saved. Balanced remains the default, so the fast path is unchanged (#6).
+- **Optimizer batch:** add and optimize multiple JPEGs in one session. A queue
+  shows each file's preview, dimensions, size, and % saved, with per-file remove
+  and retry, an overall batch summary, and per-file error handling so one bad
+  file never breaks the batch. Quality applies across the whole queue (#7).
 - Initial Project OS documentation structure
 - Product vision and MVP boundaries
 - AI agent operating instructions

@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { validateFile } from '@/lib/validation';
 import { generateOutputFilename } from '@/lib/filename';
 import { formatBytes } from '@/lib/format';
-import { calculateSavings, type SizeComparison } from '@/lib/savings';
 import { ImageDecodeError, ImageEncodeError, optimizeJpeg } from '@/lib/optimize';
 import { ACCEPTED_EXTENSIONS } from '@/lib/constants';
 import {
@@ -15,192 +14,207 @@ import {
   qualityValue,
   type QualityLevel,
 } from '@/lib/quality';
-
-type Status = 'idle' | 'ready' | 'optimizing' | 'done' | 'error';
-
-interface OriginalInfo {
-  name: string;
-  sizeBytes: number;
-  width: number;
-  height: number;
-  previewUrl: string;
-}
-
-interface OptimizedInfo {
-  downloadName: string;
-  downloadUrl: string;
-  sizeBytes: number;
-  comparison: SizeComparison;
-}
+import {
+  batchSummary,
+  removeItem as removeQueueItem,
+  updateItem,
+  type QueueItem,
+} from '@/lib/queue';
+import { calculateSavings } from '@/lib/savings';
 
 export default function Optimizer() {
-  const [status, setStatus] = useState<Status>('idle');
-  const [error, setError] = useState<string | null>(null);
-  const [original, setOriginal] = useState<OriginalInfo | null>(null);
-  const [optimized, setOptimized] = useState<OptimizedInfo | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
+  const [items, setItems] = useState<QueueItem[]>([]);
   const [quality, setQuality] = useState<QualityLevel>(DEFAULT_QUALITY_LEVEL);
+  const [isDragging, setIsDragging] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
-  // Keep the source file so changing the quality can re-optimize it in place.
-  const currentFileRef = useRef<File | null>(null);
+  // Source files by item id, kept so we can re-optimize (quality change) or retry.
+  const filesRef = useRef<Map<string, File>>(new Map());
+  // Latest items, for reading previous object URLs and for unmount cleanup.
+  const itemsRef = useRef<QueueItem[]>([]);
+  const idCounter = useRef(0);
 
-  // Track every object URL we mint so we can revoke them precisely, both on
-  // replacement and on unmount. (docs/ux: "clean up temporary resources".)
-  const originalUrlRef = useRef<string | null>(null);
-  const optimizedUrlRef = useRef<string | null>(null);
+  useEffect(() => {
+    itemsRef.current = items;
+  }, [items]);
 
-  const revokeOriginalUrl = useCallback(() => {
-    if (originalUrlRef.current) {
-      URL.revokeObjectURL(originalUrlRef.current);
-      originalUrlRef.current = null;
-    }
-  }, []);
-
-  const revokeOptimizedUrl = useCallback(() => {
-    if (optimizedUrlRef.current) {
-      URL.revokeObjectURL(optimizedUrlRef.current);
-      optimizedUrlRef.current = null;
-    }
+  const revokeItemUrls = useCallback((item: QueueItem | undefined) => {
+    if (!item) return;
+    if (item.previewUrl) URL.revokeObjectURL(item.previewUrl);
+    if (item.optimizedUrl) URL.revokeObjectURL(item.optimizedUrl);
   }, []);
 
   useEffect(() => {
-    // Revoke any outstanding URLs when the component unmounts.
+    // Release every outstanding object URL when the component unmounts.
     return () => {
-      revokeOriginalUrl();
-      revokeOptimizedUrl();
-    };
-  }, [revokeOriginalUrl, revokeOptimizedUrl]);
-
-  const resetOutputs = useCallback(() => {
-    revokeOriginalUrl();
-    revokeOptimizedUrl();
-    setOriginal(null);
-    setOptimized(null);
-  }, [revokeOriginalUrl, revokeOptimizedUrl]);
-
-  // Core pipeline: validate, optimize at the given quality, and publish results.
-  // New object URLs are minted first and the previous ones revoked only after
-  // state is swapped, so the visible download never points at a revoked URL.
-  const runOptimize = useCallback(
-    async (file: File, level: QualityLevel) => {
-      setError(null);
-
-      const validation = validateFile(file);
-      if (!validation.ok) {
-        currentFileRef.current = null;
-        resetOutputs();
-        setStatus('error');
-        setError(validation.message ?? 'This file cannot be used.');
-        return;
+      for (const item of itemsRef.current) {
+        if (item.previewUrl) URL.revokeObjectURL(item.previewUrl);
+        if (item.optimizedUrl) URL.revokeObjectURL(item.optimizedUrl);
       }
+    };
+  }, []);
+
+  const nextId = useCallback(() => {
+    idCounter.current += 1;
+    return `item-${idCounter.current}`;
+  }, []);
+
+  // Optimize a single item's source file at the given quality and publish the
+  // result. Mints new object URLs, then revokes the item's previous ones, so a
+  // visible download never points at a revoked URL.
+  const optimizeItem = useCallback(
+    async (id: string, level: QualityLevel) => {
+      const file = filesRef.current.get(id);
+      if (!file) return;
+
+      const previous = itemsRef.current.find((i) => i.id === id);
+      setItems((prev) => updateItem(prev, id, { status: 'optimizing', error: undefined }));
 
       try {
-        setStatus('optimizing');
         const result = await optimizeJpeg(file, qualityValue(level));
 
-        const previousOriginalUrl = originalUrlRef.current;
-        const previousOptimizedUrl = optimizedUrlRef.current;
+        // If the user removed this item mid-flight, drop the result and don't leak URLs.
+        if (!itemsRef.current.some((i) => i.id === id)) return;
 
         const previewUrl = URL.createObjectURL(file);
-        originalUrlRef.current = previewUrl;
-        const downloadUrl = URL.createObjectURL(result.blob);
-        optimizedUrlRef.current = downloadUrl;
+        const optimizedUrl = URL.createObjectURL(result.blob);
 
-        const comparison = calculateSavings(file.size, result.blob.size);
+        setItems((prev) =>
+          updateItem(prev, id, {
+            status: 'done',
+            width: result.dimensions.width,
+            height: result.dimensions.height,
+            previewUrl,
+            optimizedUrl,
+            optimizedSize: result.blob.size,
+            downloadName: generateOutputFilename(file.name),
+            error: undefined,
+          }),
+        );
 
-        setOriginal({
-          name: file.name,
-          sizeBytes: file.size,
-          width: result.dimensions.width,
-          height: result.dimensions.height,
-          previewUrl,
-        });
-        setOptimized({
-          downloadName: generateOutputFilename(file.name),
-          downloadUrl,
-          sizeBytes: result.blob.size,
-          comparison,
-        });
-        setStatus('done');
-
-        // Safe to release the superseded URLs now that state points at the new ones.
-        if (previousOriginalUrl) URL.revokeObjectURL(previousOriginalUrl);
-        if (previousOptimizedUrl) URL.revokeObjectURL(previousOptimizedUrl);
+        revokeItemUrls(previous);
       } catch (caught) {
-        currentFileRef.current = null;
-        resetOutputs();
-        setStatus('error');
-        if (caught instanceof ImageDecodeError || caught instanceof ImageEncodeError) {
-          setError(caught.message);
-        } else {
-          setError('Something went wrong while optimizing this image. Please try again.');
-        }
+        if (!itemsRef.current.some((i) => i.id === id)) return;
+        const message =
+          caught instanceof ImageDecodeError || caught instanceof ImageEncodeError
+            ? caught.message
+            : 'Something went wrong while optimizing this image. Please try again.';
+        setItems((prev) =>
+          updateItem(prev, id, {
+            status: 'error',
+            error: message,
+            previewUrl: undefined,
+            optimizedUrl: undefined,
+            optimizedSize: undefined,
+          }),
+        );
+        revokeItemUrls(previous);
       }
     },
-    [resetOutputs],
+    [revokeItemUrls],
   );
 
-  const handleFile = useCallback(
-    (file: File) => {
-      currentFileRef.current = file;
-      void runOptimize(file, quality);
+  const addFiles = useCallback(
+    (fileList: FileList | File[]) => {
+      const files = Array.from(fileList);
+      const accepted: string[] = [];
+
+      const newItems: QueueItem[] = files.map((file) => {
+        const id = nextId();
+        const validation = validateFile(file);
+        if (!validation.ok) {
+          // Keep the file so the user can retry, but surface the error now.
+          filesRef.current.set(id, file);
+          return {
+            id,
+            fileName: file.name,
+            fileSize: file.size,
+            status: 'error',
+            error: validation.message ?? 'This file cannot be used.',
+          };
+        }
+        filesRef.current.set(id, file);
+        accepted.push(id);
+        return { id, fileName: file.name, fileSize: file.size, status: 'optimizing' };
+      });
+
+      if (newItems.length === 0) return;
+      setItems((prev) => [...prev, ...newItems]);
+      // Kick off optimization for the valid ones at the current quality.
+      for (const id of accepted) {
+        void optimizeItem(id, quality);
+      }
     },
-    [runOptimize, quality],
+    [nextId, optimizeItem, quality],
   );
 
   const onQualityChange = useCallback(
     (level: QualityLevel) => {
       setQuality(level);
-      // Re-optimize the current file immediately so the result reflects the choice.
-      const file = currentFileRef.current;
-      if (file) {
-        void runOptimize(file, level);
+      // Re-optimize everything that has a source file so results reflect the choice.
+      for (const item of itemsRef.current) {
+        if (filesRef.current.has(item.id)) {
+          void optimizeItem(item.id, level);
+        }
       }
     },
-    [runOptimize],
+    [optimizeItem],
   );
+
+  const retryItem = useCallback(
+    (id: string) => {
+      void optimizeItem(id, quality);
+    },
+    [optimizeItem, quality],
+  );
+
+  const removeItem = useCallback(
+    (id: string) => {
+      revokeItemUrls(itemsRef.current.find((i) => i.id === id));
+      filesRef.current.delete(id);
+      setItems((prev) => removeQueueItem(prev, id));
+    },
+    [revokeItemUrls],
+  );
+
+  const clearAll = useCallback(() => {
+    for (const item of itemsRef.current) revokeItemUrls(item);
+    filesRef.current.clear();
+    setItems([]);
+  }, [revokeItemUrls]);
 
   const onInputChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      const file = event.target.files?.[0];
-      if (file) {
-        void handleFile(file);
+      if (event.target.files && event.target.files.length > 0) {
+        addFiles(event.target.files);
       }
-      // Allow re-selecting the same file to re-run.
-      event.target.value = '';
+      event.target.value = ''; // allow re-selecting the same files
     },
-    [handleFile],
+    [addFiles],
   );
 
   const onDrop = useCallback(
     (event: React.DragEvent<HTMLDivElement>) => {
       event.preventDefault();
       setIsDragging(false);
-      const file = event.dataTransfer.files?.[0];
-      if (file) {
-        void handleFile(file);
+      if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
+        addFiles(event.dataTransfer.files);
       }
     },
-    [handleFile],
+    [addFiles],
   );
 
   const openPicker = useCallback(() => inputRef.current?.click(), []);
 
-  const clearAll = useCallback(() => {
-    currentFileRef.current = null;
-    resetOutputs();
-    setError(null);
-    setStatus('idle');
-  }, [resetOutputs]);
-
-  const isBusy = status === 'optimizing';
+  const summary = batchSummary(items);
+  const hasItems = items.length > 0;
 
   return (
     <section className="optimizer" aria-labelledby="optimizer-heading">
       <input
         ref={inputRef}
         type="file"
+        multiple
         accept={`image/jpeg,${ACCEPTED_EXTENSIONS.join(',')}`}
         className="visually-hidden"
         onChange={onInputChange}
@@ -211,7 +225,7 @@ export default function Optimizer() {
         className={`dropzone${isDragging ? ' dropzone--active' : ''}`}
         role="button"
         tabIndex={0}
-        aria-label="Add a JPEG image by choosing a file or dropping it here"
+        aria-label="Add JPEG images by choosing files or dropping them here"
         onClick={openPicker}
         onKeyDown={(event) => {
           if (event.key === 'Enter' || event.key === ' ') {
@@ -227,11 +241,11 @@ export default function Optimizer() {
         onDrop={onDrop}
         data-testid="dropzone"
       >
-        <p className="dropzone__lead">Drop a product photo here, or choose a JPEG.</p>
-        <p className="dropzone__hint">One JPEG at a time. It is optimized in your browser.</p>
+        <p className="dropzone__lead">Drop product photos here, or choose JPEGs.</p>
+        <p className="dropzone__hint">Add one or many. They are optimized in your browser.</p>
       </div>
 
-      <fieldset className="quality" data-testid="quality" disabled={isBusy}>
+      <fieldset className="quality" data-testid="quality" disabled={!summary.settled}>
         <legend>Compression level</legend>
         <div className="quality__options">
           {QUALITY_LEVELS.map((level) => (
@@ -254,72 +268,109 @@ export default function Optimizer() {
       </fieldset>
 
       <div className="status" aria-live="polite" role="status" data-testid="status">
-        {isBusy ? 'Optimizing your image…' : ''}
+        {hasItems
+          ? summary.settled
+            ? summary.done > 0
+              ? `${summary.done} image${summary.done === 1 ? '' : 's'} optimized` +
+                (summary.totalSavedPercent > 0
+                  ? ` · ${summary.totalSavedPercent}% smaller overall`
+                  : '') +
+                (summary.errored > 0 ? ` · ${summary.errored} failed` : '')
+              : `${summary.errored} file${summary.errored === 1 ? '' : 's'} could not be used`
+            : `Optimizing… (${summary.done}/${summary.total})`
+          : ''}
       </div>
 
-      {status === 'error' && error ? (
-        <p className="alert alert--error" role="alert" data-testid="error">
-          {error}
-        </p>
-      ) : null}
+      {hasItems ? (
+        <>
+          <ul className="queue" data-testid="results">
+            {items.map((item) => (
+              <li key={item.id} className={`queue__item queue__item--${item.status}`}>
+                {item.previewUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    className="queue__thumb"
+                    src={item.previewUrl}
+                    alt={`Preview of ${item.fileName}`}
+                  />
+                ) : (
+                  <div className="queue__thumb queue__thumb--empty" aria-hidden="true" />
+                )}
 
-      {original && optimized ? (
-        <div className="results" data-testid="results">
-          <figure className="preview">
-            {/* Object-URL preview of the user's own local file; next/image is
-                unnecessary and would try to optimize a blob URL. */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={original.previewUrl} alt={`Preview of ${original.name}`} />
-            <figcaption>{original.name}</figcaption>
-          </figure>
+                <div className="queue__body">
+                  <p className="queue__name" title={item.fileName}>
+                    {item.fileName}
+                  </p>
 
-          <dl className="details">
-            <div>
-              <dt>Format</dt>
-              <dd>JPEG</dd>
-            </div>
-            <div>
-              <dt>Dimensions</dt>
-              <dd data-testid="dimensions">
-                {original.width} × {original.height} px
-              </dd>
-            </div>
-            <div>
-              <dt>Original size</dt>
-              <dd data-testid="original-size">{formatBytes(original.sizeBytes)}</dd>
-            </div>
-            <div>
-              <dt>Optimized size</dt>
-              <dd data-testid="optimized-size">{formatBytes(optimized.sizeBytes)}</dd>
-            </div>
-            <div>
-              <dt>Result</dt>
-              <dd data-testid="savings">
-                {optimized.comparison.isSmaller
-                  ? `${optimized.comparison.savedPercent}% smaller`
-                  : 'Already well optimized — no size reduction'}
-              </dd>
-            </div>
-          </dl>
+                  {item.status === 'optimizing' ? <p className="queue__meta">Optimizing…</p> : null}
+
+                  {item.status === 'error' ? (
+                    <p className="queue__meta queue__meta--error" data-testid="item-error">
+                      {item.error}
+                    </p>
+                  ) : null}
+
+                  {item.status === 'done' ? (
+                    <p className="queue__meta" data-testid="item-meta">
+                      {item.width}×{item.height} ·{' '}
+                      <span data-testid="item-original">{formatBytes(item.fileSize)}</span> →{' '}
+                      <span data-testid="item-optimized">
+                        {formatBytes(item.optimizedSize ?? item.fileSize)}
+                      </span>{' '}
+                      ·{' '}
+                      <span data-testid="item-savings">
+                        {calculateSavings(item.fileSize, item.optimizedSize ?? item.fileSize)
+                          .isSmaller
+                          ? `${calculateSavings(item.fileSize, item.optimizedSize ?? item.fileSize).savedPercent}% smaller`
+                          : 'already optimized'}
+                      </span>
+                    </p>
+                  ) : null}
+                </div>
+
+                <div className="queue__actions">
+                  {item.status === 'done' && item.optimizedUrl ? (
+                    <a
+                      className="button button--primary button--small"
+                      href={item.optimizedUrl}
+                      download={item.downloadName}
+                      data-testid="item-download"
+                    >
+                      Download
+                    </a>
+                  ) : null}
+                  {item.status === 'error' ? (
+                    <button
+                      type="button"
+                      className="button button--ghost button--small"
+                      onClick={() => retryItem(item.id)}
+                    >
+                      Retry
+                    </button>
+                  ) : null}
+                  <button
+                    type="button"
+                    className="button button--ghost button--small"
+                    aria-label={`Remove ${item.fileName}`}
+                    onClick={() => removeItem(item.id)}
+                  >
+                    Remove
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
 
           <div className="actions">
-            <a
-              className="button button--primary"
-              href={optimized.downloadUrl}
-              download={optimized.downloadName}
-              data-testid="download"
-            >
-              Download optimized JPEG
-            </a>
             <button type="button" className="button button--ghost" onClick={clearAll}>
-              Start over
+              Clear all
             </button>
           </div>
 
           <p className="privacy">
-            Your image never leaves your device. Optimization runs entirely in your browser.
+            Your images never leave your device. Optimization runs entirely in your browser.
           </p>
-        </div>
+        </>
       ) : null}
     </section>
   );

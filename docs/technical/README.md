@@ -49,7 +49,13 @@ Pipeline: decode file → `HTMLImageElement` → draw to `<canvas>` →
 Quality is chosen via a small set of named levels (`src/lib/quality.ts`): Low
 (0.6), Balanced (0.8, the default), High (0.92). Balanced reuses the original
 Sprint 001 default so the untouched fast path is unchanged. Changing the level
-re-optimizes the current image in place.
+re-optimizes every queued image in place.
+
+Multiple images are handled as a queue (`src/lib/queue.ts` holds the pure shape
+and aggregate math; the component owns files and object URLs). Each item decodes
+and encodes independently, so one corrupt file fails on its own without
+affecting the batch. Per-item object URLs are revoked on remove, on re-optimize
+(swap-then-revoke), on clear, and on unmount.
 
 ### Findings
 
