@@ -69,13 +69,35 @@ export default function ContrastChecker() {
       <Controls>
         <Field>
           Text
-          <input type="color" value={fg} onChange={(e) => setFg(e.target.value)} aria-label="Text color" data-testid="contrast-fg-picker" />
-          <HexInput value={fg} onChange={(e) => setFg(e.target.value)} aria-label="Text hex" data-testid="contrast-fg" />
+          <input
+            type="color"
+            value={fg}
+            onChange={(e) => setFg(e.target.value)}
+            aria-label="Text color"
+            data-testid="contrast-fg-picker"
+          />
+          <HexInput
+            value={fg}
+            onChange={(e) => setFg(e.target.value)}
+            aria-label="Text hex"
+            data-testid="contrast-fg"
+          />
         </Field>
         <Field>
           Background
-          <input type="color" value={bg} onChange={(e) => setBg(e.target.value)} aria-label="Background color" data-testid="contrast-bg-picker" />
-          <HexInput value={bg} onChange={(e) => setBg(e.target.value)} aria-label="Background hex" data-testid="contrast-bg" />
+          <input
+            type="color"
+            value={bg}
+            onChange={(e) => setBg(e.target.value)}
+            aria-label="Background color"
+            data-testid="contrast-bg-picker"
+          />
+          <HexInput
+            value={bg}
+            onChange={(e) => setBg(e.target.value)}
+            aria-label="Background hex"
+            data-testid="contrast-bg"
+          />
         </Field>
       </Controls>
 

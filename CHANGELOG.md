@@ -40,6 +40,14 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
     of separator/case.
   - **Color contrast checker** (`/contrast`) — WCAG AA/AAA pass/fail with a
     live preview and contrast ratio.
+- **First tools with a dependency (Tier 2):**
+  - **QR code generator** (`/qr`) — encode any link/text to a QR PNG with a
+    download, via the `qrcode` library.
+  - **Markdown editor** (`/markdown`) — live split-pane preview via
+    `markdown-it`, configured with `html:false` so it is XSS-safe.
+  - Note: a YAML↔JSON converter was deferred — the only `js-yaml` version the
+    registry offered here was an anomalous `5.2.2` (real latest is 4.x) flagged
+    with a critical advisory, so the package was not adopted.
 - **Command-palette search:** the home-page search is now a keyboard-driven
   command palette (inspired by DevToys / free-tooling). It searches tool names,
   descriptions, categories and action-style keywords (e.g. "encode" → Base64,

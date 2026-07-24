@@ -103,7 +103,7 @@ export const TOOLS: Tool[] = [
     description: 'Generate a QR code for any link or text.',
     href: '/qr',
     category: 'Images & Media',
-    status: 'planned',
+    status: 'live',
   },
   {
     id: 'code-image',
@@ -158,10 +158,10 @@ export const TOOLS: Tool[] = [
   {
     id: 'markdown',
     name: 'Markdown',
-    description: 'Markdown editor with live preview and export.',
+    description: 'Markdown editor with live preview.',
     href: '/markdown',
     category: 'Text & Documents',
-    status: 'planned',
+    status: 'live',
   },
   {
     id: 'mermaid',
@@ -506,6 +506,8 @@ export const TOOL_KEYWORDS: Record<string, string[]> = {
   'word-count': ['characters', 'words', 'count', 'reading time', 'letters'],
   slugify: ['slug', 'url', 'permalink', 'kebab', 'seo'],
   contrast: ['wcag', 'accessibility', 'a11y', 'ratio', 'color', 'luminance'],
+  qr: ['qrcode', 'barcode', 'scan', 'link', 'url'],
+  markdown: ['md', 'markdown', 'preview', 'editor', 'readme'],
 };
 
 /** Tools grouped by category, in display order (skips empty categories). */
