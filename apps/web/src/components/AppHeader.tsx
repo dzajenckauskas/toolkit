@@ -1,46 +1,65 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import styled from '@emotion/styled';
+import { Logo } from '@/components/Logo';
+import ThemeToggle from '@/components/ThemeToggle';
+import MobileMenu from '@/components/MobileMenu';
 
 /**
- * Persistent top navigation across the toolkit. Shows the brand (links home)
- * and a link per tool, with the current tool highlighted. Client component so
- * it can read the active route via usePathname.
+ * Persistent top navigation. Logo (→ home), a couple of quick links on wider
+ * screens, a theme toggle, and a menu button that opens the category drawer.
  */
 
-const TOOLS = [
-  { href: '/optimize', label: 'Optimize' },
+const QUICK_LINKS = [
+  { href: '/optimize', label: 'Compress' },
   { href: '/crop', label: 'Crop' },
+  { href: '/palette', label: 'Palette' },
 ] as const;
 
 const Bar = styled('header')(({ theme }) => ({
+  position: 'sticky',
+  top: 0,
+  zIndex: 40,
   borderBottom: `1px solid ${theme.color.border}`,
-  background: theme.color.surface,
+  background: `color-mix(in srgb, ${theme.color.surface} 88%, transparent)`,
+  backdropFilter: 'saturate(1.2) blur(8px)',
 }));
 
 const Inner = styled('div')({
-  maxWidth: 720,
+  maxWidth: 1080,
   margin: '0 auto',
-  padding: '0.75rem 1.25rem',
+  padding: '0.6rem 1.25rem',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
   gap: '1rem',
 });
 
-const Brand = styled(Link)(({ theme }) => ({
-  fontWeight: 700,
-  fontSize: '1rem',
-  color: theme.color.text,
+const Brand = styled(Link)({
   textDecoration: 'none',
+  display: 'inline-flex',
+  borderRadius: 10,
+  '&:focus-visible': {
+    outline: 'none',
+    boxShadow: '0 0 0 3px color-mix(in srgb, var(--accent) 32%, transparent)',
+  },
+});
+
+const Right = styled('div')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  gap: theme.space(2),
 }));
 
-const Nav = styled('nav')({
-  display: 'flex',
-  gap: '0.25rem',
-});
+const QuickNav = styled('nav')(({ theme }) => ({
+  display: 'none',
+  gap: theme.space(1),
+  marginRight: theme.space(2),
+  '@media (min-width: 720px)': { display: 'flex' },
+}));
 
 const NavLink = styled(Link, {
   shouldForwardProp: (prop) => prop !== 'active',
@@ -51,37 +70,83 @@ const NavLink = styled(Link, {
   fontSize: '0.9rem',
   textDecoration: 'none',
   color: active ? theme.color.accent : theme.color.muted,
-  background: active ? `color-mix(in srgb, ${theme.color.accent} 10%, transparent)` : 'transparent',
+  background: active ? `color-mix(in srgb, ${theme.color.accent} 12%, transparent)` : 'transparent',
   '&:hover': { color: theme.color.text },
   '&:focus-visible': {
     outline: 'none',
-    boxShadow: `0 0 0 3px color-mix(in srgb, ${theme.color.accent} 35%, transparent)`,
+    boxShadow: `0 0 0 3px color-mix(in srgb, ${theme.color.accent} 32%, transparent)`,
+  },
+}));
+
+const IconButton = styled('button')(({ theme }) => ({
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: '2.4rem',
+  height: '2.4rem',
+  color: theme.color.text,
+  background: theme.color.surface,
+  border: `1px solid ${theme.color.border}`,
+  borderRadius: theme.radius.md,
+  cursor: 'pointer',
+  '&:hover': { borderColor: theme.color.accent },
+  '&:focus-visible': {
+    outline: 'none',
+    borderColor: theme.color.accent,
+    boxShadow: `0 0 0 3px color-mix(in srgb, ${theme.color.accent} 32%, transparent)`,
   },
 }));
 
 export function AppHeader() {
   const pathname = usePathname();
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <Bar>
       <Inner>
-        <Brand href="/">Ecommerce Toolkit</Brand>
-        <Nav aria-label="Tools">
-          {TOOLS.map((tool) => {
-            const active = pathname === tool.href;
-            return (
+        <Brand href="/" aria-label="toolkit — home" data-testid="brand-home">
+          <Logo />
+        </Brand>
+
+        <Right>
+          <QuickNav aria-label="Quick links">
+            {QUICK_LINKS.map((link) => (
               <NavLink
-                key={tool.href}
-                href={tool.href}
-                active={active}
-                aria-current={active ? 'page' : undefined}
-                data-testid={`nav-${tool.label.toLowerCase()}`}
+                key={link.href}
+                href={link.href}
+                active={pathname === link.href}
+                aria-current={pathname === link.href ? 'page' : undefined}
               >
-                {tool.label}
+                {link.label}
               </NavLink>
-            );
-          })}
-        </Nav>
+            ))}
+          </QuickNav>
+
+          <ThemeToggle />
+
+          <IconButton
+            type="button"
+            onClick={() => setMenuOpen(true)}
+            aria-label="Open menu"
+            aria-expanded={menuOpen}
+            data-testid="menu-open"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            >
+              <path d="M3 6h18M3 12h18M3 18h18" />
+            </svg>
+          </IconButton>
+        </Right>
       </Inner>
+
+      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
     </Bar>
   );
 }

@@ -5,7 +5,13 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import styled from '@emotion/styled';
 import { Stack, Text } from '@/components/ui';
-import { CATEGORY_ORDER, searchTools, type Tool, type ToolCategory } from '@/tools/registry';
+import {
+  CATEGORY_ORDER,
+  searchTools,
+  toolsByCategory,
+  type Tool,
+  type ToolCategory,
+} from '@/tools/registry';
 import { CategoryIcon } from '@/components/CategoryIcon';
 
 const SearchWrap = styled('div')({
@@ -185,6 +191,48 @@ const RowTag = styled('span')(({ theme }) => ({
   color: theme.color.muted,
 }));
 
+const Chips = styled('div')(({ theme }) => ({
+  display: 'flex',
+  flexWrap: 'wrap',
+  gap: theme.space(2),
+}));
+
+const Chip = styled('button', {
+  shouldForwardProp: (prop) => prop !== 'active',
+})<{ active: boolean }>(({ theme, active }) => ({
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: theme.space(2),
+  padding: '0.4rem 0.8rem',
+  fontSize: '0.85rem',
+  fontWeight: 600,
+  cursor: 'pointer',
+  color: active ? theme.color.accentContrast : theme.color.text,
+  background: active ? theme.color.accent : theme.color.surface,
+  border: `1px solid ${active ? theme.color.accent : theme.color.border}`,
+  borderRadius: theme.radius.pill,
+  transition: 'border-color 0.12s ease, background 0.12s ease',
+  '& svg': { color: active ? theme.color.accentContrast : theme.color.muted },
+  '&:hover': { borderColor: theme.color.accent },
+  '&:focus-visible': {
+    outline: 'none',
+    boxShadow: `0 0 0 3px color-mix(in srgb, ${theme.color.accent} 32%, transparent)`,
+  },
+}));
+
+const ChipCount = styled('span', {
+  shouldForwardProp: (prop) => prop !== 'active',
+})<{ active: boolean }>(({ theme, active }) => ({
+  fontSize: '0.72rem',
+  fontWeight: 700,
+  opacity: 0.8,
+  color: active ? theme.color.accentContrast : theme.color.muted,
+}));
+
+const CatSection = styled('section')({
+  scrollMarginTop: '5rem', // clear the sticky header when jumped to via anchor
+});
+
 function ToolCard({ tool }: { tool: Tool }) {
   const body = (
     <>
@@ -268,10 +316,12 @@ export function ToolCatalog() {
   const router = useRouter();
   const [query, setQuery] = useState('');
   const [selected, setSelected] = useState(0);
+  const [activeCategory, setActiveCategory] = useState<ToolCategory | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const results = useMemo(() => searchTools(query), [query]);
   const searching = query.trim() !== '';
+  const categoryGroups = useMemo(() => toolsByCategory(), []);
 
   // Keep the selection in range as results change.
   useEffect(() => {
@@ -316,7 +366,9 @@ export function ToolCatalog() {
   const groups = CATEGORY_ORDER.map((category) => ({
     category: category as ToolCategory,
     tools: results.filter((tool) => tool.category === category),
-  })).filter((group) => group.tools.length > 0);
+  }))
+    .filter((group) => group.tools.length > 0)
+    .filter((group) => activeCategory === null || group.category === activeCategory);
 
   return (
     <Stack gap={5}>
@@ -350,6 +402,37 @@ export function ToolCatalog() {
         <Kbd aria-hidden>⌘K</Kbd>
       </SearchWrap>
 
+      {!searching ? (
+        <Chips role="group" aria-label="Browse by category" data-testid="category-chips">
+          <Chip
+            type="button"
+            active={activeCategory === null}
+            onClick={() => setActiveCategory(null)}
+            data-testid="chip-all"
+          >
+            All
+            <ChipCount active={activeCategory === null}>
+              {categoryGroups.reduce((n, g) => n + g.tools.length, 0)}
+            </ChipCount>
+          </Chip>
+          {categoryGroups.map((group) => (
+            <Chip
+              key={group.category}
+              type="button"
+              active={activeCategory === group.category}
+              onClick={() =>
+                setActiveCategory((cur) => (cur === group.category ? null : group.category))
+              }
+              data-testid={`chip-${group.category}`}
+            >
+              <CategoryIcon category={group.category} />
+              {group.category}
+              <ChipCount active={activeCategory === group.category}>{group.tools.length}</ChipCount>
+            </Chip>
+          ))}
+        </Chips>
+      ) : null}
+
       {searching ? (
         results.length === 0 ? (
           <Text tone="muted" data-testid="tool-empty">
@@ -370,14 +453,18 @@ export function ToolCatalog() {
         )
       ) : (
         groups.map((group) => (
-          <section key={group.category} data-testid={`cat-${group.category}`}>
+          <CatSection
+            key={group.category}
+            id={`cat-${group.category}`}
+            data-testid={`cat-${group.category}`}
+          >
             <CategoryHeading>{group.category}</CategoryHeading>
             <Grid>
               {group.tools.map((tool) => (
                 <ToolCard key={tool.id} tool={tool} />
               ))}
             </Grid>
-          </section>
+          </CatSection>
         ))
       )}
     </Stack>

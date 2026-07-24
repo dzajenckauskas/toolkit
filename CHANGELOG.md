@@ -4,6 +4,18 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 
 ## Unreleased
 
+### Changed
+
+- **Brand & UI overhaul.** Renamed the product to **toolkit** (working name)
+  with a hand-drawn glasses logo (recreated as inline SVG from the source
+  doodle). New sticky, responsive header with the logo, quick links, a
+  **light/dark theme toggle** (manual override persisted in `localStorage`,
+  with a no-flash init script and `data-theme` beating `prefers-color-scheme`),
+  and a **mobile menu drawer** that lists every category. The home page gained a
+  **browse-by-category** chip row (filter by category) and a wider layout, and
+  every native control (select, color/range/checkbox/file inputs) now shares a
+  consistent themed style via global CSS.
+
 ### Added
 
 - **Productivity, image & PDF tools (zero-dependency batch):**

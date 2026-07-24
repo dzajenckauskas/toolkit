@@ -108,19 +108,29 @@ Diagram builder, and the rest of the PDF set (PDF editor, Redact PDF —
 `pdf-lib`/`pdf.js`).
 **Policy / AI deferred:** Upscale (#27), Remove watermark (#28).
 
+## UI / navigation (done)
+
+- Brand is **toolkit** (working name) with a glasses SVG logo
+  (`src/components/Logo.tsx`, traced from the source doodle).
+- Sticky responsive header (`AppHeader`) with logo, quick links, a **light/dark
+  toggle** (`ThemeToggle` + `src/lib/theme-mode.ts`; `data-theme` on the root,
+  persisted, no-flash script in `app/layout.tsx`), and a **mobile drawer**
+  (`MobileMenu`) listing all categories.
+- Home page: **browse-by-category chip row** + anchor sections (`#cat-<Cat>`),
+  wider layout (`<Page wide>`).
+- Global control styling in `GlobalStyles.tsx` themes every native
+  select/input/range/checkbox/file/color control consistently.
+
 ## Open decisions for the owner
 
-1. **Product naming** — the header still reads "Ecommerce Toolkit," now
-   off-brand (ADR-008 flags naming as unresolved). Needs a chosen name to wire
-   through the header, titles and metadata.
+1. **Final product name** — "toolkit" is a working name; confirm or replace it
+   (wired through `Logo`, `app/layout.tsx` title, and `AppHeader`).
 2. **Shared image workspace** (#29) — one place to add images then route them
    into any tool (batch/chaining), vs. today's per-tool uploads.
 3. **`packages/ui` extraction** (#23) — move the primitives into a workspace
    package now that there are many consumers (ADR-001/006).
-4. **Navigation** — the header only links Optimize/Crop; with 48 tools a
-   catalog link or sidebar would help sub-pages reach the full set.
-5. **Theming** — an accent/theme switcher (the theme-maker tool already proves
-   out the token model).
+4. **Accent color** — the theme currently ships one accent; the theme-maker
+   tool proves out a switchable token model if you want a picker.
 
 ## Pointers
 

@@ -3,14 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { Button, Stack, Text } from '@/components/ui';
-import {
-  addCard,
-  columnIndex,
-  defaultBoard,
-  moveCard,
-  removeCard,
-  type Board,
-} from '@/lib/kanban';
+import { addCard, columnIndex, defaultBoard, moveCard, removeCard, type Board } from '@/lib/kanban';
 
 const STORAGE_KEY = 'toolkit:kanban';
 
@@ -101,10 +94,13 @@ export default function KanbanBoard() {
     }
   }, [board, loaded]);
 
-  const submit = useCallback((columnId: string) => {
-    setBoard((b) => addCard(b, columnId, drafts[columnId] ?? ''));
-    setDrafts((d) => ({ ...d, [columnId]: '' }));
-  }, [drafts]);
+  const submit = useCallback(
+    (columnId: string) => {
+      setBoard((b) => addCard(b, columnId, drafts[columnId] ?? ''));
+      setDrafts((d) => ({ ...d, [columnId]: '' }));
+    },
+    [drafts],
+  );
 
   const move = (cardId: string, dir: -1 | 1) => {
     setBoard((b) => {
@@ -175,7 +171,13 @@ export default function KanbanBoard() {
                 aria-label={`Add a card to ${col.title}`}
                 data-testid={`kanban-input-${col.id}`}
               />
-              <Button type="button" variant="ghost" size="sm" onClick={() => submit(col.id)} data-testid={`kanban-add-${col.id}`}>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => submit(col.id)}
+                data-testid={`kanban-add-${col.id}`}
+              >
                 Add
               </Button>
             </AddRow>

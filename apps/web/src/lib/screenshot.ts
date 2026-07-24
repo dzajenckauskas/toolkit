@@ -30,10 +30,30 @@ export function framedSize(
 }
 
 export const BACKGROUNDS: Background[] = [
-  { id: 'sunset', label: 'Sunset', css: 'linear-gradient(135deg, #ff7e5f, #feb47b)', stops: ['#ff7e5f', '#feb47b'] },
-  { id: 'ocean', label: 'Ocean', css: 'linear-gradient(135deg, #2b5876, #4e4376)', stops: ['#2b5876', '#4e4376'] },
-  { id: 'mint', label: 'Mint', css: 'linear-gradient(135deg, #43cea2, #185a9d)', stops: ['#43cea2', '#185a9d'] },
-  { id: 'grape', label: 'Grape', css: 'linear-gradient(135deg, #667eea, #764ba2)', stops: ['#667eea', '#764ba2'] },
+  {
+    id: 'sunset',
+    label: 'Sunset',
+    css: 'linear-gradient(135deg, #ff7e5f, #feb47b)',
+    stops: ['#ff7e5f', '#feb47b'],
+  },
+  {
+    id: 'ocean',
+    label: 'Ocean',
+    css: 'linear-gradient(135deg, #2b5876, #4e4376)',
+    stops: ['#2b5876', '#4e4376'],
+  },
+  {
+    id: 'mint',
+    label: 'Mint',
+    css: 'linear-gradient(135deg, #43cea2, #185a9d)',
+    stops: ['#43cea2', '#185a9d'],
+  },
+  {
+    id: 'grape',
+    label: 'Grape',
+    css: 'linear-gradient(135deg, #667eea, #764ba2)',
+    stops: ['#667eea', '#764ba2'],
+  },
   { id: 'slate', label: 'Slate', css: '#1f2933', stops: ['#1f2933'] },
   { id: 'white', label: 'White', css: '#ffffff', stops: ['#ffffff'] },
 ];

@@ -258,7 +258,10 @@ export default function ScreenshotBeautifier() {
                   maxWidth: '100%',
                   height: 'auto',
                   borderRadius: radius,
-                  boxShadow: shadow > 0 ? `0 ${Math.round(shadow / 3)}px ${shadow}px rgba(0,0,0,0.35)` : 'none',
+                  boxShadow:
+                    shadow > 0
+                      ? `0 ${Math.round(shadow / 3)}px ${shadow}px rgba(0,0,0,0.35)`
+                      : 'none',
                 }}
               />
             </div>
@@ -267,15 +270,36 @@ export default function ScreenshotBeautifier() {
           <Stack direction="row" gap={4} wrap>
             <Field>
               Padding {padding}
-              <input type="range" min={0} max={160} value={padding} onChange={(e) => setPadding(Number(e.target.value))} data-testid="ss-padding" />
+              <input
+                type="range"
+                min={0}
+                max={160}
+                value={padding}
+                onChange={(e) => setPadding(Number(e.target.value))}
+                data-testid="ss-padding"
+              />
             </Field>
             <Field>
               Radius {radius}
-              <input type="range" min={0} max={48} value={radius} onChange={(e) => setRadius(Number(e.target.value))} data-testid="ss-radius" />
+              <input
+                type="range"
+                min={0}
+                max={48}
+                value={radius}
+                onChange={(e) => setRadius(Number(e.target.value))}
+                data-testid="ss-radius"
+              />
             </Field>
             <Field>
               Shadow {shadow}
-              <input type="range" min={0} max={60} value={shadow} onChange={(e) => setShadow(Number(e.target.value))} data-testid="ss-shadow" />
+              <input
+                type="range"
+                min={0}
+                max={60}
+                value={shadow}
+                onChange={(e) => setShadow(Number(e.target.value))}
+                data-testid="ss-shadow"
+              />
             </Field>
           </Stack>
 

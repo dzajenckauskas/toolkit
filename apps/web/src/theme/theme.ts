@@ -10,6 +10,7 @@ export const theme = {
   color: {
     bg: 'var(--bg)',
     surface: 'var(--surface)',
+    surface2: 'var(--surface-2)',
     border: 'var(--border)',
     borderStrong: 'var(--border-strong)',
     text: 'var(--text)',
@@ -19,7 +20,9 @@ export const theme = {
     dangerBg: 'var(--danger-bg)',
     dangerBorder: 'var(--danger-border)',
     dangerText: 'var(--danger-text)',
+    overlay: 'var(--overlay)',
   },
+  shadow: 'var(--shadow)',
   radius: {
     sm: '6px',
     md: '10px',

@@ -49,7 +49,9 @@ const Thumb = styled('div')(({ theme }) => ({
   background: theme.color.surface,
 }));
 
-function toJpeg(file: File): Promise<{ jpeg: Uint8Array; width: number; height: number; url: string }> {
+function toJpeg(
+  file: File,
+): Promise<{ jpeg: Uint8Array; width: number; height: number; url: string }> {
   return new Promise((resolve, reject) => {
     const url = URL.createObjectURL(file);
     const img = new Image();
@@ -112,7 +114,14 @@ export default function ImagesToPdf() {
         urlsRef.current.push(url);
         setItems((prev) => [
           ...prev,
-          { id: `${file.name}-${Date.now()}-${Math.random()}`, jpeg, width, height, url, name: file.name },
+          {
+            id: `${file.name}-${Date.now()}-${Math.random()}`,
+            jpeg,
+            width,
+            height,
+            url,
+            name: file.name,
+          },
         ]);
         setError(null);
       } catch {
@@ -194,15 +203,40 @@ export default function ImagesToPdf() {
           {items.map((it, i) => (
             <Thumb key={it.id} data-testid="pdf-thumb">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={it.url} alt={it.name} style={{ display: 'block', width: '100%', height: 'auto' }} />
+              <img
+                src={it.url}
+                alt={it.name}
+                style={{ display: 'block', width: '100%', height: 'auto' }}
+              />
               <Stack direction="row" gap={1} justify="center" style={{ padding: 4 }}>
-                <Button type="button" variant="ghost" size="sm" onClick={() => move(it.id, -1)} disabled={i === 0} aria-label="Move earlier">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => move(it.id, -1)}
+                  disabled={i === 0}
+                  aria-label="Move earlier"
+                >
                   ←
                 </Button>
-                <Button type="button" variant="ghost" size="sm" onClick={() => move(it.id, 1)} disabled={i === items.length - 1} aria-label="Move later">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => move(it.id, 1)}
+                  disabled={i === items.length - 1}
+                  aria-label="Move later"
+                >
                   →
                 </Button>
-                <Button type="button" variant="ghost" size="sm" onClick={() => remove(it.id)} aria-label="Remove" data-testid="pdf-remove">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => remove(it.id)}
+                  aria-label="Remove"
+                  data-testid="pdf-remove"
+                >
                   ×
                 </Button>
               </Stack>
@@ -212,7 +246,13 @@ export default function ImagesToPdf() {
       ) : null}
 
       <Stack direction="row" gap={2}>
-        <Button type="button" variant="primary" onClick={download} disabled={items.length === 0} data-testid="pdf-download">
+        <Button
+          type="button"
+          variant="primary"
+          onClick={download}
+          disabled={items.length === 0}
+          data-testid="pdf-download"
+        >
           Download PDF ({items.length})
         </Button>
       </Stack>
