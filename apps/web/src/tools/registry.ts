@@ -343,6 +343,22 @@ export const TOOLS: Tool[] = [
     category: 'Developer',
     status: 'live',
   },
+  {
+    id: 'timestamp',
+    name: 'Unix timestamp converter',
+    description: 'Convert between Unix timestamps and dates.',
+    href: '/timestamp',
+    category: 'Developer',
+    status: 'live',
+  },
+  {
+    id: 'csv-json',
+    name: 'CSV ↔ JSON',
+    description: 'Convert between CSV and JSON.',
+    href: '/csv-json',
+    category: 'Developer',
+    status: 'live',
+  },
 
   // Design
   {
@@ -407,6 +423,22 @@ export const TOOLS: Tool[] = [
     category: 'Calculators',
     status: 'live',
   },
+  {
+    id: 'unit-converter',
+    name: 'Unit converter',
+    description: 'Convert length, weight, data, time and temperature.',
+    href: '/unit-converter',
+    category: 'Calculators',
+    status: 'live',
+  },
+  {
+    id: 'percentage',
+    name: 'Percentage calculator',
+    description: 'Percentages, percent change and tip splitting.',
+    href: '/percentage',
+    category: 'Calculators',
+    status: 'live',
+  },
 ];
 
 /**
@@ -443,6 +475,10 @@ export const TOOL_KEYWORDS: Record<string, string[]> = {
   encrypt: ['aes', 'decrypt', 'password', 'cipher', 'secret', 'encryption'],
   totp: ['2fa', 'mfa', 'otp', 'authenticator', 'two factor', 'one time password'],
   hmac: ['signature', 'sign', 'sha', 'keyed hash', 'mac'],
+  timestamp: ['unix', 'epoch', 'date', 'time', 'iso', 'utc'],
+  'csv-json': ['csv', 'json', 'convert', 'spreadsheet', 'table', 'parse'],
+  'unit-converter': ['length', 'weight', 'temperature', 'metric', 'imperial', 'convert', 'celsius'],
+  percentage: ['percent', 'tip', 'discount', 'change', 'split', 'calculator'],
 };
 
 /** Tools grouped by category, in display order (skips empty categories). */

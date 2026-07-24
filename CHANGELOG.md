@@ -24,6 +24,15 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
   - **TOTP / 2FA generator** (`/totp`) — RFC 6238 codes from a base32 secret,
     with a live countdown (verified against the RFC test vectors).
   - **HMAC generator** (`/hmac`) — keyed HMAC (SHA-1/256/384/512) of a message.
+- **Converters & calculators (zero-dependency batch):**
+  - **Unit converter** (`/unit-converter`) — length, weight, data, time and
+    temperature (temperature special-cased).
+  - **Percentage calculator** (`/percentage`) — percent-of, what-percent,
+    percent change, and tip/split.
+  - **Unix timestamp converter** (`/timestamp`) — epoch ↔ ISO/UTC/local with a
+    live clock and relative time.
+  - **CSV ↔ JSON** (`/csv-json`) — convert both directions with an RFC 4180-ish
+    quoted-field parser.
 - **Command-palette search:** the home-page search is now a keyboard-driven
   command palette (inspired by DevToys / free-tooling). It searches tool names,
   descriptions, categories and action-style keywords (e.g. "encode" → Base64,
