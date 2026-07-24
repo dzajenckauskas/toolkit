@@ -6,6 +6,12 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 
 ### Added
 
+- **Command-palette search:** the home-page search is now a keyboard-driven
+  command palette (inspired by DevToys / free-tooling). It searches tool names,
+  descriptions, categories and action-style keywords (e.g. "encode" → Base64,
+  "minify" → JSON, "pomodoro" → Focus timer), shows results as rows with a
+  category icon and tag, supports ↑/↓ + Enter navigation and a global ⌘K/Ctrl-K
+  shortcut, and falls back to the grouped browse cards when the box is empty.
 - **Tool hub (ADR-008):** the product is now a general-purpose, free,
   client-side browser tool hub. A registry-driven catalog
   (`src/tools/registry.ts`) is the single source of truth for ~35 tools; the

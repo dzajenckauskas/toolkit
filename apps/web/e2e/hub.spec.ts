@@ -22,6 +22,24 @@ test('search with no matches shows the empty state', async ({ page }) => {
   await expect(page.getByTestId('tool-empty')).toBeVisible();
 });
 
+test('search matches action keywords, not just names', async ({ page }) => {
+  await page.goto('/');
+  // "encode" is a keyword of Base64, not part of its name/description.
+  await page.getByTestId('tool-search').fill('encode');
+  await expect(page.getByTestId('tool-base64')).toBeVisible();
+});
+
+test('command palette navigates with the keyboard', async ({ page }) => {
+  await page.goto('/');
+  const search = page.getByTestId('tool-search');
+  // "json" matches the JSON tool first, then the JWT tool (mentions JSON).
+  await search.fill('json');
+  await expect(page.getByTestId('tool-json')).toBeVisible();
+  await search.press('ArrowDown'); // move to the second result (JWT)
+  await search.press('Enter');
+  await expect(page).toHaveURL(/\/jwt$/);
+});
+
 test('UUID generator produces the requested number of v4 UUIDs', async ({ page }) => {
   await page.goto('/uuid');
 

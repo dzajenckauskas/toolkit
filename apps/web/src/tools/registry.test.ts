@@ -30,6 +30,13 @@ describe('tool registry', () => {
     expect(searchTools('zzzznotarealtool')).toHaveLength(0);
   });
 
+  it('search matches action-style keywords', () => {
+    expect(searchTools('encode').some((t) => t.id === 'base64')).toBe(true);
+    expect(searchTools('minify').some((t) => t.id === 'json')).toBe(true);
+    expect(searchTools('sha256').some((t) => t.id === 'hash')).toBe(true);
+    expect(searchTools('pomodoro').some((t) => t.id === 'focus-timer')).toBe(true);
+  });
+
   it('exposes the live tools', () => {
     expect(LIVE_TOOLS.every((t) => t.status === 'live')).toBe(true);
     expect(LIVE_TOOLS.map((t) => t.id)).toEqual(

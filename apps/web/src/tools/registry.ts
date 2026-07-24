@@ -345,6 +345,34 @@ export const TOOLS: Tool[] = [
   },
 ];
 
+/**
+ * Action-style synonyms per tool, so a command-palette search matches what a
+ * user would *do* ("encode", "minify", "sha256") not just the tool's name.
+ * Keyed by tool id; tools without an entry still match name/description/category.
+ */
+export const TOOL_KEYWORDS: Record<string, string[]> = {
+  optimize: ['compress', 'shrink', 'reduce', 'jpeg', 'size'],
+  crop: ['trim', 'cut', 'aspect ratio'],
+  resize: ['scale', 'dimensions', 'width', 'height', 'shrink', 'enlarge'],
+  convert: ['jpg', 'jpeg', 'png', 'webp', 'format', 'transcode'],
+  rotate: ['flip', 'mirror', 'turn', 'orientation'],
+  favicon: ['icon', 'ico', 'app icon', 'sizes'],
+  uuid: ['guid', 'unique id', 'v4', 'identifier'],
+  base64: ['encode', 'decode', 'b64'],
+  password: ['passphrase', 'random', 'secret', 'credentials'],
+  json: ['format', 'minify', 'beautify', 'pretty', 'validate'],
+  hash: ['sha', 'sha1', 'sha256', 'sha512', 'digest', 'md5'],
+  jwt: ['token', 'decode', 'bearer', 'claims'],
+  regex: ['regexp', 'pattern', 'match', 'test'],
+  checksum: ['verify', 'sha', 'integrity', 'digest'],
+  'lorem-ipsum': ['placeholder', 'dummy text', 'filler', 'lipsum'],
+  'text-diff': ['compare', 'difference', 'changes', 'merge'],
+  colors: ['hex', 'rgb', 'hsl', 'convert', 'palette', 'picker'],
+  'metadata-cleaner': ['exif', 'gps', 'strip', 'privacy', 'remove metadata'],
+  'focus-timer': ['pomodoro', 'timer', 'countdown', 'productivity'],
+  calculator: ['calc', 'math', 'arithmetic', 'sum'],
+};
+
 /** Tools grouped by category, in display order (skips empty categories). */
 export function toolsByCategory(): { category: ToolCategory; tools: Tool[] }[] {
   return CATEGORY_ORDER.map((category) => ({
@@ -353,13 +381,16 @@ export function toolsByCategory(): { category: ToolCategory; tools: Tool[] }[] {
   })).filter((group) => group.tools.length > 0);
 }
 
-/** Case-insensitive search over tool name, description, and category. */
+/** Case-insensitive search over name, description, category, and keywords. */
 export function searchTools(query: string): Tool[] {
   const q = query.trim().toLowerCase();
   if (!q) return TOOLS;
-  return TOOLS.filter((tool) =>
-    `${tool.name} ${tool.description} ${tool.category}`.toLowerCase().includes(q),
-  );
+  return TOOLS.filter((tool) => {
+    const keywords = (TOOL_KEYWORDS[tool.id] ?? []).join(' ');
+    return `${tool.name} ${tool.description} ${tool.category} ${keywords}`
+      .toLowerCase()
+      .includes(q);
+  });
 }
 
 /** Only the tools that are actually usable now. */

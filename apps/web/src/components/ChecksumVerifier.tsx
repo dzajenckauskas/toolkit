@@ -31,19 +31,16 @@ export default function ChecksumVerifier() {
   const [busy, setBusy] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleFile = useCallback(
-    async (file: File, algo: HashAlgorithm) => {
-      setBusy(true);
-      setFileName(file.name);
-      try {
-        const buffer = await file.arrayBuffer();
-        setDigest(await hashBytes(buffer, algo));
-      } finally {
-        setBusy(false);
-      }
-    },
-    [],
-  );
+  const handleFile = useCallback(async (file: File, algo: HashAlgorithm) => {
+    setBusy(true);
+    setFileName(file.name);
+    try {
+      const buffer = await file.arrayBuffer();
+      setDigest(await hashBytes(buffer, algo));
+    } finally {
+      setBusy(false);
+    }
+  }, []);
 
   const fileRef = useRef<File | null>(null);
   const onPick = (file: File) => {

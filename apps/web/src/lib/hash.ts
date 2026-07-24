@@ -21,10 +21,7 @@ export async function hashText(text: string, algorithm: HashAlgorithm): Promise<
 }
 
 /** Hash raw bytes (e.g. a file's contents) with the given SHA algorithm. */
-export async function hashBytes(
-  bytes: ArrayBuffer,
-  algorithm: HashAlgorithm,
-): Promise<string> {
+export async function hashBytes(bytes: ArrayBuffer, algorithm: HashAlgorithm): Promise<string> {
   const digest = await crypto.subtle.digest(algorithm, bytes);
   return toHex(digest);
 }

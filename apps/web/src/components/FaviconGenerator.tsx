@@ -45,7 +45,10 @@ export default function FaviconGenerator() {
     const entries: ZipEntry[] = [];
     for (const size of chosen) {
       const { blob } = await renderResized(image.file, { width: size, height: size }, 'png');
-      entries.push({ name: `favicon-${size}x${size}.png`, data: new Uint8Array(await blob.arrayBuffer()) });
+      entries.push({
+        name: `favicon-${size}x${size}.png`,
+        data: new Uint8Array(await blob.arrayBuffer()),
+      });
     }
     const zip = buildZip(entries);
     const blob = new Blob([zip.buffer as ArrayBuffer], { type: 'application/zip' });
@@ -53,7 +56,11 @@ export default function FaviconGenerator() {
   };
 
   return (
-    <ImageToolShell process={process} downloadLabel="Download favicons (ZIP)" testIdPrefix="favicon">
+    <ImageToolShell
+      process={process}
+      downloadLabel="Download favicons (ZIP)"
+      testIdPrefix="favicon"
+    >
       {() => (
         <Stack gap={3}>
           <Text as="span" tone="muted" size="sm" weight={600}>

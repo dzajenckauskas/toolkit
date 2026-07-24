@@ -29,11 +29,7 @@ export default function MetadataCleaner() {
   };
 
   return (
-    <ImageToolShell
-      process={process}
-      downloadLabel="Download clean image"
-      testIdPrefix="metadata"
-    >
+    <ImageToolShell process={process} downloadLabel="Download clean image" testIdPrefix="metadata">
       {() => (
         <Stack gap={3}>
           <Field>
