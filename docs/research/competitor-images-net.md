@@ -33,6 +33,57 @@ many operations, batch selection — rather than a separate upload per tool.
 a green brand accent, simple list rows, a bottom-sheet action menu on mobile.
 Good, calm UI — consistent with our own `design-principles.md`.
 
+### Desktop landing page (from the Chrome PDF)
+
+Structure: header nav (How it works · Prices · FAQs · Tools ▾ · Sign up ·
+**Login**) → hero **"All the online tools you need to edit your images"** /
+*"Easily convert, compress, resize, and enhance your images in one place."* → an
+**8-tool grid** with one-line descriptions → **"Transform your images in 3
+simple steps"** → a **"All the tools you need in one place"** showcase carousel →
+**FAQ accordion** → a rich dark footer repeating the tools + links.
+
+Their tool copy (useful reference for our own):
+
+- Compress — "Reduce the size of your JPG, PNG, SVG or GIF images without losing quality."
+- Resize — "Change the dimensions of your images in seconds without affecting quality."
+- Crop — "Select the exact portion of the image you need."
+- Rotate — "Rotate your images in any direction quickly and easily."
+- Convert to JPG — "Convert PNG, SVG, GIF, and more images to JPG…"
+- Convert from JPG — "Convert your JPG files to PNG, SVG, GIF and other formats…"
+- Upscale — "Increase the size of your images while maintaining the best possible quality."
+- Remove Watermark — "Remove watermarks from your images quickly and effortlessly."
+
+**Formats they emphasize:** JPG, PNG, **SVG**, **GIF** (WebP/AVIF are not
+highlighted). SVG and GIF handling is a differentiator on their side worth noting
+for our Converter scope.
+
+### Business model — the key strategic finding
+
+images.net is a **trial-to-subscription paywall**. The "3 steps" end with:
+
+> **"Sign up and pay €0.50 for a 7-day trial to download your file. Then
+> €39/month if you don't cancel."**
+
+You do all the editing for free, then hit an **account + payment wall to
+download**, with a €0.50 trial that **auto-renews to €39/month**. The entire FAQ
+is about the subscription, the 7-day trial limits, when the €39 is charged,
+cancelling, and refunds.
+
+**This is exactly the anti-pattern our `vision.md` positions against** ("simple
+web tools are often cluttered … privacy-unclear … or designed mainly to drive
+subscriptions"). It sharpens our differentiation:
+
+| | images.net | Ecommerce Toolkit |
+| --- | --- | --- |
+| Cost to download | €0.50 trial → **€39/mo** auto-renew | **Free** |
+| Account | Required | **None** |
+| Where processing runs | Server (upload required) | **In your browser** |
+| Privacy | Images uploaded | **Images never leave the device** |
+| Time to result | Blocked behind sign-up/payment | **Instant download** |
+
+We should lean into "**free, private, no sign-up, instant download, runs in your
+browser**" as the headline positioning — it's a genuine, defensible contrast.
+
 ## Comparison to our plan
 
 | images.net | Our tool | Status |
@@ -100,6 +151,21 @@ lightweight **shared image workspace** forward from Phase 4 as an explicit near-
 term direction: one place to add images, then route them into any tool (and
 eventually chain operations). This is also what the shared file-queue in Phase 3
 is for. Track as a design/research item, not immediate build.
+
+## UX patterns worth adopting (the good parts, minus the paywall)
+
+Their landing/UX is genuinely well-structured. Worth borrowing for our own
+marketing/home page:
+
+- A clean **hero + tool grid** (icon, title, one-line description per tool).
+- A **"how it works in 3 steps"** explainer — but our step 3 is *"Download —
+  free, instantly, no sign-up"*, not a payment wall.
+- A concise **FAQ** — ours answers "Is it free? (yes)", "Do you upload my
+  images? (no, they stay in your browser)", "Do I need an account? (no)".
+- The **"all in one place"** message + the **unified workspace** (#29) idea.
+
+We adopt the structure and polish; our content flips their paywall/privacy story
+into our advantage.
 
 ## Resulting plan adjustments
 
