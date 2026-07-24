@@ -20,8 +20,9 @@ tools first, decide on monetization later").
   light/dark via CSS variables. Shared primitives in `src/components/ui/`.
 - **Tool registry** (`src/tools/registry.ts`) is the single source of truth:
   every tool is one entry; the catalog, search and command palette read from it.
-- Processing is client-only (Canvas for images, Web Crypto for hashing, fflate
-  for ZIP). No backend, nothing is uploaded.
+  `TOOL_KEYWORDS` in the same file adds action-synonyms for search.
+- Processing is client-only (Canvas, Web Crypto, fflate, qrcode, markdown-it).
+  No backend, nothing is uploaded.
 
 ## Workflow conventions (important)
 
@@ -35,76 +36,93 @@ tools first, decide on monetization later").
   npx vitest run
   npx playwright test        # builds first
   ```
-- Current baseline: **147 unit tests + 40 e2e tests, all green.**
+- Current baseline: **249 unit tests + 66 e2e tests, all green.**
 - Playwright uses the pre-installed Chromium; do not run `playwright install`.
+- Note: `npm audit` reports pre-existing advisories in the Next.js toolchain
+  (PostCSS, sharp). `npm audit fix --force` would downgrade Next to v9 — do not
+  run it. These are not from app dependencies.
 
-## Recipe: add a tool (the pattern all 20 follow)
+## Recipe: add a tool (the pattern all tools follow)
 
 1. **Pure lib** in `src/lib/<tool>.ts` + `src/lib/<tool>.test.ts` (Vitest). Keep
-   logic pure and testable; browser-only bits (canvas) are exercised by e2e.
+   logic pure and testable; browser-only bits (canvas, crypto) are exercised by
+   e2e.
 2. **Component** in `src/components/<Tool>.tsx` (`'use client'`), using the `ui`
    primitives. Give interactive elements stable `data-testid`s.
 3. **Route** in `app/<slug>/page.tsx` with `metadata` + a `<Page>`/`<Heading>`.
-4. **Flip the registry entry** `status: 'planned' → 'live'` (and add
-   `TOOL_KEYWORDS` action synonyms so the palette finds it by verb).
+4. **Flip/add the registry entry** `status: 'live'` and add `TOOL_KEYWORDS`
+   action synonyms so the palette finds it by verb.
 5. **e2e** in `apps/web/e2e/…spec.ts`.
 6. Update `CHANGELOG.md`; run the full suite; commit + push to `main`.
 
-Image tools reuse `ImageToolShell` (drop/paste/preview/download) and
-`src/lib/image.ts` (format + geometry helpers).
+Reusable helpers worth knowing:
+- `ImageToolShell` + `src/lib/image.ts` — drop/paste/preview/download for image
+  tools (resize/convert/rotate/metadata/favicon).
+- `EncodeDecodeTool` — shared encode/decode UI (base64/url/html-entities).
+- `src/lib/color.ts` — HEX/RGB/HSL math reused across all the color tools.
+- `src/lib/webcrypto.ts` — ArrayBuffer helpers for Web Crypto typings.
 
-## Live tools (20)
+## Live tools (45)
 
-| Category | Tools (route) |
-|---|---|
-| Images & Media | Compress `/optimize`, Crop `/crop`, Resize `/resize`, Convert `/convert`, Rotate & flip `/rotate`, Favicon `/favicon` |
-| Developer | UUID `/uuid`, Base64 `/base64`, Password `/password`, JSON `/json`, Hash `/hash`, JWT `/jwt`, Regex `/regex`, Checksum `/checksum` |
-| Text & Documents | Lorem Ipsum `/lorem-ipsum`, Text diff `/text-diff` |
-| Design | Colors `/colors` |
-| Privacy | Metadata cleaner `/metadata-cleaner` |
-| Productivity | Focus timer `/focus-timer` |
-| Calculators | Notepad calculator `/calculator` |
+- **Images & Media (7):** Compress `/optimize`, Crop `/crop`, Resize `/resize`,
+  Convert `/convert`, Rotate & flip `/rotate`, QR code `/qr`, Favicon `/favicon`
+- **Text & Documents (7):** Markdown `/markdown`, Text diff `/text-diff`,
+  Lorem Ipsum `/lorem-ipsum`, Case converter `/case-converter`, Line tools
+  `/line-tools`, Word counter `/word-count`, Slugify `/slugify`
+- **Developer (15):** JSON `/json`, JWT `/jwt`, Regex `/regex`, Base64
+  `/base64`, Hash `/hash`, Checksum `/checksum`, UUID `/uuid`, Password
+  `/password`, URL encode `/url-encode`, HTML entities `/html-entities`,
+  Number base `/number-base`, TOTP/2FA `/totp`, HMAC `/hmac`, Timestamp
+  `/timestamp`, CSV↔JSON `/csv-json`
+- **Design (10):** Colors `/colors`, Contrast `/contrast`, Palette `/palette`,
+  Gradient `/gradient`, Color mixer `/color-mixer`, Blob `/blob`, Theme maker
+  `/theme-maker`, Palette from image `/image-palette`, Color blindness
+  `/color-blindness`, Color name finder `/color-name`
+- **Privacy (2):** Metadata cleaner `/metadata-cleaner`, Text encrypt/decrypt
+  `/encrypt`
+- **Productivity (1):** Focus timer `/focus-timer`
+- **Calculators (3):** Notepad calculator `/calculator`, Unit converter
+  `/unit-converter`, Percentage `/percentage`
 
 **Command palette:** the home-page search (`ToolCatalog`) is a DevToys /
 free-tooling-style palette — searches names, descriptions, categories and
 action keywords; rows show a category icon + tag; ↑/↓ + Enter navigate; global
 ⌘K/Ctrl-K focuses it; empty query falls back to grouped browse cards.
 
-## Backlog (still `planned` in the registry)
+## Dependencies
 
-**Needs a small third-party library** (only `fflate` is used so far — adding
-deps is a real decision, flagged to the owner):
-- QR code, Markdown preview, Mermaid diagram, Markdown+Mermaid, Code image
-  (syntax highlight), and a JSON↔YAML converter (DevToys parity).
+Kept deliberately small: `fflate` (zip), `qrcode` (QR), `markdown-it` (Markdown,
+run with `html:false` = XSS-safe). Everything else is browser-native. A
+YAML↔JSON tool was **not** shipped: the only `js-yaml` the registry offered here
+resolved to an anomalous `5.2.2` (real latest is 4.x) with a critical advisory,
+so it was removed rather than adopted — revisit if a clean version is available.
 
-**Heavier custom builds** (no new dep, but large):
-- Screenshot beautifier, full Image editor, Kanban board, Images→PDF, PDF
-  editor, Redact PDF, Video editor, Text-to-handwriting, Diagram builder.
+## Backlog (still `planned` in the registry, 14)
 
-**Policy / AI deferred** (see issues):
-- **Upscale** (#27) — real quality needs AI super-resolution; conflicts with
-  no-backend/privacy-local. Do not ship a naive canvas upscale.
-- **Remove watermark** (#28) — legal/ethical; do **not** build a general
-  remover. Only ever a strictly "your own watermark" scope after an owner call.
+**Needs a library:** Mermaid + Markdown+Mermaid (`mermaid`), Code image
+(`shiki`/`prismjs`), and (deferred) YAML↔JSON.
+**Heavier custom builds:** Image editor, Screenshot beautifier, Text-to-
+handwriting, Video editor, Diagram builder, Kanban board, and the PDF trio
+(PDF editor, Redact PDF, Images→PDF — `pdf-lib`/`pdf.js`).
+**Policy / AI deferred:** Upscale (#27), Remove watermark (#28).
 
 ## Open decisions for the owner
 
 1. **Product naming** — the header still reads "Ecommerce Toolkit," now
    off-brand (ADR-008 flags naming as unresolved). Needs a chosen name to wire
    through the header, titles and metadata.
-2. **Introduce dependencies?** — required to ship QR / Markdown / Mermaid.
-3. **Shared image workspace** (#29) — one place to add images then route them
+2. **Shared image workspace** (#29) — one place to add images then route them
    into any tool (batch/chaining), vs. today's per-tool uploads.
-4. **`packages/ui` extraction** (#23) — move the primitives into a workspace
+3. **`packages/ui` extraction** (#23) — move the primitives into a workspace
    package now that there are many consumers (ADR-001/006).
-5. **Navigation** — the header only links Optimize/Crop; with 20 tools a
+4. **Navigation** — the header only links Optimize/Crop; with 45 tools a
    catalog link or sidebar would help sub-pages reach the full set.
-6. **Theming** — optional accent/theme switcher on top of the existing tokens.
+5. **Theming** — an accent/theme switcher (the theme-maker tool already proves
+   out the token model).
 
 ## Pointers
 
 - Decisions: `docs/decisions/` (ADR-008 = the pivot).
 - Competitor scans: `docs/research/` (images.net, free-tooling.com).
 - Direction: `ROADMAP.md`. Change log: `CHANGELOG.md`.
-- GitHub issues track deferred/decision items (#23, #27, #28, #29) and the hub
-  epic.
+- GitHub: hub epic **#30**; deferred/decision items #23, #27, #28, #29.

@@ -15,22 +15,23 @@ Tools are drawn from a competitor scan (`docs/research/`). Build order favours
 small, pure, high-value utilities first; heavy tools (PDF/video editors, AI
 upscale) come later.
 
-**20 tools are live** (see `docs/PROJECT-STATE.md` for the full table and the
+**45 tools are live** (see `docs/PROJECT-STATE.md` for the full table and the
 recipe for adding one). The home-page search is a keyboard-driven **command
 palette** (icons, category tags, action keywords, ⌘K, ↑/↓ + Enter).
 
 - [x] Registry + catalog landing page (`/`)
 - [x] Command-palette search (keywords, keyboard nav, ⌘K)
-- [x] Image tools — Compress, Crop, Resize, Convert, Rotate/Flip, Favicon
-- [x] Developer utilities — UUID, Base64, Password, JSON, Hash, JWT, Regex, Checksum
-- [x] Text & documents — Lorem Ipsum, Text diff
-- [x] Design — Colors (HEX/RGB/HSL)
-- [x] Privacy — Metadata cleaner (EXIF/GPS strip)
-- [x] Productivity / Calculators — Focus timer, Notepad calculator
+- [x] Images & Media (7) — Compress, Crop, Resize, Convert, Rotate/Flip, QR, Favicon
+- [x] Text & Documents (7) — Markdown, Text diff, Lorem Ipsum, Case converter, Line tools, Word counter, Slugify
+- [x] Developer (15) — UUID, Base64, Password, JSON, Hash, JWT, Regex, Checksum, URL encode, HTML entities, Number base, TOTP/2FA, HMAC, Timestamp, CSV↔JSON
+- [x] Design (10) — Colors, Contrast, Palette, Gradient, Color mixer, Blob, Theme maker, Palette-from-image, Color-blindness, Color name finder
+- [x] Privacy (2) — Metadata cleaner, Text encrypt/decrypt (AES)
+- [x] Productivity (1) — Focus timer
+- [x] Calculators (3) — Notepad calculator, Unit converter, Percentage
 
 Remaining backlog (need a dependency, are heavy, or are policy-deferred):
 
-- [ ] Needs a small library — QR code, Markdown preview, Mermaid, Code image, JSON↔YAML
+- [ ] Needs a library — Mermaid, Markdown+Mermaid, Code image, JSON↔YAML (deferred)
 - [ ] Heavier custom builds — Screenshot beautifier, Image editor, Kanban board,
       Images→PDF, PDF editor / redact, Video editor, Text-to-handwriting, Diagram builder
 - [ ] Policy / AI deferred — Upscale (#27), Remove watermark (#28)
