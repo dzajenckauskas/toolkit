@@ -31,6 +31,12 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
   against sample text, listing matches, positions and capture groups.
 - **Color converter:** new `/colors` tool — pick a color and convert between
   HEX, RGB and HSL.
+- **Text diff:** new `/text-diff` tool — compare two texts with an LCS line
+  diff, highlighting added and removed lines with a change summary.
+- **Notepad calculator:** new `/calculator` tool — evaluate arithmetic line by
+  line with a safe expression evaluator (no `eval`), plus a running total.
+- **Focus timer:** new `/focus-timer` tool — a simple Pomodoro timer (25/5)
+  that alternates focus and break phases in the browser.
 - **App navigation:** a persistent header links the tools (Optimize, Crop) and
   home, highlighting the current tool, so users move between them from anywhere.
 - **Image Cropper (foundation):** new `/crop` tool — load a JPEG (picker /

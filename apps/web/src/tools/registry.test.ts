@@ -45,6 +45,9 @@ describe('tool registry', () => {
         'jwt',
         'regex',
         'colors',
+        'text-diff',
+        'focus-timer',
+        'calculator',
       ]),
     );
   });

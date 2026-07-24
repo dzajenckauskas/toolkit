@@ -185,7 +185,7 @@ export const TOOLS: Tool[] = [
     description: 'Compare two texts with highlighted changes.',
     href: '/text-diff',
     category: 'Text & Documents',
-    status: 'planned',
+    status: 'live',
   },
   {
     id: 'lorem-ipsum',
@@ -323,7 +323,7 @@ export const TOOLS: Tool[] = [
     description: 'A simple Pomodoro-style timer.',
     href: '/focus-timer',
     category: 'Productivity',
-    status: 'planned',
+    status: 'live',
   },
   {
     id: 'kanban',
@@ -341,7 +341,7 @@ export const TOOLS: Tool[] = [
     description: 'Calculate as you type, line by line.',
     href: '/calculator',
     category: 'Calculators',
-    status: 'planned',
+    status: 'live',
   },
 ];
 
