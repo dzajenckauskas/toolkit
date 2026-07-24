@@ -36,7 +36,7 @@ tools first, decide on monetization later").
   npx vitest run
   npx playwright test        # builds first
   ```
-- Current baseline: **249 unit tests + 66 e2e tests, all green.**
+- Current baseline: **261 unit tests + 69 e2e tests, all green.**
 - Playwright uses the pre-installed Chromium; do not run `playwright install`.
 - Note: `npm audit` reports pre-existing advisories in the Next.js toolchain
   (PostCSS, sharp). `npm audit fix --force` would downgrade Next to v9 — do not
@@ -62,10 +62,11 @@ Reusable helpers worth knowing:
 - `src/lib/color.ts` — HEX/RGB/HSL math reused across all the color tools.
 - `src/lib/webcrypto.ts` — ArrayBuffer helpers for Web Crypto typings.
 
-## Live tools (45)
+## Live tools (48)
 
-- **Images & Media (7):** Compress `/optimize`, Crop `/crop`, Resize `/resize`,
-  Convert `/convert`, Rotate & flip `/rotate`, QR code `/qr`, Favicon `/favicon`
+- **Images & Media (8):** Compress `/optimize`, Crop `/crop`, Resize `/resize`,
+  Convert `/convert`, Rotate & flip `/rotate`, QR code `/qr`, Favicon
+  `/favicon`, Screenshot beautifier `/screenshot`
 - **Text & Documents (7):** Markdown `/markdown`, Text diff `/text-diff`,
   Lorem Ipsum `/lorem-ipsum`, Case converter `/case-converter`, Line tools
   `/line-tools`, Word counter `/word-count`, Slugify `/slugify`
@@ -78,9 +79,10 @@ Reusable helpers worth knowing:
   Gradient `/gradient`, Color mixer `/color-mixer`, Blob `/blob`, Theme maker
   `/theme-maker`, Palette from image `/image-palette`, Color blindness
   `/color-blindness`, Color name finder `/color-name`
+- **PDF (1):** Images to PDF `/images-to-pdf`
 - **Privacy (2):** Metadata cleaner `/metadata-cleaner`, Text encrypt/decrypt
   `/encrypt`
-- **Productivity (1):** Focus timer `/focus-timer`
+- **Productivity (2):** Focus timer `/focus-timer`, Kanban board `/kanban`
 - **Calculators (3):** Notepad calculator `/calculator`, Unit converter
   `/unit-converter`, Percentage `/percentage`
 
@@ -97,13 +99,13 @@ YAML↔JSON tool was **not** shipped: the only `js-yaml` the registry offered he
 resolved to an anomalous `5.2.2` (real latest is 4.x) with a critical advisory,
 so it was removed rather than adopted — revisit if a clean version is available.
 
-## Backlog (still `planned` in the registry, 14)
+## Backlog (still `planned` in the registry, 11)
 
 **Needs a library:** Mermaid + Markdown+Mermaid (`mermaid`), Code image
 (`shiki`/`prismjs`), and (deferred) YAML↔JSON.
-**Heavier custom builds:** Image editor, Screenshot beautifier, Text-to-
-handwriting, Video editor, Diagram builder, Kanban board, and the PDF trio
-(PDF editor, Redact PDF, Images→PDF — `pdf-lib`/`pdf.js`).
+**Heavier custom builds:** Image editor, Text-to-handwriting, Video editor,
+Diagram builder, and the rest of the PDF set (PDF editor, Redact PDF —
+`pdf-lib`/`pdf.js`).
 **Policy / AI deferred:** Upscale (#27), Remove watermark (#28).
 
 ## Open decisions for the owner
@@ -115,7 +117,7 @@ handwriting, Video editor, Diagram builder, Kanban board, and the PDF trio
    into any tool (batch/chaining), vs. today's per-tool uploads.
 3. **`packages/ui` extraction** (#23) — move the primitives into a workspace
    package now that there are many consumers (ADR-001/006).
-4. **Navigation** — the header only links Optimize/Crop; with 45 tools a
+4. **Navigation** — the header only links Optimize/Crop; with 48 tools a
    catalog link or sidebar would help sub-pages reach the full set.
 5. **Theming** — an accent/theme switcher (the theme-maker tool already proves
    out the token model).

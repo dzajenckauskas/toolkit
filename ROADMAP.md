@@ -15,25 +15,26 @@ Tools are drawn from a competitor scan (`docs/research/`). Build order favours
 small, pure, high-value utilities first; heavy tools (PDF/video editors, AI
 upscale) come later.
 
-**45 tools are live** (see `docs/PROJECT-STATE.md` for the full table and the
+**48 tools are live** (see `docs/PROJECT-STATE.md` for the full table and the
 recipe for adding one). The home-page search is a keyboard-driven **command
 palette** (icons, category tags, action keywords, ⌘K, ↑/↓ + Enter).
 
 - [x] Registry + catalog landing page (`/`)
 - [x] Command-palette search (keywords, keyboard nav, ⌘K)
-- [x] Images & Media (7) — Compress, Crop, Resize, Convert, Rotate/Flip, QR, Favicon
+- [x] Images & Media (8) — Compress, Crop, Resize, Convert, Rotate/Flip, QR, Favicon, Screenshot beautifier
 - [x] Text & Documents (7) — Markdown, Text diff, Lorem Ipsum, Case converter, Line tools, Word counter, Slugify
 - [x] Developer (15) — UUID, Base64, Password, JSON, Hash, JWT, Regex, Checksum, URL encode, HTML entities, Number base, TOTP/2FA, HMAC, Timestamp, CSV↔JSON
 - [x] Design (10) — Colors, Contrast, Palette, Gradient, Color mixer, Blob, Theme maker, Palette-from-image, Color-blindness, Color name finder
+- [x] PDF (1) — Images to PDF
 - [x] Privacy (2) — Metadata cleaner, Text encrypt/decrypt (AES)
-- [x] Productivity (1) — Focus timer
+- [x] Productivity (2) — Focus timer, Kanban board
 - [x] Calculators (3) — Notepad calculator, Unit converter, Percentage
 
 Remaining backlog (need a dependency, are heavy, or are policy-deferred):
 
 - [ ] Needs a library — Mermaid, Markdown+Mermaid, Code image, JSON↔YAML (deferred)
-- [ ] Heavier custom builds — Screenshot beautifier, Image editor, Kanban board,
-      Images→PDF, PDF editor / redact, Video editor, Text-to-handwriting, Diagram builder
+- [ ] Heavier custom builds — Image editor, PDF editor / redact, Video editor,
+      Text-to-handwriting, Diagram builder
 - [ ] Policy / AI deferred — Upscale (#27), Remove watermark (#28)
 
 Every tool in the registry is a candidate; the sections below track the
