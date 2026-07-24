@@ -2,6 +2,31 @@
 
 This roadmap describes direction, not fixed deadlines.
 
+## Tool catalog (ADR-008)
+
+The product is a general-purpose, free, client-side **browser tool hub**: many
+small tools under one roof, every one running locally with no account, no
+upload, and no paywall. The catalog is registry-driven
+(`apps/web/src/tools/registry.ts`) — the home page, search, and navigation all
+read from a single source of truth, and shipping a tool means adding a route +
+component and flipping its `status` from `planned` to `live`.
+
+Tools are drawn from a competitor scan (`docs/research/`). Build order favours
+small, pure, high-value utilities first; heavy tools (PDF/video editors, AI
+upscale) come later.
+
+- [x] Registry + catalog landing page with search (`/`)
+- [x] Compress image (`/optimize`) — live
+- [x] Crop image (`/crop`) — live
+- [x] UUID generator (`/uuid`) — live
+- [ ] Developer utilities — Base64, password generator, hash, JSON, regex, JWT
+- [ ] Text & documents — Lorem Ipsum, text diff, Markdown, Mermaid
+- [ ] Design — colors, QR code
+- [ ] Remaining image, PDF, privacy, productivity and calculator tools
+
+Every tool in the registry (~35) is a candidate; the sections below track the
+image-focused ones in more detail.
+
 ## Phase 0 — Product foundation
 
 - [x] Define the standalone-tools-first strategy

@@ -6,6 +6,14 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 
 ### Added
 
+- **Tool hub (ADR-008):** the product is now a general-purpose, free,
+  client-side browser tool hub. A registry-driven catalog
+  (`src/tools/registry.ts`) is the single source of truth for ~35 tools; the
+  home page (`/`) renders them grouped by category with live search, links the
+  live ones (Compress, Crop, UUID) and shows the rest as "Soon".
+- **UUID generator:** new `/uuid` tool — generate up to 100 random v4 UUIDs in
+  the browser, adjust the count, and copy them. First tool shipped under the
+  hub model.
 - **App navigation:** a persistent header links the tools (Optimize, Crop) and
   home, highlighting the current tool, so users move between them from anywhere.
 - **Image Cropper (foundation):** new `/crop` tool — load a JPEG (picker /
