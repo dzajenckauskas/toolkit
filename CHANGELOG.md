@@ -6,6 +6,15 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 
 ### Added
 
+- **Productivity, image & PDF tools (zero-dependency batch):**
+  - **Kanban board** (`/kanban`) — a lightweight board (To do / In progress /
+    Done) saved in `localStorage`; add cards and move them between columns.
+  - **Screenshot beautifier** (`/screenshot`) — frame a screenshot with a
+    background (solid/gradient presets), padding, rounded corners and a shadow,
+    then export a PNG. Live preview + canvas compositing.
+  - **Images to PDF** (`/images-to-pdf`) — combine images into a single PDF
+    (one per page) via a dependency-free PDF writer that embeds JPEGs with
+    `/DCTDecode`; reorder and remove before export.
 - **Color tools (zero-dependency batch):**
   - **Palette generator** (`/palette`) — complementary, analogous, triadic,
     tetradic and monochromatic harmonies plus tints/shades; click to copy.

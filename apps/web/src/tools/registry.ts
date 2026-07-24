@@ -95,7 +95,7 @@ export const TOOLS: Tool[] = [
     description: 'Add padding, backgrounds and shadows.',
     href: '/screenshot',
     category: 'Images & Media',
-    status: 'planned',
+    status: 'live',
   },
   {
     id: 'qr',
@@ -251,7 +251,7 @@ export const TOOLS: Tool[] = [
     description: 'Combine images into a single PDF.',
     href: '/images-to-pdf',
     category: 'PDF',
-    status: 'planned',
+    status: 'live',
   },
 
   // Developer
@@ -499,7 +499,7 @@ export const TOOLS: Tool[] = [
     description: 'A lightweight local kanban board.',
     href: '/kanban',
     category: 'Productivity',
-    status: 'planned',
+    status: 'live',
   },
 
   // Calculators
@@ -580,6 +580,9 @@ export const TOOL_KEYWORDS: Record<string, string[]> = {
   'image-palette': ['extract', 'dominant', 'colors', 'photo', 'eyedropper', 'swatches'],
   'color-blindness': ['cvd', 'protanopia', 'deuteranopia', 'accessibility', 'daltonism', 'a11y'],
   'color-name': ['name', 'css', 'nearest', 'named color', 'keyword'],
+  kanban: ['board', 'tasks', 'todo', 'trello', 'cards', 'productivity'],
+  screenshot: ['beautify', 'mockup', 'background', 'padding', 'shadow', 'frame'],
+  'images-to-pdf': ['pdf', 'combine', 'merge', 'convert', 'document'],
 };
 
 /** Tools grouped by category, in display order (skips empty categories). */
