@@ -394,6 +394,46 @@ export const TOOLS: Tool[] = [
     status: 'live',
   },
   {
+    id: 'palette',
+    name: 'Palette generator',
+    description: 'Harmonies, tints and shades from a base color.',
+    href: '/palette',
+    category: 'Design',
+    status: 'live',
+  },
+  {
+    id: 'gradient',
+    name: 'Gradient generator',
+    description: 'Build linear and radial CSS gradients.',
+    href: '/gradient',
+    category: 'Design',
+    status: 'live',
+  },
+  {
+    id: 'color-mixer',
+    name: 'Color mixer',
+    description: 'Blend two colors and get the steps between.',
+    href: '/color-mixer',
+    category: 'Design',
+    status: 'live',
+  },
+  {
+    id: 'blob',
+    name: 'Blob generator',
+    description: 'Generate organic SVG blob shapes.',
+    href: '/blob',
+    category: 'Design',
+    status: 'live',
+  },
+  {
+    id: 'theme-maker',
+    name: 'Color theme maker',
+    description: 'Build a light/dark theme and export CSS variables.',
+    href: '/theme-maker',
+    category: 'Design',
+    status: 'live',
+  },
+  {
     id: 'diagram',
     name: 'Diagram builder',
     description: 'Build simple diagrams.',
@@ -508,6 +548,11 @@ export const TOOL_KEYWORDS: Record<string, string[]> = {
   contrast: ['wcag', 'accessibility', 'a11y', 'ratio', 'color', 'luminance'],
   qr: ['qrcode', 'barcode', 'scan', 'link', 'url'],
   markdown: ['md', 'markdown', 'preview', 'editor', 'readme'],
+  palette: ['colors', 'harmony', 'tints', 'shades', 'scheme', 'swatches'],
+  gradient: ['css', 'linear', 'radial', 'background', 'colors'],
+  'color-mixer': ['blend', 'mix', 'interpolate', 'colors', 'between'],
+  blob: ['svg', 'shape', 'organic', 'background', 'generator'],
+  'theme-maker': ['theme', 'palette', 'css variables', 'design system', 'tokens', 'dark mode'],
 };
 
 /** Tools grouped by category, in display order (skips empty categories). */

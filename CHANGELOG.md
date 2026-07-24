@@ -6,6 +6,16 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 
 ### Added
 
+- **Color tools (zero-dependency batch):**
+  - **Palette generator** (`/palette`) — complementary, analogous, triadic,
+    tetradic and monochromatic harmonies plus tints/shades; click to copy.
+  - **Gradient generator** (`/gradient`) — linear/radial CSS gradients with
+    multiple stops, angle control, and copyable CSS.
+  - **Color mixer** (`/color-mixer`) — blend two colors into N steps.
+  - **Blob generator** (`/blob`) — organic SVG blob shapes (seeded, adjustable
+    points/randomness) with SVG download/copy.
+  - **Color theme maker** (`/theme-maker`) — build a matching light & dark
+    theme from one accent and export CSS variables, with live UI mockups.
 - **Encoders & text transforms (zero-dependency batch):**
   - **URL encode/decode** (`/url-encode`) — percent-encode and decode URL
     components, with a clear error for malformed input.
