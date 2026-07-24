@@ -23,6 +23,14 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
   paragraphs of placeholder text with the classic opening.
 - **JSON formatter & validator:** new `/json` tool — format, minify and
   validate JSON with friendly error messages, all in the browser.
+- **Hash generator:** new `/hash` tool — SHA-1/256/384/512 digests of text via
+  Web Crypto (MD5 intentionally omitted).
+- **JWT decoder:** new `/jwt` tool — decode and inspect a JSON Web Token's
+  header and payload locally (no signature verification).
+- **Regex tester:** new `/regex` tool — test a regular expression with flags
+  against sample text, listing matches, positions and capture groups.
+- **Color converter:** new `/colors` tool — pick a color and convert between
+  HEX, RGB and HSL.
 - **App navigation:** a persistent header links the tools (Optimize, Crop) and
   home, highlighting the current tool, so users move between them from anywhere.
 - **Image Cropper (foundation):** new `/crop` tool — load a JPEG (picker /

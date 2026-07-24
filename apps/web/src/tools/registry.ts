@@ -237,7 +237,7 @@ export const TOOLS: Tool[] = [
     description: 'Decode and inspect JSON Web Tokens.',
     href: '/jwt',
     category: 'Developer',
-    status: 'planned',
+    status: 'live',
   },
   {
     id: 'regex',
@@ -245,7 +245,7 @@ export const TOOLS: Tool[] = [
     description: 'Test regular expressions live.',
     href: '/regex',
     category: 'Developer',
-    status: 'planned',
+    status: 'live',
   },
   {
     id: 'base64',
@@ -258,10 +258,10 @@ export const TOOLS: Tool[] = [
   {
     id: 'hash',
     name: 'Hash generator',
-    description: 'Generate SHA / MD5 hashes.',
+    description: 'Generate SHA-1/256/384/512 hashes.',
     href: '/hash',
     category: 'Developer',
-    status: 'planned',
+    status: 'live',
   },
   {
     id: 'checksum',
@@ -292,10 +292,10 @@ export const TOOLS: Tool[] = [
   {
     id: 'colors',
     name: 'Colors',
-    description: 'Pick, convert and build color palettes.',
+    description: 'Convert colors between HEX, RGB and HSL.',
     href: '/colors',
     category: 'Design',
-    status: 'planned',
+    status: 'live',
   },
   {
     id: 'diagram',

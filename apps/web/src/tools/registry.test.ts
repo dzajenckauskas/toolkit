@@ -41,6 +41,10 @@ describe('tool registry', () => {
         'password',
         'lorem-ipsum',
         'json',
+        'hash',
+        'jwt',
+        'regex',
+        'colors',
       ]),
     );
   });
