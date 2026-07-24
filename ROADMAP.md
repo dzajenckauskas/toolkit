@@ -60,6 +60,17 @@ for that slice only; full multi-format, batch, and controls remain open. See
 - [ ] Common marketplace presets
 - [ ] Batch resize
 
+### Image Rotate / Flip
+
+Added after a competitor scan (`docs/research/competitor-images-net.md`).
+Client-side via Canvas; no new dependencies (ADR-005).
+
+- [ ] Rotate 90° left / right
+- [ ] Arbitrary-angle rotation
+- [ ] Horizontal / vertical flip
+- [ ] Batch rotate/flip
+- [ ] Export settings shared with the other tools
+
 ## Phase 3 — Shared foundations
 
 - [ ] Shared file queue
@@ -69,6 +80,9 @@ for that slice only; full multi-format, batch, and controls remain open. See
 - [ ] Local preference persistence
 - [ ] Accessible keyboard workflows
 - [ ] Performance telemetry without collecting user images
+- [ ] **Unified "My Images" workspace** — one place to add images, then route
+      them into any tool (bridges Phase 4). Pulled forward from the competitor
+      scan; the shared file queue is its foundation.
 
 ## Phase 4 — Project workflows
 
@@ -86,5 +100,15 @@ for that slice only; full multi-format, batch, and controls remain open. See
 - [ ] Background replacement or cleanup
 - [ ] Product-image quality checks
 - [ ] Listing-related helpers
+- [ ] **Upscale image** — real quality needs AI super-resolution (heavy WASM or
+      a paid/hosted model), which conflicts with our no-backend / privacy-local
+      MVP stance. Approach is an **open owner decision**; a naive Canvas
+      "upscale" (interpolation only) is not worth shipping. See the competitor
+      scan.
+- [ ] **Remove Watermark** — ⚠️ **legal/ethical: needs an explicit owner policy
+      decision before any work.** Dual-use (removing your own vs. others'
+      watermarks); a general remover would mostly enable copyright infringement
+      and needs AI inpainting. If pursued, scope strictly to the user's *own*
+      watermark with clear ownership guidance. Not in the near-term plan.
 
 AI features must not delay the core utility MVP.
