@@ -327,6 +327,22 @@ export const TOOLS: Tool[] = [
     category: 'Developer',
     status: 'live',
   },
+  {
+    id: 'totp',
+    name: 'TOTP / 2FA generator',
+    description: 'Generate two-factor codes from a secret.',
+    href: '/totp',
+    category: 'Developer',
+    status: 'live',
+  },
+  {
+    id: 'hmac',
+    name: 'HMAC generator',
+    description: 'Compute a keyed HMAC signature.',
+    href: '/hmac',
+    category: 'Developer',
+    status: 'live',
+  },
 
   // Design
   {
@@ -352,6 +368,14 @@ export const TOOLS: Tool[] = [
     name: 'Metadata cleaner',
     description: 'Strip EXIF/GPS metadata from images.',
     href: '/metadata-cleaner',
+    category: 'Privacy',
+    status: 'live',
+  },
+  {
+    id: 'encrypt',
+    name: 'Text encrypt / decrypt',
+    description: 'Password-based AES-256 text encryption.',
+    href: '/encrypt',
     category: 'Privacy',
     status: 'live',
   },
@@ -416,6 +440,9 @@ export const TOOL_KEYWORDS: Record<string, string[]> = {
   'number-base': ['binary', 'hex', 'hexadecimal', 'octal', 'decimal', 'radix', 'convert'],
   'case-converter': ['camelcase', 'snake_case', 'kebab', 'title case', 'uppercase', 'lowercase'],
   'line-tools': ['sort', 'dedupe', 'unique', 'reverse', 'shuffle', 'trim', 'lines'],
+  encrypt: ['aes', 'decrypt', 'password', 'cipher', 'secret', 'encryption'],
+  totp: ['2fa', 'mfa', 'otp', 'authenticator', 'two factor', 'one time password'],
+  hmac: ['signature', 'sign', 'sha', 'keyed hash', 'mac'],
 };
 
 /** Tools grouped by category, in display order (skips empty categories). */

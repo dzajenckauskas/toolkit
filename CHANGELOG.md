@@ -18,6 +18,12 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
   - **Line tools** (`/line-tools`) — sort, de-duplicate, reverse, shuffle, trim
     and clean lines, with live line stats.
   - Encode/decode tools now share an `EncodeDecodeTool` component.
+- **Crypto tools (zero-dependency, Web Crypto):**
+  - **Text encrypt/decrypt** (`/encrypt`) — password-based AES-256-GCM with a
+    PBKDF2-derived key and random salt/IV; wrong passwords fail clearly.
+  - **TOTP / 2FA generator** (`/totp`) — RFC 6238 codes from a base32 secret,
+    with a live countdown (verified against the RFC test vectors).
+  - **HMAC generator** (`/hmac`) — keyed HMAC (SHA-1/256/384/512) of a message.
 - **Command-palette search:** the home-page search is now a keyboard-driven
   command palette (inspired by DevToys / free-tooling). It searches tool names,
   descriptions, categories and action-style keywords (e.g. "encode" → Base64,
