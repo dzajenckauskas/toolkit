@@ -16,6 +16,12 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
     points/randomness) with SVG download/copy.
   - **Color theme maker** (`/theme-maker`) — build a matching light & dark
     theme from one accent and export CSS variables, with live UI mockups.
+  - **Palette from image** (`/image-palette`) — extract a dominant-color
+    palette from an image (downscaled canvas sampling + frequency ranking);
+    nothing is uploaded.
+  - **Color blindness simulator** (`/color-blindness`) — preview a set of
+    colors under protanopia/deuteranopia/tritanopia/achromatopsia.
+  - **Color name finder** (`/color-name`) — nearest CSS named color for a hex.
 - **Encoders & text transforms (zero-dependency batch):**
   - **URL encode/decode** (`/url-encode`) — percent-encode and decode URL
     components, with a clear error for malformed input.

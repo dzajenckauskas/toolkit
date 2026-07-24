@@ -434,6 +434,30 @@ export const TOOLS: Tool[] = [
     status: 'live',
   },
   {
+    id: 'image-palette',
+    name: 'Palette from image',
+    description: 'Extract dominant colors from an image.',
+    href: '/image-palette',
+    category: 'Design',
+    status: 'live',
+  },
+  {
+    id: 'color-blindness',
+    name: 'Color blindness simulator',
+    description: 'Preview colors for different vision types.',
+    href: '/color-blindness',
+    category: 'Design',
+    status: 'live',
+  },
+  {
+    id: 'color-name',
+    name: 'Color name finder',
+    description: 'Find the nearest CSS named color for a hex.',
+    href: '/color-name',
+    category: 'Design',
+    status: 'live',
+  },
+  {
     id: 'diagram',
     name: 'Diagram builder',
     description: 'Build simple diagrams.',
@@ -553,6 +577,9 @@ export const TOOL_KEYWORDS: Record<string, string[]> = {
   'color-mixer': ['blend', 'mix', 'interpolate', 'colors', 'between'],
   blob: ['svg', 'shape', 'organic', 'background', 'generator'],
   'theme-maker': ['theme', 'palette', 'css variables', 'design system', 'tokens', 'dark mode'],
+  'image-palette': ['extract', 'dominant', 'colors', 'photo', 'eyedropper', 'swatches'],
+  'color-blindness': ['cvd', 'protanopia', 'deuteranopia', 'accessibility', 'daltonism', 'a11y'],
+  'color-name': ['name', 'css', 'nearest', 'named color', 'keyword'],
 };
 
 /** Tools grouped by category, in display order (skips empty categories). */
