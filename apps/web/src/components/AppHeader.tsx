@@ -41,7 +41,7 @@ const Inner = styled('div')({
 const Brand = styled(Link)({
   textDecoration: 'none',
   display: 'inline-flex',
-  borderRadius: 10,
+  borderRadius: '0.7rem',
   '&:focus-visible': {
     outline: 'none',
     boxShadow: '0 0 0 3px color-mix(in srgb, var(--accent) 32%, transparent)',
@@ -64,14 +64,20 @@ const QuickNav = styled('nav')(({ theme }) => ({
 const NavLink = styled(Link, {
   shouldForwardProp: (prop) => prop !== 'active',
 })<{ active?: boolean }>(({ theme, active }) => ({
-  padding: '0.4rem 0.7rem',
-  borderRadius: 8,
+  padding: '0.5rem 0.75rem',
+  borderRadius: '0.6rem',
   fontWeight: 600,
-  fontSize: '0.9rem',
+  fontSize: '0.875rem',
   textDecoration: 'none',
-  color: active ? theme.color.accent : theme.color.muted,
-  background: active ? `color-mix(in srgb, ${theme.color.accent} 12%, transparent)` : 'transparent',
-  '&:hover': { color: theme.color.text },
+  transition: 'color 0.2s ease, background-color 0.2s ease',
+  color: active ? theme.color.text : theme.color.muted,
+  background: active ? `color-mix(in srgb, ${theme.color.accent} 14%, transparent)` : 'transparent',
+  '&:hover': {
+    color: theme.color.text,
+    background: active
+      ? `color-mix(in srgb, ${theme.color.accent} 14%, transparent)`
+      : `color-mix(in srgb, ${theme.color.surface} 75%, transparent)`,
+  },
   '&:focus-visible': {
     outline: 'none',
     boxShadow: `0 0 0 3px color-mix(in srgb, ${theme.color.accent} 32%, transparent)`,

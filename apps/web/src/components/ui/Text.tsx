@@ -7,7 +7,7 @@ import styled from '@emotion/styled';
  * small-caps meta labels used across the tool.
  */
 export interface TextProps {
-  tone?: 'default' | 'muted' | 'danger';
+  tone?: 'default' | 'muted' | 'subtle' | 'danger';
   size?: 'sm' | 'md' | 'lg';
   weight?: number;
   numeric?: boolean;
@@ -16,6 +16,7 @@ export interface TextProps {
 const toneColor = {
   default: 'text',
   muted: 'muted',
+  subtle: 'subtle',
   danger: 'dangerText',
 } as const;
 
@@ -32,5 +33,8 @@ export const Text = styled('p', {
   color: theme.color[toneColor[tone]],
   fontSize: sizeValue[size],
   fontWeight: weight,
+  // Numeric readouts use Geist Mono (danielius' meta/numeral face) with
+  // tabular figures so digits stay aligned as values change.
+  fontFamily: numeric ? theme.font.mono : undefined,
   fontVariantNumeric: numeric ? 'tabular-nums' : undefined,
 }));

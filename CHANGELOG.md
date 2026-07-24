@@ -6,6 +6,22 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 
 ### Changed
 
+- **Design system reskin — "danielius" theme.** Reskinned the app to match the
+  danielius design system while keeping the existing architecture (Emotion,
+  typed theme, `data-theme` light/dark toggle). Ported the full palette — a warm
+  off-white paper light mode and a blue-slate dark mode, both with a muted
+  teal/sage "ink" accent (mapped onto `--accent`/`--accent-strong`, with a new
+  `--subtle` third-tier text token) — into the CSS variables in
+  `GlobalStyles.tsx` and the typed tokens in `theme.ts`. Adopted danielius'
+  **typography**: self-hosted **Neris** (Light/SemiBold/Black, via
+  `next/font/local`) as the display/body sans with **Geist Sans** fallback and
+  **Geist Mono** for numerals, a light (300) body weight, and heavy (900),
+  tightly-tracked headings. Softened the radii (large rounded cards, ~0.85rem
+  inputs, **pill buttons**), added soft tight-spread shadows, and restyled the
+  UI primitives + native controls to suit — primary buttons are ink-filled pills
+  that lift on hover, secondary/ghost buttons are bordered pills. Both light and
+  dark modes and all 48 tools are preserved; suite stays green (261 unit + 72
+  e2e).
 - **Brand & UI overhaul.** Renamed the product to **toolkit** (working name)
   with a hand-drawn glasses logo (recreated as inline SVG from the source
   doodle). New sticky, responsive header with the logo, quick links, a

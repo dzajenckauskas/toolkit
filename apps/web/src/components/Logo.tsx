@@ -47,9 +47,9 @@ const Wrap = styled('span')(({ theme }) => ({
 }));
 
 const Word = styled('span')({
-  fontSize: '1.15rem',
-  fontWeight: 800,
-  letterSpacing: '-0.02em',
+  fontSize: '1.2rem',
+  fontWeight: 900,
+  letterSpacing: '-0.01em',
 });
 
 export function Logo({ size = 24 }: { size?: number }) {

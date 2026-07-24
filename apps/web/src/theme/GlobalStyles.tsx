@@ -9,38 +9,57 @@ import { Global, css } from '@emotion/react';
  * range / checkbox looks consistent without per-component work.
  */
 
+// Palette ported from the danielius design system. Light follows the printed
+// CV — a warm off-white paper with a muted teal/sage "ink" accent; dark is a
+// restrained blue-slate companion. `--accent` is danielius' `--ink`,
+// `--accent-strong` its `--ink-strong` (accent hover), and `--subtle` its
+// third-tier text. Radii are large and soft (pill buttons, rounded cards).
 const LIGHT = `
-  --bg: #f6f7f9;
+  --bg: #f7f5f2;
   --surface: #ffffff;
-  --surface-2: #f0f2f5;
-  --border: #e2e6ec;
-  --border-strong: #c3cad4;
-  --text: #171c24;
-  --muted: #5b6675;
-  --accent: #2563eb;
+  --surface-2: #f2efea;
+  --border: #e5e1da;
+  --border-strong: #d6d0c6;
+  --text: #191a1c;
+  --muted: #55585c;
+  --subtle: #8b8e92;
+  --accent: #4f736e;
+  --accent-strong: #3d5b57;
   --accent-contrast: #ffffff;
-  --danger-bg: #fdecec;
-  --danger-border: #f3b4b4;
-  --danger-text: #9b1c1c;
-  --overlay: rgba(17, 22, 30, 0.45);
-  --shadow: 0 10px 30px rgba(17, 24, 39, 0.12);
+  --danger-bg: #fbecee;
+  --danger-border: #e7b3bb;
+  --danger-text: #a23a4c;
+  --overlay: rgba(25, 26, 28, 0.42);
+  --shadow: 0 22px 55px -48px rgba(25, 26, 28, 0.55);
 `;
 
 const DARK = `
-  --bg: #0c0f14;
-  --surface: #151a21;
-  --surface-2: #1c222b;
-  --border: #262d38;
-  --border-strong: #3a4351;
-  --text: #e7ecf3;
-  --muted: #97a2b2;
-  --accent: #5b9bff;
-  --accent-contrast: #0b0e13;
-  --danger-bg: #3a1d1d;
-  --danger-border: #6b2b2b;
-  --danger-text: #f7b4b4;
-  --overlay: rgba(0, 0, 0, 0.6);
-  --shadow: 0 12px 34px rgba(0, 0, 0, 0.5);
+  --bg: #1b212c;
+  --surface: #232a37;
+  --surface-2: #1f2531;
+  --border: #333b49;
+  --border-strong: #414b5c;
+  --text: #f2f0ec;
+  --muted: #a7adb8;
+  --subtle: #737b88;
+  --accent: #93bcb5;
+  --accent-strong: #b6d6d0;
+  --accent-contrast: #12201d;
+  --danger-bg: #3a2126;
+  --danger-border: #6b3540;
+  --danger-text: #eca9b3;
+  --overlay: rgba(0, 0, 0, 0.62);
+  --shadow: 0 26px 60px -50px rgba(0, 0, 0, 0.75);
+`;
+
+// Radii + fluid tokens shared by both themes (danielius: utility 1.1rem,
+// card 1.5rem, feature 2rem, inputs ~0.85rem, pill buttons).
+const TOKENS = `
+  --radius-sm: 0.7rem;
+  --radius-md: 1.1rem;
+  --radius-lg: 1.5rem;
+  --radius-xl: 2rem;
+  --radius-pill: 999px;
 `;
 
 // A muted chevron for native <select>, tinted to read on both themes.
@@ -52,6 +71,7 @@ export function GlobalStyles() {
     <Global
       styles={css`
         :root {
+          ${TOKENS}
           ${LIGHT}
         }
         :root[data-theme='dark'] {
@@ -79,13 +99,18 @@ export function GlobalStyles() {
           background: var(--bg);
           color: var(--text);
           font-family:
+            var(--font-neris),
+            var(--font-geist-sans),
+            ui-sans-serif,
             system-ui,
             -apple-system,
             'Segoe UI',
             Roboto,
             sans-serif;
+          font-weight: 300;
           line-height: 1.5;
           -webkit-font-smoothing: antialiased;
+          text-rendering: optimizeLegibility;
         }
 
         /* Respect the OS "reduce motion" setting for the theme transition. */
@@ -110,16 +135,19 @@ export function GlobalStyles() {
         select {
           appearance: none;
           -webkit-appearance: none;
-          padding: 0.5rem 2.1rem 0.5rem 0.75rem;
+          padding: 0.55rem 2.1rem 0.55rem 0.8rem;
           color: var(--text);
           background-color: var(--surface);
           background-image: ${CHEVRON};
           background-repeat: no-repeat;
           background-position: right 0.7rem center;
           border: 1px solid var(--border-strong);
-          border-radius: 10px;
+          border-radius: 0.85rem;
           cursor: pointer;
           line-height: 1.2;
+          transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease;
         }
         select:hover {
           border-color: var(--accent);
@@ -146,7 +174,7 @@ export function GlobalStyles() {
           height: 2.4rem;
           padding: 0;
           border: 1px solid var(--border-strong);
-          border-radius: 10px;
+          border-radius: 0.85rem;
           background: none;
           cursor: pointer;
         }
@@ -155,7 +183,7 @@ export function GlobalStyles() {
         }
         input[type='color']::-webkit-color-swatch {
           border: none;
-          border-radius: 6px;
+          border-radius: 0.6rem;
         }
 
         input[type='file'] {
@@ -169,20 +197,21 @@ export function GlobalStyles() {
           color: var(--text);
           background: var(--surface-2);
           border: 1px solid var(--border-strong);
-          border-radius: 10px;
+          border-radius: var(--radius-pill);
           cursor: pointer;
         }
         input[type='file']::file-selector-button:hover {
           border-color: var(--accent);
         }
 
-        /* Consistent focus ring for anything focusable that doesn't set its own. */
+        /* Consistent focus ring for anything focusable that doesn't set its own —
+           danielius' soft ink halo (subtle tint) plus an accent border. */
         select:focus-visible,
         input:focus-visible,
         textarea:focus-visible {
           outline: none;
           border-color: var(--accent);
-          box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 32%, transparent);
+          box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
         }
 
         ::placeholder {
