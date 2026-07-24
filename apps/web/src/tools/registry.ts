@@ -63,15 +63,15 @@ export const TOOLS: Tool[] = [
     description: 'Change image dimensions precisely.',
     href: '/resize',
     category: 'Images & Media',
-    status: 'planned',
+    status: 'live',
   },
   {
     id: 'convert',
     name: 'Convert image',
-    description: 'Convert between JPG, PNG, WebP and more.',
+    description: 'Convert between JPG, PNG and WebP.',
     href: '/convert',
     category: 'Images & Media',
-    status: 'planned',
+    status: 'live',
   },
   {
     id: 'rotate',
@@ -79,7 +79,7 @@ export const TOOLS: Tool[] = [
     description: 'Rotate or flip an image any direction.',
     href: '/rotate',
     category: 'Images & Media',
-    status: 'planned',
+    status: 'live',
   },
   {
     id: 'image-editor',

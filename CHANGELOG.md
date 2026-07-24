@@ -37,6 +37,15 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
   line with a safe expression evaluator (no `eval`), plus a running total.
 - **Focus timer:** new `/focus-timer` tool — a simple Pomodoro timer (25/5)
   that alternates focus and break phases in the browser.
+- **Resize image:** new `/resize` tool — set exact pixel dimensions with an
+  optional aspect-ratio lock and choice of output format (PNG/JPG/WebP).
+- **Convert image:** new `/convert` tool — convert between JPG, PNG and WebP,
+  with a quality control for the lossy formats.
+- **Rotate & flip:** new `/rotate` tool — rotate in 90° steps and flip
+  horizontally/vertically, then download.
+- **Shared image workspace:** resize/convert/rotate share a common
+  drop-in/paste/preview shell (`ImageToolShell`) and canvas helpers
+  (`src/lib/image.ts`), accepting JPG, PNG, WebP, GIF and BMP.
 - **App navigation:** a persistent header links the tools (Optimize, Crop) and
   home, highlighting the current tool, so users move between them from anywhere.
 - **Image Cropper (foundation):** new `/crop` tool — load a JPEG (picker /

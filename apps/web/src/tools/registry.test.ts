@@ -48,6 +48,9 @@ describe('tool registry', () => {
         'text-diff',
         'focus-timer',
         'calculator',
+        'resize',
+        'convert',
+        'rotate',
       ]),
     );
   });
