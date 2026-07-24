@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { HASH_ALGORITHMS, hashText } from './hash';
+import { HASH_ALGORITHMS, checksumsMatch, hashBytes, hashText } from './hash';
 
 describe('hash', () => {
   it('matches known SHA-256 of "abc"', async () => {
@@ -28,5 +28,16 @@ describe('hash', () => {
     expect(await hashText('', 'SHA-256')).toBe(
       'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
     );
+  });
+
+  it('hashes raw bytes consistently with text', async () => {
+    const bytes = new TextEncoder().encode('abc');
+    expect(await hashBytes(bytes.buffer, 'SHA-256')).toBe(await hashText('abc', 'SHA-256'));
+  });
+
+  it('compares checksums case- and whitespace-insensitively', () => {
+    expect(checksumsMatch('ABC123', ' abc123 ')).toBe(true);
+    expect(checksumsMatch('abc', 'def')).toBe(false);
+    expect(checksumsMatch('', '')).toBe(false);
   });
 });

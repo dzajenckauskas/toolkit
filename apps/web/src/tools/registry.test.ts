@@ -51,6 +51,9 @@ describe('tool registry', () => {
         'resize',
         'convert',
         'rotate',
+        'checksum',
+        'metadata-cleaner',
+        'favicon',
       ]),
     );
   });

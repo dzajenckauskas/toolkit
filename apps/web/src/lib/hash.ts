@@ -19,3 +19,18 @@ export async function hashText(text: string, algorithm: HashAlgorithm): Promise<
   const digest = await crypto.subtle.digest(algorithm, bytes);
   return toHex(digest);
 }
+
+/** Hash raw bytes (e.g. a file's contents) with the given SHA algorithm. */
+export async function hashBytes(
+  bytes: ArrayBuffer,
+  algorithm: HashAlgorithm,
+): Promise<string> {
+  const digest = await crypto.subtle.digest(algorithm, bytes);
+  return toHex(digest);
+}
+
+/** Case- and whitespace-insensitive comparison of two hex checksums. */
+export function checksumsMatch(a: string, b: string): boolean {
+  const norm = (value: string) => value.trim().toLowerCase();
+  return norm(a) !== '' && norm(a) === norm(b);
+}

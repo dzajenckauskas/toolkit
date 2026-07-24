@@ -119,7 +119,7 @@ export const TOOLS: Tool[] = [
     description: 'Create favicons from an image.',
     href: '/favicon',
     category: 'Images & Media',
-    status: 'planned',
+    status: 'live',
   },
   {
     id: 'handwriting',
@@ -269,7 +269,7 @@ export const TOOLS: Tool[] = [
     description: 'Verify a file against a checksum.',
     href: '/checksum',
     category: 'Developer',
-    status: 'planned',
+    status: 'live',
   },
   {
     id: 'uuid',
@@ -313,7 +313,7 @@ export const TOOLS: Tool[] = [
     description: 'Strip EXIF/GPS metadata from images.',
     href: '/metadata-cleaner',
     category: 'Privacy',
-    status: 'planned',
+    status: 'live',
   },
 
   // Productivity

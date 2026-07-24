@@ -46,6 +46,12 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 - **Shared image workspace:** resize/convert/rotate share a common
   drop-in/paste/preview shell (`ImageToolShell`) and canvas helpers
   (`src/lib/image.ts`), accepting JPG, PNG, WebP, GIF and BMP.
+- **File checksum verifier:** new `/checksum` tool — compute a file's SHA
+  digest in the browser and compare it against an expected checksum.
+- **Metadata cleaner:** new `/metadata-cleaner` tool — strip EXIF/GPS and
+  other embedded metadata by re-encoding the image through a canvas.
+- **Favicon generator:** new `/favicon` tool — render an image to square PNG
+  icons at multiple sizes and download them as a ZIP.
 - **App navigation:** a persistent header links the tools (Optimize, Crop) and
   home, highlighting the current tool, so users move between them from anywhere.
 - **Image Cropper (foundation):** new `/crop` tool — load a JPEG (picker /
