@@ -15,7 +15,12 @@ export const theme = {
     borderStrong: 'var(--border-strong)',
     text: 'var(--text)',
     muted: 'var(--muted)',
+    /** Third-tier text (danielius `--subtle`): meta labels, captions. */
+    subtle: 'var(--subtle)',
+    /** Ink accent (danielius `--ink`). */
     accent: 'var(--accent)',
+    /** Ink accent, hover/darker (danielius `--ink-strong`). */
+    accentStrong: 'var(--accent-strong)',
     accentContrast: 'var(--accent-contrast)',
     dangerBg: 'var(--danger-bg)',
     dangerBorder: 'var(--danger-border)',
@@ -24,14 +29,19 @@ export const theme = {
   },
   shadow: 'var(--shadow)',
   radius: {
-    sm: '6px',
-    md: '10px',
-    pill: '999px',
+    sm: 'var(--radius-sm)',
+    md: 'var(--radius-md)',
+    lg: 'var(--radius-lg)',
+    xl: 'var(--radius-xl)',
+    pill: 'var(--radius-pill)',
   },
   /** Spacing helper: space(3) -> "0.75rem" (4px grid). */
   space: (steps: number): string => `${steps * 0.25}rem`,
   font: {
-    body: "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+    /** Neris display/body sans with Geist + system fallbacks. */
+    body: "var(--font-neris), var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+    /** Geist Mono for numerals and meta labels. */
+    mono: "var(--font-geist-mono), ui-monospace, 'SFMono-Regular', 'Menlo', monospace",
   },
   breakpoint: {
     sm: '480px',

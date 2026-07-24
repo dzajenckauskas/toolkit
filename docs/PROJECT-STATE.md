@@ -36,7 +36,7 @@ tools first, decide on monetization later").
   npx vitest run
   npx playwright test        # builds first
   ```
-- Current baseline: **261 unit tests + 69 e2e tests, all green.**
+- Current baseline: **261 unit tests + 72 e2e tests, all green.**
 - Playwright uses the pre-installed Chromium; do not run `playwright install`.
 - Note: `npm audit` reports pre-existing advisories in the Next.js toolchain
   (PostCSS, sharp). `npm audit fix --force` would downgrade Next to v9 — do not
@@ -56,6 +56,7 @@ tools first, decide on monetization later").
 6. Update `CHANGELOG.md`; run the full suite; commit + push to `main`.
 
 Reusable helpers worth knowing:
+
 - `ImageToolShell` + `src/lib/image.ts` — drop/paste/preview/download for image
   tools (resize/convert/rotate/metadata/favicon).
 - `EncodeDecodeTool` — shared encode/decode UI (base64/url/html-entities).
@@ -120,6 +121,13 @@ Diagram builder, and the rest of the PDF set (PDF editor, Redact PDF —
   wider layout (`<Page wide>`).
 - Global control styling in `GlobalStyles.tsx` themes every native
   select/input/range/checkbox/file/color control consistently.
+- **Design system:** reskinned to match the **danielius** theme — warm-paper
+  light / blue-slate dark palette with a teal/sage "ink" accent, **Neris**
+  (self-hosted via `next/font/local`, in `apps/web/public/fonts/neris/`) +
+  **Geist Sans/Mono** typography, soft large radii and pill buttons. Tokens live
+  as CSS variables in `GlobalStyles.tsx` and typed tokens in `theme.ts`
+  (`--accent`/`--accent-strong`/`--subtle`, `--radius-*`); the `ui/` primitives
+  read from them.
 
 ## Open decisions for the owner
 
