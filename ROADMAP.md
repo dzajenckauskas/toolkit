@@ -15,16 +15,27 @@ Tools are drawn from a competitor scan (`docs/research/`). Build order favours
 small, pure, high-value utilities first; heavy tools (PDF/video editors, AI
 upscale) come later.
 
-- [x] Registry + catalog landing page with search (`/`)
-- [x] Compress image (`/optimize`) — live
-- [x] Crop image (`/crop`) — live
-- [x] UUID generator (`/uuid`) — live
-- [ ] Developer utilities — Base64, password generator, hash, JSON, regex, JWT
-- [ ] Text & documents — Lorem Ipsum, text diff, Markdown, Mermaid
-- [ ] Design — colors, QR code
-- [ ] Remaining image, PDF, privacy, productivity and calculator tools
+**20 tools are live** (see `docs/PROJECT-STATE.md` for the full table and the
+recipe for adding one). The home-page search is a keyboard-driven **command
+palette** (icons, category tags, action keywords, ⌘K, ↑/↓ + Enter).
 
-Every tool in the registry (~35) is a candidate; the sections below track the
+- [x] Registry + catalog landing page (`/`)
+- [x] Command-palette search (keywords, keyboard nav, ⌘K)
+- [x] Image tools — Compress, Crop, Resize, Convert, Rotate/Flip, Favicon
+- [x] Developer utilities — UUID, Base64, Password, JSON, Hash, JWT, Regex, Checksum
+- [x] Text & documents — Lorem Ipsum, Text diff
+- [x] Design — Colors (HEX/RGB/HSL)
+- [x] Privacy — Metadata cleaner (EXIF/GPS strip)
+- [x] Productivity / Calculators — Focus timer, Notepad calculator
+
+Remaining backlog (need a dependency, are heavy, or are policy-deferred):
+
+- [ ] Needs a small library — QR code, Markdown preview, Mermaid, Code image, JSON↔YAML
+- [ ] Heavier custom builds — Screenshot beautifier, Image editor, Kanban board,
+      Images→PDF, PDF editor / redact, Video editor, Text-to-handwriting, Diagram builder
+- [ ] Policy / AI deferred — Upscale (#27), Remove watermark (#28)
+
+Every tool in the registry is a candidate; the sections below track the
 image-focused ones in more detail.
 
 ## Phase 0 — Product foundation
