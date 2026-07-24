@@ -33,6 +33,13 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
     live clock and relative time.
   - **CSV ↔ JSON** (`/csv-json`) — convert both directions with an RFC 4180-ish
     quoted-field parser.
+- **Text & design tools (zero-dependency batch):**
+  - **Word & character counter** (`/word-count`) — words, characters,
+    sentences, paragraphs, lines and reading time.
+  - **Slugify** (`/slugify`) — URL slugs with diacritic stripping and a choice
+    of separator/case.
+  - **Color contrast checker** (`/contrast`) — WCAG AA/AAA pass/fail with a
+    live preview and contrast ratio.
 - **Command-palette search:** the home-page search is now a keyboard-driven
   command palette (inspired by DevToys / free-tooling). It searches tool names,
   descriptions, categories and action-style keywords (e.g. "encode" → Base64,

@@ -211,6 +211,22 @@ export const TOOLS: Tool[] = [
     category: 'Text & Documents',
     status: 'live',
   },
+  {
+    id: 'word-count',
+    name: 'Word & character counter',
+    description: 'Count words, characters, sentences and reading time.',
+    href: '/word-count',
+    category: 'Text & Documents',
+    status: 'live',
+  },
+  {
+    id: 'slugify',
+    name: 'Slugify',
+    description: 'Turn text into a clean URL slug.',
+    href: '/slugify',
+    category: 'Text & Documents',
+    status: 'live',
+  },
 
   // PDF
   {
@@ -370,6 +386,14 @@ export const TOOLS: Tool[] = [
     status: 'live',
   },
   {
+    id: 'contrast',
+    name: 'Contrast checker',
+    description: 'Check color contrast against WCAG AA/AAA.',
+    href: '/contrast',
+    category: 'Design',
+    status: 'live',
+  },
+  {
     id: 'diagram',
     name: 'Diagram builder',
     description: 'Build simple diagrams.',
@@ -479,6 +503,9 @@ export const TOOL_KEYWORDS: Record<string, string[]> = {
   'csv-json': ['csv', 'json', 'convert', 'spreadsheet', 'table', 'parse'],
   'unit-converter': ['length', 'weight', 'temperature', 'metric', 'imperial', 'convert', 'celsius'],
   percentage: ['percent', 'tip', 'discount', 'change', 'split', 'calculator'],
+  'word-count': ['characters', 'words', 'count', 'reading time', 'letters'],
+  slugify: ['slug', 'url', 'permalink', 'kebab', 'seo'],
+  contrast: ['wcag', 'accessibility', 'a11y', 'ratio', 'color', 'luminance'],
 };
 
 /** Tools grouped by category, in display order (skips empty categories). */
