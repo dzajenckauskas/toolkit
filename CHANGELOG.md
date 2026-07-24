@@ -6,6 +6,18 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 
 ### Added
 
+- **Encoders & text transforms (zero-dependency batch):**
+  - **URL encode/decode** (`/url-encode`) — percent-encode and decode URL
+    components, with a clear error for malformed input.
+  - **HTML entities** (`/html-entities`) — escape the five HTML-significant
+    characters and unescape named + numeric entities.
+  - **Number base converter** (`/number-base`) — convert between binary, octal,
+    decimal and hex; BigInt-backed so large values stay exact.
+  - **Case converter** (`/case-converter`) — transform text between camelCase,
+    snake_case, kebab-case, Title Case, CONSTANT_CASE and more.
+  - **Line tools** (`/line-tools`) — sort, de-duplicate, reverse, shuffle, trim
+    and clean lines, with live line stats.
+  - Encode/decode tools now share an `EncodeDecodeTool` component.
 - **Command-palette search:** the home-page search is now a keyboard-driven
   command palette (inspired by DevToys / free-tooling). It searches tool names,
   descriptions, categories and action-style keywords (e.g. "encode" → Base64,

@@ -195,6 +195,22 @@ export const TOOLS: Tool[] = [
     category: 'Text & Documents',
     status: 'live',
   },
+  {
+    id: 'case-converter',
+    name: 'Case converter',
+    description: 'Convert between camelCase, snake_case, Title Case and more.',
+    href: '/case-converter',
+    category: 'Text & Documents',
+    status: 'live',
+  },
+  {
+    id: 'line-tools',
+    name: 'Line tools',
+    description: 'Sort, de-duplicate, reverse and clean lines of text.',
+    href: '/line-tools',
+    category: 'Text & Documents',
+    status: 'live',
+  },
 
   // PDF
   {
@@ -287,6 +303,30 @@ export const TOOLS: Tool[] = [
     category: 'Developer',
     status: 'live',
   },
+  {
+    id: 'url-encode',
+    name: 'URL encode / decode',
+    description: 'Percent-encode and decode URL components.',
+    href: '/url-encode',
+    category: 'Developer',
+    status: 'live',
+  },
+  {
+    id: 'html-entities',
+    name: 'HTML entities',
+    description: 'Escape and unescape HTML entities.',
+    href: '/html-entities',
+    category: 'Developer',
+    status: 'live',
+  },
+  {
+    id: 'number-base',
+    name: 'Number base converter',
+    description: 'Convert between binary, octal, decimal and hex.',
+    href: '/number-base',
+    category: 'Developer',
+    status: 'live',
+  },
 
   // Design
   {
@@ -371,6 +411,11 @@ export const TOOL_KEYWORDS: Record<string, string[]> = {
   'metadata-cleaner': ['exif', 'gps', 'strip', 'privacy', 'remove metadata'],
   'focus-timer': ['pomodoro', 'timer', 'countdown', 'productivity'],
   calculator: ['calc', 'math', 'arithmetic', 'sum'],
+  'url-encode': ['percent', 'uri', 'escape', 'querystring', 'encode', 'decode'],
+  'html-entities': ['escape', 'unescape', 'entity', 'ampersand', 'encode', 'decode'],
+  'number-base': ['binary', 'hex', 'hexadecimal', 'octal', 'decimal', 'radix', 'convert'],
+  'case-converter': ['camelcase', 'snake_case', 'kebab', 'title case', 'uppercase', 'lowercase'],
+  'line-tools': ['sort', 'dedupe', 'unique', 'reverse', 'shuffle', 'trim', 'lines'],
 };
 
 /** Tools grouped by category, in display order (skips empty categories). */
