@@ -33,7 +33,15 @@ describe('tool registry', () => {
   it('exposes the live tools', () => {
     expect(LIVE_TOOLS.every((t) => t.status === 'live')).toBe(true);
     expect(LIVE_TOOLS.map((t) => t.id)).toEqual(
-      expect.arrayContaining(['optimize', 'crop', 'uuid']),
+      expect.arrayContaining([
+        'optimize',
+        'crop',
+        'uuid',
+        'base64',
+        'password',
+        'lorem-ipsum',
+        'json',
+      ]),
     );
   });
 });

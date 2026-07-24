@@ -14,6 +14,15 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 - **UUID generator:** new `/uuid` tool — generate up to 100 random v4 UUIDs in
   the browser, adjust the count, and copy them. First tool shipped under the
   hub model.
+- **Base64 encode / decode:** new `/base64` tool — UTF-8-safe Base64 encoding
+  and decoding with a clear per-input error for invalid Base64.
+- **Password generator:** new `/password` tool — cryptographically random
+  passwords (CSPRNG, rejection-sampled to avoid modulo bias) with adjustable
+  length and character sets.
+- **Lorem Ipsum generator:** new `/lorem-ipsum` tool — generate up to 50
+  paragraphs of placeholder text with the classic opening.
+- **JSON formatter & validator:** new `/json` tool — format, minify and
+  validate JSON with friendly error messages, all in the browser.
 - **App navigation:** a persistent header links the tools (Optimize, Crop) and
   home, highlighting the current tool, so users move between them from anywhere.
 - **Image Cropper (foundation):** new `/crop` tool — load a JPEG (picker /

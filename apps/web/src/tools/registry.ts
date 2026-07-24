@@ -193,7 +193,7 @@ export const TOOLS: Tool[] = [
     description: 'Generate placeholder text for layouts.',
     href: '/lorem-ipsum',
     category: 'Text & Documents',
-    status: 'planned',
+    status: 'live',
   },
 
   // PDF
@@ -226,10 +226,10 @@ export const TOOLS: Tool[] = [
   {
     id: 'json',
     name: 'JSON validator',
-    description: 'Validate and format JSON.',
+    description: 'Validate, format and minify JSON.',
     href: '/json',
     category: 'Developer',
-    status: 'planned',
+    status: 'live',
   },
   {
     id: 'jwt',
@@ -253,7 +253,7 @@ export const TOOLS: Tool[] = [
     description: 'Encode and decode Base64.',
     href: '/base64',
     category: 'Developer',
-    status: 'planned',
+    status: 'live',
   },
   {
     id: 'hash',
@@ -285,7 +285,7 @@ export const TOOLS: Tool[] = [
     description: 'Generate strong random passwords.',
     href: '/password',
     category: 'Developer',
-    status: 'planned',
+    status: 'live',
   },
 
   // Design
