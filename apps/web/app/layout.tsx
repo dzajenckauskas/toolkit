@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import EmotionRegistry from '@/theme/EmotionRegistry';
+import { AppHeader } from '@/components/AppHeader';
 
 export const metadata: Metadata = {
   title: 'Ecommerce Toolkit',
@@ -15,7 +16,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <EmotionRegistry>{children}</EmotionRegistry>
+        <EmotionRegistry>
+          <AppHeader />
+          {children}
+        </EmotionRegistry>
       </body>
     </html>
   );

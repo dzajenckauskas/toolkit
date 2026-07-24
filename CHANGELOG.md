@@ -6,6 +6,8 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 
 ### Added
 
+- **App navigation:** a persistent header links the tools (Optimize, Crop) and
+  home, highlighting the current tool, so users move between them from anywhere.
 - **Image Cropper (foundation):** new `/crop` tool — load a JPEG (picker /
   drag-drop / paste), frame it with an interactive crop box (drag to move,
   corner handles to resize, arrow keys to nudge), see live output dimensions,
