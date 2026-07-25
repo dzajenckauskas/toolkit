@@ -6,6 +6,17 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 
 ### Added
 
+- **Global search dialog.** A search icon in the header (and ⌘K / Ctrl-K from
+  anywhere) opens a command palette that searches every tool by name,
+  description, category and action keywords, with arrow-key navigation and
+  Enter-to-open. Works on every route, not just the catalog. The home page's
+  inline catalog search is unchanged; the duplicate ⌘K binding was moved to the
+  header so the two no longer conflict.
+- **Mobile drawer lists individual tools.** The slide-in menu now groups every
+  live tool under its category (free-tooling.com style) with a theme toggle and
+  "Send feedback" in a pinned footer, and slides in from the left. Category
+  labels remain jump-links to the catalog sections.
+
 - **FAQ page** (`/faq`) — a keyboard-accessible accordion (native
   `<details>`/`<summary>`) answering common questions about the free,
   client-side, no-upload model.
@@ -20,6 +31,12 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 
 ### Fixed
 
+- **Mobile menu drawer not opening (clipped to the header).** The drawer is
+  `position: fixed`, but the header sets `backdrop-filter`, which makes the
+  header a *containing block* for fixed descendants — so the drawer (rendered
+  inside the header) was sized to the ~50px header instead of the viewport,
+  showing only its top strip with no overlay or links. The drawer (and the new
+  search dialog) are now portalled to `<body>`, escaping that containing block.
 - **Mobile menu drawer horizontal overflow / phantom header.** The off-canvas
   drawer was `position: fixed` and slid off to the right when closed, which
   widened the page by its own width — producing a horizontal scrollbar, an empty

@@ -328,19 +328,6 @@ export function ToolCatalog() {
     setSelected(0);
   }, [query]);
 
-  // Global ⌘K / Ctrl-K focuses the palette.
-  useEffect(() => {
-    const onKey = (event: KeyboardEvent) => {
-      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
-        event.preventDefault();
-        inputRef.current?.focus();
-        inputRef.current?.select();
-      }
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, []);
-
   const onInputKeyDown = useCallback(
     (event: React.KeyboardEvent) => {
       if (!searching || results.length === 0) return;

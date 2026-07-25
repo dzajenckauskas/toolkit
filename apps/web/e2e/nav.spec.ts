@@ -74,6 +74,45 @@ test('the menu drawer opens and lists categories', async ({ page }) => {
   await expect(page.getByTestId('cat-Design')).toBeVisible();
 });
 
+test('the mobile drawer fills the viewport and lists individual tools', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 800 });
+  await page.goto('/');
+  await page.getByTestId('menu-open').click();
+
+  const panel = page.getByTestId('mobile-menu');
+  await expect(panel).toBeVisible();
+
+  // Regression: before the portal fix the drawer was trapped inside the header's
+  // `backdrop-filter` containing block and rendered only ~50px tall.
+  const box = await panel.boundingBox();
+  expect(box).not.toBeNull();
+  expect(box!.height).toBeGreaterThan(600);
+
+  // It now lists individual tools (not just category jump-links).
+  await expect(page.getByTestId('menu-tool-uuid')).toBeVisible();
+  await page.getByTestId('menu-tool-uuid').click();
+  await expect(page).toHaveURL(/\/uuid$/);
+});
+
+test('the header search opens a global dialog on any page and navigates', async ({ page }) => {
+  // A non-home route proves the palette works everywhere, not just the catalog.
+  await page.goto('/terms');
+  await page.getByTestId('search-open').click();
+  await expect(page.getByTestId('search-dialog')).toBeVisible();
+
+  await page.getByTestId('search-input').fill('uuid');
+  await page.getByTestId('search-input').press('Enter');
+  await expect(page).toHaveURL(/\/uuid$/);
+});
+
+test('cmd/ctrl-K opens the global search and Escape closes it', async ({ page }) => {
+  await page.goto('/faq');
+  await page.keyboard.press('ControlOrMeta+k');
+  await expect(page.getByTestId('search-dialog')).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(page.getByTestId('search-dialog')).toBeHidden();
+});
+
 test('the home page browses tools by category', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByTestId('category-chips')).toBeVisible();

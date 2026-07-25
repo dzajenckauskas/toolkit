@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import styled from '@emotion/styled';
@@ -9,6 +9,7 @@ import type { AppTheme } from '@/theme/theme';
 import { Logo } from '@/components/Logo';
 import ThemeToggle from '@/components/ThemeToggle';
 import MobileMenu from '@/components/MobileMenu';
+import SearchDialog from '@/components/SearchDialog';
 import { CONTACT_MAILTO } from '@/lib/site';
 
 /**
@@ -114,6 +115,20 @@ const IconButton = styled('button')(({ theme }) => ({
 export function AppHeader() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+
+  // ⌘K / Ctrl-K opens the global search from anywhere.
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+        event.preventDefault();
+        setMenuOpen(false);
+        setSearchOpen(true);
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
 
   return (
     <Bar>
@@ -143,6 +158,26 @@ export function AppHeader() {
             )}
           </QuickNav>
 
+          <IconButton
+            type="button"
+            onClick={() => setSearchOpen(true)}
+            aria-label="Search tools"
+            aria-expanded={searchOpen}
+            data-testid="search-open"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <circle cx="11" cy="11" r="7" />
+              <path d="M21 21l-4.3-4.3" strokeLinecap="round" />
+            </svg>
+          </IconButton>
+
           <ThemeToggle />
 
           <IconButton
@@ -168,6 +203,7 @@ export function AppHeader() {
       </Inner>
 
       <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
+      <SearchDialog open={searchOpen} onClose={() => setSearchOpen(false)} />
     </Bar>
   );
 }

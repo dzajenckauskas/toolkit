@@ -54,7 +54,7 @@ const Moon = (
   </svg>
 );
 
-export default function ThemeToggle() {
+export default function ThemeToggle({ testId = 'theme-toggle' }: { testId?: string } = {}) {
   const [mode, setMode] = useState<ThemeMode>('light');
   const [mounted, setMounted] = useState(false);
 
@@ -78,7 +78,7 @@ export default function ThemeToggle() {
       onClick={toggle}
       aria-label={mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
       title={mode === 'dark' ? 'Light mode' : 'Dark mode'}
-      data-testid="theme-toggle"
+      data-testid={testId}
     >
       {showMoon ? Moon : Sun}
     </Button>
