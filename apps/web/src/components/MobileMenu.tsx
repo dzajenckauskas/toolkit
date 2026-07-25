@@ -6,6 +6,8 @@ import styled from '@emotion/styled';
 import { CATEGORY_ORDER } from '@/tools/registry';
 import { CategoryIcon } from '@/components/CategoryIcon';
 import { Logo } from '@/components/Logo';
+import { CONTACT_MAILTO } from '@/lib/site';
+import type { AppTheme } from '@/theme/theme';
 
 const Overlay = styled('div', {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -31,7 +33,14 @@ const Panel = styled('aside', {
   borderLeft: `1px solid ${theme.color.border}`,
   boxShadow: theme.shadow,
   transform: open ? 'translateX(0)' : 'translateX(100%)',
-  transition: 'transform 0.24s cubic-bezier(0.4, 0, 0.2, 1)',
+  // When closed the panel is not just off-screen but truly hidden: this keeps
+  // its links out of the keyboard tab order and stops it rendering in full-page
+  // screenshots (a fixed element's transform doesn't hide it from those).
+  // `visibility` is delayed until the slide-out finishes so the animation shows.
+  visibility: open ? 'visible' : 'hidden',
+  transition: open
+    ? 'transform 0.24s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s'
+    : 'transform 0.24s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 0.24s',
   zIndex: 51,
   display: 'flex',
   flexDirection: 'column',
@@ -69,7 +78,7 @@ const SectionLabel = styled('div')(({ theme }) => ({
   color: theme.color.muted,
 }));
 
-const Item = styled(Link)(({ theme }) => ({
+const itemStyles = (theme: AppTheme) => ({
   display: 'flex',
   alignItems: 'center',
   gap: theme.space(3),
@@ -79,7 +88,12 @@ const Item = styled(Link)(({ theme }) => ({
   fontWeight: 600,
   '& svg': { color: theme.color.muted },
   '&:hover': { background: theme.color.surface2 },
-}));
+});
+
+const Item = styled(Link)(({ theme }) => itemStyles(theme));
+
+// Anchor variant for external / mailto links (Contact).
+const ItemAnchor = styled('a')(({ theme }) => itemStyles(theme));
 
 export default function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
   useEffect(() => {
@@ -142,6 +156,20 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
             {category}
           </Item>
         ))}
+
+        <SectionLabel>More</SectionLabel>
+        <Item href="/faq" onClick={onClose} data-testid="menu-faq">
+          <CategoryIcon category="Text & Documents" />
+          FAQ
+        </Item>
+        <ItemAnchor href={CONTACT_MAILTO} data-testid="menu-contact">
+          <CategoryIcon category="Privacy" />
+          Contact
+        </ItemAnchor>
+        <Item href="/terms" onClick={onClose} data-testid="menu-terms">
+          <CategoryIcon category="Developer" />
+          Terms &amp; Conditions
+        </Item>
       </Panel>
     </>
   );

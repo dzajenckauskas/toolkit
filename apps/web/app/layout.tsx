@@ -4,6 +4,7 @@ import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
 import EmotionRegistry from '@/theme/EmotionRegistry';
 import { AppHeader } from '@/components/AppHeader';
+import { Footer } from '@/components/Footer';
 import { NO_FLASH_SCRIPT } from '@/lib/theme-mode';
 
 // Neris — the display/body sans, self-hosted via next/font so the @font-face
@@ -41,6 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <EmotionRegistry>
           <AppHeader />
           {children}
+          <Footer />
         </EmotionRegistry>
       </body>
     </html>

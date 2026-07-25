@@ -4,9 +4,12 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import styled from '@emotion/styled';
+import type { CSSObject } from '@emotion/react';
+import type { AppTheme } from '@/theme/theme';
 import { Logo } from '@/components/Logo';
 import ThemeToggle from '@/components/ThemeToggle';
 import MobileMenu from '@/components/MobileMenu';
+import { CONTACT_MAILTO } from '@/lib/site';
 
 /**
  * Persistent top navigation. Logo (→ home), a couple of quick links on wider
@@ -14,9 +17,8 @@ import MobileMenu from '@/components/MobileMenu';
  */
 
 const QUICK_LINKS = [
-  { href: '/optimize', label: 'Compress' },
-  { href: '/crop', label: 'Crop' },
-  { href: '/palette', label: 'Palette' },
+  { href: '/faq', label: 'FAQ', external: false },
+  { href: CONTACT_MAILTO, label: 'Contact', external: true },
 ] as const;
 
 const Bar = styled('header')(({ theme }) => ({
@@ -61,9 +63,7 @@ const QuickNav = styled('nav')(({ theme }) => ({
   '@media (min-width: 720px)': { display: 'flex' },
 }));
 
-const NavLink = styled(Link, {
-  shouldForwardProp: (prop) => prop !== 'active',
-})<{ active?: boolean }>(({ theme, active }) => ({
+const navLinkStyles = (theme: AppTheme, active?: boolean): CSSObject => ({
   padding: '0.5rem 0.75rem',
   borderRadius: '0.6rem',
   fontWeight: 600,
@@ -82,7 +82,15 @@ const NavLink = styled(Link, {
     outline: 'none',
     boxShadow: `0 0 0 3px color-mix(in srgb, ${theme.color.accent} 32%, transparent)`,
   },
-}));
+});
+
+const NavLink = styled(Link, {
+  shouldForwardProp: (prop) => prop !== 'active',
+})<{ active?: boolean }>(({ theme, active }) => navLinkStyles(theme, active));
+
+// Anchor variant for external / mailto quick links (Next's Link is for
+// internal navigation only).
+const NavAnchor = styled('a')(({ theme }) => navLinkStyles(theme));
 
 const IconButton = styled('button')(({ theme }) => ({
   display: 'inline-flex',
@@ -116,16 +124,23 @@ export function AppHeader() {
 
         <Right>
           <QuickNav aria-label="Quick links">
-            {QUICK_LINKS.map((link) => (
-              <NavLink
-                key={link.href}
-                href={link.href}
-                active={pathname === link.href}
-                aria-current={pathname === link.href ? 'page' : undefined}
-              >
-                {link.label}
-              </NavLink>
-            ))}
+            {QUICK_LINKS.map((link) =>
+              link.external ? (
+                <NavAnchor key={link.href} href={link.href} data-testid={`nav-${link.label}`}>
+                  {link.label}
+                </NavAnchor>
+              ) : (
+                <NavLink
+                  key={link.href}
+                  href={link.href}
+                  active={pathname === link.href}
+                  aria-current={pathname === link.href ? 'page' : undefined}
+                  data-testid={`nav-${link.label}`}
+                >
+                  {link.label}
+                </NavLink>
+              ),
+            )}
           </QuickNav>
 
           <ThemeToggle />

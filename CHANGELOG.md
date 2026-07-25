@@ -4,8 +4,36 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 
 ## Unreleased
 
+### Added
+
+- **FAQ page** (`/faq`) — a keyboard-accessible accordion (native
+  `<details>`/`<summary>`) answering common questions about the free,
+  client-side, no-upload model.
+- **Terms & Conditions page** (`/terms`) — plain-language terms for the
+  free, browser-only tool hub (as-is / no-warranty, local-only processing,
+  local-storage note, liability, contact).
+- **Site footer** — an author credit ("Built by Danielius", linking to
+  zajenckauskas.lt) plus FAQ, Contact and Terms links, mounted app-wide and
+  pinned to the bottom on short pages.
+- **Contact** — a `mailto:` link (danielius@zajenckauskas.lt) in the header,
+  footer and mobile menu; shared site constants live in `src/lib/site.ts`.
+
+### Fixed
+
+- **Mobile menu drawer horizontal overflow / phantom header.** The off-canvas
+  drawer is `position: fixed` and slid off to the right when closed, which
+  widened the page by its own width — producing a horizontal scrollbar and
+  making the drawer's header peek in at the top-right (most visible in full-page
+  screenshots). Added `overflow-x: clip` on the root (the danielius pattern) so
+  the off-canvas drawer no longer extends the page, and made the closed drawer
+  `visibility: hidden` (after its slide-out) so its links are also out of the
+  keyboard tab order.
+
 ### Changed
 
+- **Header quick links** now point to **FAQ** and **Contact** (replacing the
+  previous Compress / Crop / Palette shortcuts); the mobile drawer gained a
+  "More" section with FAQ, Contact and Terms.
 - **Design system reskin — "danielius" theme.** Reskinned the app to match the
   danielius design system while keeping the existing architecture (Emotion,
   typed theme, `data-theme` light/dark toggle). Ported the full palette — a warm

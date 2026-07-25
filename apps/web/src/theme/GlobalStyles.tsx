@@ -93,9 +93,19 @@ export function GlobalStyles() {
         body {
           margin: 0;
           padding: 0;
+          /* Clip horizontal overflow so the off-canvas mobile drawer (fixed,
+             translated fully to the right when closed) never widens the page or
+             produces a horizontal scrollbar. "clip" (not "hidden") avoids
+             creating a scroll container that would break sticky/fixed layout. */
+          overflow-x: clip;
         }
 
         body {
+          /* Column layout lets the footer sit at the bottom on short pages
+             (Footer uses margin-top: auto). */
+          min-height: 100dvh;
+          display: flex;
+          flex-direction: column;
           background: var(--bg);
           color: var(--text);
           font-family:
