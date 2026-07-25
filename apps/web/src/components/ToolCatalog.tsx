@@ -1,18 +1,14 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import styled from '@emotion/styled';
 import { Stack, Text } from '@/components/ui';
-import {
-  CATEGORY_ORDER,
-  searchTools,
-  toolsByCategory,
-  type Tool,
-  type ToolCategory,
-} from '@/tools/registry';
+import { CATEGORY_ORDER, toolsByCategory, type Tool, type ToolCategory } from '@/tools/registry';
 import { CategoryIcon } from '@/components/CategoryIcon';
+import { useToolSearch } from '@/components/search/useToolSearch';
+import { ToolResults } from '@/components/search/ToolResults';
 
 const SearchWrap = styled('div')({
   position: 'relative',
@@ -118,79 +114,6 @@ const Soon = styled('span')(({ theme }) => ({
   padding: '0.1rem 0.5rem',
 }));
 
-// --- Command-palette results list ---
-
-const ResultsList = styled('div')(({ theme }) => ({
-  border: `1px solid ${theme.color.border}`,
-  borderRadius: theme.radius.md,
-  background: theme.color.surface,
-  overflow: 'hidden',
-}));
-
-const SectionLabel = styled('div')(({ theme }) => ({
-  padding: `${theme.space(2)} ${theme.space(3)} ${theme.space(1)}`,
-  fontSize: '0.75rem',
-  fontWeight: 700,
-  letterSpacing: '0.04em',
-  textTransform: 'uppercase',
-  color: theme.color.muted,
-}));
-
-const rowStyles = (theme: import('@/theme/theme').AppTheme, selected: boolean) => ({
-  display: 'flex',
-  alignItems: 'center',
-  gap: theme.space(3),
-  padding: `${theme.space(2)} ${theme.space(3)}`,
-  textDecoration: 'none',
-  color: 'inherit',
-  cursor: 'pointer',
-  background: selected
-    ? `color-mix(in srgb, ${theme.color.accent} 12%, transparent)`
-    : 'transparent',
-});
-
-const RowLink = styled(Link, {
-  shouldForwardProp: (prop) => prop !== 'selected',
-})<{ selected: boolean }>(({ theme, selected }) => rowStyles(theme, selected));
-
-const RowStatic = styled('div', {
-  shouldForwardProp: (prop) => prop !== 'selected',
-})<{ selected: boolean }>(({ theme, selected }) => ({
-  ...rowStyles(theme, selected),
-  cursor: 'default',
-  opacity: 0.55,
-}));
-
-const IconBadge = styled('span')(({ theme }) => ({
-  display: 'flex',
-  flex: '0 0 auto',
-  color: theme.color.muted,
-}));
-
-const RowText = styled('div')({
-  flex: '1 1 auto',
-  minWidth: 0,
-});
-
-const RowName = styled('div')(({ theme }) => ({
-  fontWeight: 600,
-  color: theme.color.text,
-}));
-
-const RowDesc = styled('div')(({ theme }) => ({
-  fontSize: '0.82rem',
-  color: theme.color.muted,
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  whiteSpace: 'nowrap',
-}));
-
-const RowTag = styled('span')(({ theme }) => ({
-  flex: '0 0 auto',
-  fontSize: '0.78rem',
-  color: theme.color.muted,
-}));
-
 const Chips = styled('div')(({ theme }) => ({
   display: 'flex',
   flexWrap: 'wrap',
@@ -262,93 +185,14 @@ function ToolCard({ tool }: { tool: Tool }) {
   );
 }
 
-function ResultRow({
-  tool,
-  selected,
-  onHover,
-}: {
-  tool: Tool;
-  selected: boolean;
-  onHover: () => void;
-}) {
-  const inner = (
-    <>
-      <IconBadge>
-        <CategoryIcon category={tool.category} />
-      </IconBadge>
-      <RowText>
-        <RowName>{tool.name}</RowName>
-        <RowDesc>{tool.description}</RowDesc>
-      </RowText>
-      {tool.status === 'planned' ? <Soon>Soon</Soon> : <RowTag>{tool.category}</RowTag>}
-    </>
-  );
-
-  if (tool.status === 'live') {
-    return (
-      <RowLink
-        href={tool.href}
-        selected={selected}
-        role="option"
-        aria-selected={selected}
-        onMouseMove={onHover}
-        data-testid={`tool-${tool.id}`}
-      >
-        {inner}
-      </RowLink>
-    );
-  }
-  return (
-    <RowStatic
-      selected={selected}
-      role="option"
-      aria-selected={selected}
-      aria-disabled="true"
-      onMouseMove={onHover}
-      data-testid={`tool-${tool.id}`}
-    >
-      {inner}
-    </RowStatic>
-  );
-}
-
 export function ToolCatalog() {
   const router = useRouter();
-  const [query, setQuery] = useState('');
-  const [selected, setSelected] = useState(0);
   const [activeCategory, setActiveCategory] = useState<ToolCategory | null>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
 
-  const results = useMemo(() => searchTools(query), [query]);
-  const searching = query.trim() !== '';
+  const { query, setQuery, results, searching, selected, setSelected, onKeyDown } = useToolSearch({
+    onSelect: (tool) => router.push(tool.href),
+  });
   const categoryGroups = useMemo(() => toolsByCategory(), []);
-
-  // Keep the selection in range as results change.
-  useEffect(() => {
-    setSelected(0);
-  }, [query]);
-
-  const onInputKeyDown = useCallback(
-    (event: React.KeyboardEvent) => {
-      if (!searching || results.length === 0) return;
-      if (event.key === 'ArrowDown') {
-        event.preventDefault();
-        setSelected((i) => (i + 1) % results.length);
-      } else if (event.key === 'ArrowUp') {
-        event.preventDefault();
-        setSelected((i) => (i - 1 + results.length) % results.length);
-      } else if (event.key === 'Enter') {
-        const tool = results[selected];
-        if (tool && tool.status === 'live') {
-          event.preventDefault();
-          router.push(tool.href);
-        }
-      } else if (event.key === 'Escape') {
-        setQuery('');
-      }
-    },
-    [searching, results, selected, router],
-  );
 
   const groups = CATEGORY_ORDER.map((category) => ({
     category: category as ToolCategory,
@@ -374,11 +218,10 @@ export function ToolCatalog() {
           </svg>
         </SearchIcon>
         <SearchInput
-          ref={inputRef}
           type="search"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
-          onKeyDown={onInputKeyDown}
+          onKeyDown={onKeyDown}
           placeholder="Search tools and actions…"
           aria-label="Search tools and actions"
           role="combobox"
@@ -421,23 +264,17 @@ export function ToolCatalog() {
       ) : null}
 
       {searching ? (
-        results.length === 0 ? (
-          <Text tone="muted" data-testid="tool-empty">
-            No tools match “{query}”.
-          </Text>
-        ) : (
-          <ResultsList id="tool-results" role="listbox" aria-label="Search results">
-            <SectionLabel>Tools and actions</SectionLabel>
-            {results.map((tool, index) => (
-              <ResultRow
-                key={tool.id}
-                tool={tool}
-                selected={index === selected}
-                onHover={() => setSelected(index)}
-              />
-            ))}
-          </ResultsList>
-        )
+        <ToolResults
+          results={results}
+          selected={selected}
+          onHover={setSelected}
+          query={query}
+          testIdPrefix="tool"
+          emptyTestId="tool-empty"
+          listId="tool-results"
+          sectionLabel="Tools and actions"
+          bordered
+        />
       ) : (
         groups.map((group) => (
           <CatSection

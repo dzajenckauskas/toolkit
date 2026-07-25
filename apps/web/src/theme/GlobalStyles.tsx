@@ -95,6 +95,14 @@ export function GlobalStyles() {
           padding: 0;
         }
 
+        /* Always reserve space for the vertical scrollbar so centered layouts
+           (the catalog, search results, the FAQ accordion) keep a constant
+           width whether or not the page currently overflows — no width jump when
+           a search filters the list or an FAQ item expands. */
+        html {
+          scrollbar-gutter: stable;
+        }
+
         body {
           /* Column layout lets the footer sit at the bottom on short pages
              (Footer uses margin-top: auto). */

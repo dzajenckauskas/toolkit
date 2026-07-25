@@ -29,8 +29,19 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 - **Contact** — a `mailto:` link (danielius@zajenckauskas.lt) in the header,
   footer and mobile menu; shared site constants live in `src/lib/site.ts`.
 
+### Changed
+
+- **One shared search component.** The inline catalog search and the header
+  search dialog now share a single `useToolSearch` hook (query + keyboard) and
+  `ToolResults` list, instead of each carrying its own copy of the result-row
+  markup and styling.
+
 ### Fixed
 
+- **Layout width jumped when the scrollbar appeared/disappeared.** Reserved the
+  scrollbar gutter globally (`scrollbar-gutter: stable`), so centered layouts
+  keep a constant width — the search results now match the unfiltered catalog
+  grid, and an expanding FAQ item no longer nudges the column width.
 - **Mobile menu drawer not opening (clipped to the header).** The drawer is
   `position: fixed`, but the header sets `backdrop-filter`, which makes the
   header a *containing block* for fixed descendants — so the drawer (rendered

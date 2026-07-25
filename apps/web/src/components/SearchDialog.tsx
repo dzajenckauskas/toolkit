@@ -1,19 +1,20 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import styled from '@emotion/styled';
-import { searchTools, type Tool } from '@/tools/registry';
-import { CategoryIcon } from '@/components/CategoryIcon';
-import type { AppTheme } from '@/theme/theme';
+import { useToolSearch } from '@/components/search/useToolSearch';
+import { ToolResults } from '@/components/search/ToolResults';
 
 /**
  * Global search / command palette. Unlike the inline catalog search (which only
  * lives on the home page), this is rendered from the header and works on every
- * route. It is portalled to <body> so the header's `backdrop-filter` — which
- * establishes a containing block for fixed descendants — cannot trap it.
+ * route. It shares its query logic (`useToolSearch`) and result rows
+ * (`ToolResults`) with the catalog so the two stay identical.
+ *
+ * Portalled to <body> so the header's `backdrop-filter` — which establishes a
+ * containing block for fixed descendants — cannot trap it.
  */
 
 const Root = styled('div', {
@@ -90,138 +91,21 @@ const EscHint = styled('kbd')(({ theme }) => ({
   padding: '0.1rem 0.4rem',
 }));
 
-const Results = styled('div')({
-  overflowY: 'auto',
-});
-
-const Empty = styled('div')(({ theme }) => ({
-  padding: `${theme.space(5)} ${theme.space(4)}`,
-  color: theme.color.muted,
-  textAlign: 'center',
-}));
-
-const rowStyles = (theme: AppTheme, selected: boolean) => ({
-  display: 'flex',
-  alignItems: 'center',
-  gap: theme.space(3),
-  padding: `${theme.space(2)} ${theme.space(4)}`,
-  textDecoration: 'none',
-  color: 'inherit',
-  cursor: 'pointer',
-  background: selected
-    ? `color-mix(in srgb, ${theme.color.accent} 12%, transparent)`
-    : 'transparent',
-});
-
-const RowLink = styled(Link, {
-  shouldForwardProp: (prop) => prop !== 'selected',
-})<{ selected: boolean }>(({ theme, selected }) => rowStyles(theme, selected));
-
-const RowStatic = styled('div', {
-  shouldForwardProp: (prop) => prop !== 'selected',
-})<{ selected: boolean }>(({ theme, selected }) => ({
-  ...rowStyles(theme, selected),
-  cursor: 'default',
-  opacity: 0.55,
-}));
-
-const IconBadge = styled('span')(({ theme }) => ({
-  display: 'flex',
-  flex: '0 0 auto',
-  color: theme.color.muted,
-}));
-
-const RowText = styled('div')({ flex: '1 1 auto', minWidth: 0 });
-
-const RowName = styled('div')(({ theme }) => ({ fontWeight: 600, color: theme.color.text }));
-
-const RowDesc = styled('div')(({ theme }) => ({
-  fontSize: '0.82rem',
-  color: theme.color.muted,
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  whiteSpace: 'nowrap',
-}));
-
-const RowTag = styled('span')(({ theme }) => ({
-  flex: '0 0 auto',
-  fontSize: '0.78rem',
-  color: theme.color.muted,
-}));
-
-const Soon = styled('span')(({ theme }) => ({
-  flex: '0 0 auto',
-  fontSize: '0.7rem',
-  fontWeight: 700,
-  letterSpacing: '0.03em',
-  textTransform: 'uppercase',
-  color: theme.color.muted,
-  border: `1px solid ${theme.color.border}`,
-  borderRadius: theme.radius.pill,
-  padding: '0.1rem 0.5rem',
-}));
-
-function ResultRow({
-  tool,
-  selected,
-  onHover,
-  onNavigate,
-}: {
-  tool: Tool;
-  selected: boolean;
-  onHover: () => void;
-  onNavigate: () => void;
-}) {
-  const inner = (
-    <>
-      <IconBadge>
-        <CategoryIcon category={tool.category} />
-      </IconBadge>
-      <RowText>
-        <RowName>{tool.name}</RowName>
-        <RowDesc>{tool.description}</RowDesc>
-      </RowText>
-      {tool.status === 'planned' ? <Soon>Soon</Soon> : <RowTag>{tool.category}</RowTag>}
-    </>
-  );
-
-  if (tool.status === 'live') {
-    return (
-      <RowLink
-        href={tool.href}
-        selected={selected}
-        role="option"
-        aria-selected={selected}
-        onMouseMove={onHover}
-        onClick={onNavigate}
-        data-testid={`search-result-${tool.id}`}
-      >
-        {inner}
-      </RowLink>
-    );
-  }
-  return (
-    <RowStatic
-      selected={selected}
-      role="option"
-      aria-selected={selected}
-      aria-disabled="true"
-      onMouseMove={onHover}
-      data-testid={`search-result-${tool.id}`}
-    >
-      {inner}
-    </RowStatic>
-  );
-}
+const Scroll = styled('div')({ overflowY: 'auto' });
 
 export default function SearchDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
-  const [query, setQuery] = useState('');
-  const [selected, setSelected] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const results = useMemo(() => searchTools(query), [query]);
+  const { query, setQuery, results, selected, setSelected, onKeyDown } = useToolSearch({
+    alwaysActive: true,
+    onSelect: (tool) => {
+      router.push(tool.href);
+      onClose();
+    },
+    onEscape: onClose,
+  });
 
   useEffect(() => setMounted(true), []);
 
@@ -237,35 +121,7 @@ export default function SearchDialog({ open, onClose }: { open: boolean; onClose
       window.clearTimeout(id);
       document.body.style.overflow = prev;
     };
-  }, [open]);
-
-  useEffect(() => setSelected(0), [query]);
-
-  const onKeyDown = useCallback(
-    (event: React.KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        event.preventDefault();
-        onClose();
-        return;
-      }
-      if (results.length === 0) return;
-      if (event.key === 'ArrowDown') {
-        event.preventDefault();
-        setSelected((i) => (i + 1) % results.length);
-      } else if (event.key === 'ArrowUp') {
-        event.preventDefault();
-        setSelected((i) => (i - 1 + results.length) % results.length);
-      } else if (event.key === 'Enter') {
-        const tool = results[selected];
-        if (tool && tool.status === 'live') {
-          event.preventDefault();
-          router.push(tool.href);
-          onClose();
-        }
-      }
-    },
-    [results, selected, router, onClose],
-  );
+  }, [open, setQuery, setSelected]);
 
   if (!mounted) return null;
 
@@ -309,21 +165,18 @@ export default function SearchDialog({ open, onClose }: { open: boolean; onClose
           <EscHint aria-hidden>Esc</EscHint>
         </InputRow>
 
-        {results.length === 0 ? (
-          <Empty data-testid="search-empty">No tools match “{query}”.</Empty>
-        ) : (
-          <Results id="search-results" role="listbox" aria-label="Search results">
-            {results.map((tool, index) => (
-              <ResultRow
-                key={tool.id}
-                tool={tool}
-                selected={index === selected}
-                onHover={() => setSelected(index)}
-                onNavigate={onClose}
-              />
-            ))}
-          </Results>
-        )}
+        <Scroll>
+          <ToolResults
+            results={results}
+            selected={selected}
+            onHover={setSelected}
+            onNavigate={onClose}
+            query={query}
+            testIdPrefix="search-result"
+            emptyTestId="search-empty"
+            listId="search-results"
+          />
+        </Scroll>
       </Panel>
     </Root>,
     document.body,
