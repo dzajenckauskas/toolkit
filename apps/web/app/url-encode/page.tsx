@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import UrlEncoder from '@/components/UrlEncoder';
-import { Heading, Page, Text } from '@/components/ui';
+import { ToolPage } from '@/components/ToolPage';
 
 export const metadata: Metadata = {
   title: 'URL Encode / Decode — Free Tools',
@@ -9,12 +9,8 @@ export const metadata: Metadata = {
 
 export default function UrlEncodePage() {
   return (
-    <Page>
-      <header>
-        <Heading>URL Encode / Decode</Heading>
-        <Text tone="muted">Percent-encode and decode text for URLs, locally in your browser.</Text>
-      </header>
+    <ToolPage toolId="url-encode">
       <UrlEncoder />
-    </Page>
+    </ToolPage>
   );
 }

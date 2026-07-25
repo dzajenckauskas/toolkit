@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import PasswordGenerator from '@/components/PasswordGenerator';
-import { Heading, Page, Text } from '@/components/ui';
+import { ToolPage } from '@/components/ToolPage';
 
 export const metadata: Metadata = {
   title: 'Password Generator — Free Tools',
@@ -10,14 +10,8 @@ export const metadata: Metadata = {
 
 export default function PasswordPage() {
   return (
-    <Page>
-      <header>
-        <Heading>Password Generator</Heading>
-        <Text tone="muted">
-          Strong, cryptographically random passwords, generated locally in your browser.
-        </Text>
-      </header>
+    <ToolPage toolId="password">
       <PasswordGenerator />
-    </Page>
+    </ToolPage>
   );
 }

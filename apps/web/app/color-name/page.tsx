@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import ColorNameFinder from '@/components/ColorNameFinder';
-import { Heading, Page, Text } from '@/components/ui';
+import { ToolPage } from '@/components/ToolPage';
 
 export const metadata: Metadata = {
   title: 'Color Name Finder — Free Tools',
@@ -9,12 +9,8 @@ export const metadata: Metadata = {
 
 export default function ColorNamePage() {
   return (
-    <Page>
-      <header>
-        <Heading>Color Name Finder</Heading>
-        <Text tone="muted">Find the nearest CSS named color for any hex value.</Text>
-      </header>
+    <ToolPage toolId="color-name">
       <ColorNameFinder />
-    </Page>
+    </ToolPage>
   );
 }

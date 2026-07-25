@@ -376,7 +376,7 @@ export default function Cropper() {
   const ready = source !== null && source.naturalWidth > 0 && crop !== null;
 
   return (
-    <section aria-labelledby="cropper-heading">
+    <section aria-labelledby="tool-heading">
       <HiddenFileInput
         ref={inputRef}
         type="file"

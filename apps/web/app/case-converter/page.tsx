@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import CaseConverter from '@/components/CaseConverter';
-import { Heading, Page, Text } from '@/components/ui';
+import { ToolPage } from '@/components/ToolPage';
 
 export const metadata: Metadata = {
   title: 'Case Converter — Free Tools',
@@ -9,12 +9,8 @@ export const metadata: Metadata = {
 
 export default function CaseConverterPage() {
   return (
-    <Page>
-      <header>
-        <Heading>Case Converter</Heading>
-        <Text tone="muted">Convert text between camelCase, snake_case, Title Case and more.</Text>
-      </header>
+    <ToolPage toolId="case-converter">
       <CaseConverter />
-    </Page>
+    </ToolPage>
   );
 }

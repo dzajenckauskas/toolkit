@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import KanbanBoard from '@/components/KanbanBoard';
-import { Heading, Page, Text } from '@/components/ui';
+import { ToolPage } from '@/components/ToolPage';
 
 export const metadata: Metadata = {
   title: 'Kanban Board — Free Tools',
@@ -9,12 +9,8 @@ export const metadata: Metadata = {
 
 export default function KanbanPage() {
   return (
-    <Page>
-      <header>
-        <Heading>Kanban Board</Heading>
-        <Text tone="muted">A simple board saved in your browser — add cards and move them.</Text>
-      </header>
+    <ToolPage toolId="kanban">
       <KanbanBoard />
-    </Page>
+    </ToolPage>
   );
 }

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import ThemeMaker from '@/components/ThemeMaker';
-import { Heading, Page, Text } from '@/components/ui';
+import { ToolPage } from '@/components/ToolPage';
 
 export const metadata: Metadata = {
   title: 'Color Theme Maker — Free Tools',
@@ -9,14 +9,8 @@ export const metadata: Metadata = {
 
 export default function ThemeMakerPage() {
   return (
-    <Page>
-      <header>
-        <Heading>Color Theme Maker</Heading>
-        <Text tone="muted">
-          Build a matching light &amp; dark theme from one accent, then export CSS variables.
-        </Text>
-      </header>
+    <ToolPage toolId="theme-maker">
       <ThemeMaker />
-    </Page>
+    </ToolPage>
   );
 }

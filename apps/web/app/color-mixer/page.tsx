@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import ColorMixer from '@/components/ColorMixer';
-import { Heading, Page, Text } from '@/components/ui';
+import { ToolPage } from '@/components/ToolPage';
 
 export const metadata: Metadata = {
   title: 'Color Mixer — Free Tools',
@@ -9,12 +9,8 @@ export const metadata: Metadata = {
 
 export default function ColorMixerPage() {
   return (
-    <Page>
-      <header>
-        <Heading>Color Mixer</Heading>
-        <Text tone="muted">Blend two colors and get the steps in between — click to copy.</Text>
-      </header>
+    <ToolPage toolId="color-mixer">
       <ColorMixer />
-    </Page>
+    </ToolPage>
   );
 }

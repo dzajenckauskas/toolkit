@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import ImagesToPdf from '@/components/ImagesToPdf';
-import { Heading, Page, Text } from '@/components/ui';
+import { ToolPage } from '@/components/ToolPage';
 
 export const metadata: Metadata = {
   title: 'Images to PDF — Free Tools',
@@ -9,12 +9,8 @@ export const metadata: Metadata = {
 
 export default function ImagesToPdfPage() {
   return (
-    <Page>
-      <header>
-        <Heading>Images to PDF</Heading>
-        <Text tone="muted">Combine images into a single PDF — one image per page, in order.</Text>
-      </header>
+    <ToolPage toolId="images-to-pdf">
       <ImagesToPdf />
-    </Page>
+    </ToolPage>
   );
 }

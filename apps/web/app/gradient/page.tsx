@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import GradientGenerator from '@/components/GradientGenerator';
-import { Heading, Page, Text } from '@/components/ui';
+import { ToolPage } from '@/components/ToolPage';
 
 export const metadata: Metadata = {
   title: 'CSS Gradient Generator — Free Tools',
@@ -9,12 +9,8 @@ export const metadata: Metadata = {
 
 export default function GradientPage() {
   return (
-    <Page>
-      <header>
-        <Heading>CSS Gradient Generator</Heading>
-        <Text tone="muted">Build linear and radial gradients and copy the CSS.</Text>
-      </header>
+    <ToolPage toolId="gradient">
       <GradientGenerator />
-    </Page>
+    </ToolPage>
   );
 }

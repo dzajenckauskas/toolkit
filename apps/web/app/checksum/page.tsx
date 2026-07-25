@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import ChecksumVerifier from '@/components/ChecksumVerifier';
-import { Heading, Page, Text } from '@/components/ui';
+import { ToolPage } from '@/components/ToolPage';
 
 export const metadata: Metadata = {
   title: 'File Checksum Verifier — Free Tools',
@@ -9,12 +9,8 @@ export const metadata: Metadata = {
 
 export default function ChecksumPage() {
   return (
-    <Page>
-      <header>
-        <Heading>File Checksum Verifier</Heading>
-        <Text tone="muted">Hash a file and compare it against an expected checksum, locally.</Text>
-      </header>
+    <ToolPage toolId="checksum">
       <ChecksumVerifier />
-    </Page>
+    </ToolPage>
   );
 }

@@ -410,7 +410,7 @@ export default function Optimizer() {
   const hasItems = items.length > 0;
 
   return (
-    <section aria-labelledby="optimizer-heading">
+    <section aria-labelledby="tool-heading">
       <HiddenFileInput
         ref={inputRef}
         type="file"

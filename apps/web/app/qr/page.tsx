@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import QrGenerator from '@/components/QrGenerator';
-import { Heading, Page, Text } from '@/components/ui';
+import { ToolPage } from '@/components/ToolPage';
 
 export const metadata: Metadata = {
   title: 'QR Code Generator — Free Tools',
@@ -9,12 +9,8 @@ export const metadata: Metadata = {
 
 export default function QrPage() {
   return (
-    <Page>
-      <header>
-        <Heading>QR Code Generator</Heading>
-        <Text tone="muted">Generate a QR code for any link or text, locally in your browser.</Text>
-      </header>
+    <ToolPage toolId="qr">
       <QrGenerator />
-    </Page>
+    </ToolPage>
   );
 }

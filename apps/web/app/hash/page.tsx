@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import HashGenerator from '@/components/HashGenerator';
-import { Heading, Page, Text } from '@/components/ui';
+import { ToolPage } from '@/components/ToolPage';
 
 export const metadata: Metadata = {
   title: 'Hash Generator (SHA) — Free Tools',
@@ -9,12 +9,8 @@ export const metadata: Metadata = {
 
 export default function HashPage() {
   return (
-    <Page>
-      <header>
-        <Heading>Hash Generator</Heading>
-        <Text tone="muted">SHA-1, SHA-256, SHA-384 and SHA-512, computed in your browser.</Text>
-      </header>
+    <ToolPage toolId="hash">
       <HashGenerator />
-    </Page>
+    </ToolPage>
   );
 }

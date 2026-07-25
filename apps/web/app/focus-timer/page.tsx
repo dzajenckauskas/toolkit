@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import FocusTimer from '@/components/FocusTimer';
-import { Heading, Page, Text } from '@/components/ui';
+import { ToolPage } from '@/components/ToolPage';
 
 export const metadata: Metadata = {
   title: 'Focus Timer (Pomodoro) — Free Tools',
@@ -9,12 +9,8 @@ export const metadata: Metadata = {
 
 export default function FocusTimerPage() {
   return (
-    <Page>
-      <header>
-        <Heading>Focus Timer</Heading>
-        <Text tone="muted">A simple Pomodoro-style timer, running in your browser.</Text>
-      </header>
+    <ToolPage toolId="focus-timer">
       <FocusTimer />
-    </Page>
+    </ToolPage>
   );
 }

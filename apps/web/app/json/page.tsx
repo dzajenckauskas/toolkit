@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import JsonFormatter from '@/components/JsonFormatter';
-import { Heading, Page, Text } from '@/components/ui';
+import { ToolPage } from '@/components/ToolPage';
 
 export const metadata: Metadata = {
   title: 'JSON Formatter & Validator — Free Tools',
@@ -9,12 +9,8 @@ export const metadata: Metadata = {
 
 export default function JsonPage() {
   return (
-    <Page>
-      <header>
-        <Heading>JSON Formatter &amp; Validator</Heading>
-        <Text tone="muted">Format, minify and validate JSON, locally in your browser.</Text>
-      </header>
+    <ToolPage toolId="json">
       <JsonFormatter />
-    </Page>
+    </ToolPage>
   );
 }

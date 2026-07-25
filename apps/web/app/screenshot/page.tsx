@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import ScreenshotBeautifier from '@/components/ScreenshotBeautifier';
-import { Heading, Page, Text } from '@/components/ui';
+import { ToolPage } from '@/components/ToolPage';
 
 export const metadata: Metadata = {
   title: 'Screenshot Beautifier — Free Tools',
@@ -9,12 +9,8 @@ export const metadata: Metadata = {
 
 export default function ScreenshotPage() {
   return (
-    <Page>
-      <header>
-        <Heading>Screenshot Beautifier</Heading>
-        <Text tone="muted">Frame a screenshot with a background, padding, corners and shadow.</Text>
-      </header>
+    <ToolPage toolId="screenshot">
       <ScreenshotBeautifier />
-    </Page>
+    </ToolPage>
   );
 }

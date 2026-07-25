@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import UnitConverter from '@/components/UnitConverter';
-import { Heading, Page, Text } from '@/components/ui';
+import { ToolPage } from '@/components/ToolPage';
 
 export const metadata: Metadata = {
   title: 'Unit Converter — Free Tools',
@@ -9,12 +9,8 @@ export const metadata: Metadata = {
 
 export default function UnitConverterPage() {
   return (
-    <Page>
-      <header>
-        <Heading>Unit Converter</Heading>
-        <Text tone="muted">Convert length, weight, data, time and temperature, locally.</Text>
-      </header>
+    <ToolPage toolId="unit-converter">
       <UnitConverter />
-    </Page>
+    </ToolPage>
   );
 }

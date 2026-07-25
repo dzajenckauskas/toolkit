@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Optimizer from '@/components/Optimizer';
-import { Heading, Page, Text } from '@/components/ui';
+import { ToolPage } from '@/components/ToolPage';
 
 export const metadata: Metadata = {
   title: 'Image Optimizer — Ecommerce Toolkit',
@@ -10,14 +10,8 @@ export const metadata: Metadata = {
 
 export default function OptimizePage() {
   return (
-    <Page>
-      <header>
-        <Heading id="optimizer-heading">Image Optimizer</Heading>
-        <Text tone="muted">
-          Add a JPEG and download a smaller version. Nothing is uploaded to a server.
-        </Text>
-      </header>
+    <ToolPage toolId="optimize">
       <Optimizer />
-    </Page>
+    </ToolPage>
   );
 }

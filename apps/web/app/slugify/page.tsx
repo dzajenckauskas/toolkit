@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Slugifier from '@/components/Slugifier';
-import { Heading, Page, Text } from '@/components/ui';
+import { ToolPage } from '@/components/ToolPage';
 
 export const metadata: Metadata = {
   title: 'Slugify — URL Slug Generator — Free Tools',
@@ -9,12 +9,8 @@ export const metadata: Metadata = {
 
 export default function SlugifyPage() {
   return (
-    <Page>
-      <header>
-        <Heading>Slugify</Heading>
-        <Text tone="muted">Turn any title into a clean, URL-friendly slug.</Text>
-      </header>
+    <ToolPage toolId="slugify">
       <Slugifier />
-    </Page>
+    </ToolPage>
   );
 }

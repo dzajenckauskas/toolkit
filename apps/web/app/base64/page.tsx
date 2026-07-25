@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Base64Tool from '@/components/Base64Tool';
-import { Heading, Page, Text } from '@/components/ui';
+import { ToolPage } from '@/components/ToolPage';
 
 export const metadata: Metadata = {
   title: 'Base64 Encode / Decode — Free Tools',
@@ -9,12 +9,8 @@ export const metadata: Metadata = {
 
 export default function Base64Page() {
   return (
-    <Page>
-      <header>
-        <Heading>Base64 Encode / Decode</Heading>
-        <Text tone="muted">Convert text to and from Base64, locally in your browser.</Text>
-      </header>
+    <ToolPage toolId="base64">
       <Base64Tool />
-    </Page>
+    </ToolPage>
   );
 }

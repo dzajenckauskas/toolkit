@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import FaviconGenerator from '@/components/FaviconGenerator';
-import { Heading, Page, Text } from '@/components/ui';
+import { ToolPage } from '@/components/ToolPage';
 
 export const metadata: Metadata = {
   title: 'Favicon Generator — Free Tools',
@@ -10,12 +10,8 @@ export const metadata: Metadata = {
 
 export default function FaviconPage() {
   return (
-    <Page>
-      <header>
-        <Heading>Favicon Generator</Heading>
-        <Text tone="muted">Create favicon PNGs at multiple sizes from an image, locally.</Text>
-      </header>
+    <ToolPage toolId="favicon">
       <FaviconGenerator />
-    </Page>
+    </ToolPage>
   );
 }

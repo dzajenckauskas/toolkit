@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import ColorConverter from '@/components/ColorConverter';
-import { Heading, Page, Text } from '@/components/ui';
+import { ToolPage } from '@/components/ToolPage';
 
 export const metadata: Metadata = {
   title: 'Color Converter (HEX / RGB / HSL) — Free Tools',
@@ -9,12 +9,8 @@ export const metadata: Metadata = {
 
 export default function ColorsPage() {
   return (
-    <Page>
-      <header>
-        <Heading>Color Converter</Heading>
-        <Text tone="muted">Pick a color and convert between HEX, RGB and HSL.</Text>
-      </header>
+    <ToolPage toolId="colors">
       <ColorConverter />
-    </Page>
+    </ToolPage>
   );
 }

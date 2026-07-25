@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import ImagePalette from '@/components/ImagePalette';
-import { Heading, Page, Text } from '@/components/ui';
+import { ToolPage } from '@/components/ToolPage';
 
 export const metadata: Metadata = {
   title: 'Palette from Image — Free Tools',
@@ -10,14 +10,8 @@ export const metadata: Metadata = {
 
 export default function ImagePalettePage() {
   return (
-    <Page>
-      <header>
-        <Heading>Palette from Image</Heading>
-        <Text tone="muted">
-          Extract the dominant colors from an image — click a swatch to copy.
-        </Text>
-      </header>
+    <ToolPage toolId="image-palette">
       <ImagePalette />
-    </Page>
+    </ToolPage>
   );
 }

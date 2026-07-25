@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import ImageConverter from '@/components/ImageConverter';
-import { Heading, Page, Text } from '@/components/ui';
+import { ToolPage } from '@/components/ToolPage';
 
 export const metadata: Metadata = {
   title: 'Convert Image (JPG / PNG / WebP) — Free Tools',
@@ -9,12 +9,8 @@ export const metadata: Metadata = {
 
 export default function ConvertPage() {
   return (
-    <Page>
-      <header>
-        <Heading>Convert Image</Heading>
-        <Text tone="muted">Convert between JPG, PNG and WebP, locally in your browser.</Text>
-      </header>
+    <ToolPage toolId="convert">
       <ImageConverter />
-    </Page>
+    </ToolPage>
   );
 }

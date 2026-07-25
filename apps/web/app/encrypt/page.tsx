@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import TextEncryptor from '@/components/TextEncryptor';
-import { Heading, Page, Text } from '@/components/ui';
+import { ToolPage } from '@/components/ToolPage';
 
 export const metadata: Metadata = {
   title: 'Text Encrypt / Decrypt (AES) — Free Tools',
@@ -10,12 +10,8 @@ export const metadata: Metadata = {
 
 export default function EncryptPage() {
   return (
-    <Page>
-      <header>
-        <Heading>Text Encrypt / Decrypt</Heading>
-        <Text tone="muted">Password-based AES-256 encryption, entirely in your browser.</Text>
-      </header>
+    <ToolPage toolId="encrypt">
       <TextEncryptor />
-    </Page>
+    </ToolPage>
   );
 }

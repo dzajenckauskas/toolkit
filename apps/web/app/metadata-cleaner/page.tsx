@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import MetadataCleaner from '@/components/MetadataCleaner';
-import { Heading, Page, Text } from '@/components/ui';
+import { ToolPage } from '@/components/ToolPage';
 
 export const metadata: Metadata = {
   title: 'Image Metadata Cleaner — Free Tools',
@@ -9,12 +9,8 @@ export const metadata: Metadata = {
 
 export default function MetadataCleanerPage() {
   return (
-    <Page>
-      <header>
-        <Heading>Metadata Cleaner</Heading>
-        <Text tone="muted">Remove EXIF, GPS and other metadata from an image, locally.</Text>
-      </header>
+    <ToolPage toolId="metadata-cleaner">
       <MetadataCleaner />
-    </Page>
+    </ToolPage>
   );
 }

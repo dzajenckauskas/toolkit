@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import TotpGenerator from '@/components/TotpGenerator';
-import { Heading, Page, Text } from '@/components/ui';
+import { ToolPage } from '@/components/ToolPage';
 
 export const metadata: Metadata = {
   title: 'TOTP / 2FA Code Generator — Free Tools',
@@ -10,14 +10,8 @@ export const metadata: Metadata = {
 
 export default function TotpPage() {
   return (
-    <Page>
-      <header>
-        <Heading>TOTP / 2FA Generator</Heading>
-        <Text tone="muted">
-          Generate time-based one-time codes from a secret, locally in your browser.
-        </Text>
-      </header>
+    <ToolPage toolId="totp">
       <TotpGenerator />
-    </Page>
+    </ToolPage>
   );
 }

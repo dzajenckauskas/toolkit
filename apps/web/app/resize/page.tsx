@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import ImageResizer from '@/components/ImageResizer';
-import { Heading, Page, Text } from '@/components/ui';
+import { ToolPage } from '@/components/ToolPage';
 
 export const metadata: Metadata = {
   title: 'Resize Image — Free Tools',
@@ -9,12 +9,8 @@ export const metadata: Metadata = {
 
 export default function ResizePage() {
   return (
-    <Page>
-      <header>
-        <Heading>Resize Image</Heading>
-        <Text tone="muted">Change an image&apos;s dimensions, locally in your browser.</Text>
-      </header>
+    <ToolPage toolId="resize">
       <ImageResizer />
-    </Page>
+    </ToolPage>
   );
 }

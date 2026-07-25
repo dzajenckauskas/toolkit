@@ -46,17 +46,17 @@ const Wrap = styled('span')(({ theme }) => ({
   color: theme.color.text,
 }));
 
-const Word = styled('span')({
-  fontSize: '1.2rem',
-  fontWeight: 900,
-  letterSpacing: '-0.01em',
-});
+// const Word = styled('span')({
+//   fontSize: '1.2rem',
+//   fontWeight: 900,
+//   letterSpacing: '-0.01em',
+// });
 
 export function Logo({ size = 24 }: { size?: number }) {
   return (
     <Wrap>
       <GlassesMark size={size} />
-      <Word>toolkit</Word>
+      {/* <Word>toolkit</Word> */}
     </Wrap>
   );
 }

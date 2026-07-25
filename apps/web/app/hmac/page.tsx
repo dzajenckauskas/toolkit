@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import HmacGenerator from '@/components/HmacGenerator';
-import { Heading, Page, Text } from '@/components/ui';
+import { ToolPage } from '@/components/ToolPage';
 
 export const metadata: Metadata = {
   title: 'HMAC Generator — Free Tools',
@@ -9,12 +9,8 @@ export const metadata: Metadata = {
 
 export default function HmacPage() {
   return (
-    <Page>
-      <header>
-        <Heading>HMAC Generator</Heading>
-        <Text tone="muted">Compute a keyed HMAC signature, locally in your browser.</Text>
-      </header>
+    <ToolPage toolId="hmac">
       <HmacGenerator />
-    </Page>
+    </ToolPage>
   );
 }

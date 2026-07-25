@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import UuidGenerator from '@/components/UuidGenerator';
-import { Heading, Page, Text } from '@/components/ui';
+import { ToolPage } from '@/components/ToolPage';
 
 export const metadata: Metadata = {
   title: 'UUID Generator — Free Tools',
@@ -9,12 +9,8 @@ export const metadata: Metadata = {
 
 export default function UuidPage() {
   return (
-    <Page>
-      <header>
-        <Heading>UUID Generator</Heading>
-        <Text tone="muted">Generate random version-4 UUIDs, locally in your browser.</Text>
-      </header>
+    <ToolPage toolId="uuid">
       <UuidGenerator />
-    </Page>
+    </ToolPage>
   );
 }

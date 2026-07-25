@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import TimestampConverter from '@/components/TimestampConverter';
-import { Heading, Page, Text } from '@/components/ui';
+import { ToolPage } from '@/components/ToolPage';
 
 export const metadata: Metadata = {
   title: 'Unix Timestamp Converter — Free Tools',
@@ -9,12 +9,8 @@ export const metadata: Metadata = {
 
 export default function TimestampPage() {
   return (
-    <Page>
-      <header>
-        <Heading>Unix Timestamp Converter</Heading>
-        <Text tone="muted">Convert between Unix timestamps and human dates, locally.</Text>
-      </header>
+    <ToolPage toolId="timestamp">
       <TimestampConverter />
-    </Page>
+    </ToolPage>
   );
 }

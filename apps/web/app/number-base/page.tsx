@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import NumberBaseConverter from '@/components/NumberBaseConverter';
-import { Heading, Page, Text } from '@/components/ui';
+import { ToolPage } from '@/components/ToolPage';
 
 export const metadata: Metadata = {
   title: 'Number Base Converter — Free Tools',
@@ -9,12 +9,8 @@ export const metadata: Metadata = {
 
 export default function NumberBasePage() {
   return (
-    <Page>
-      <header>
-        <Heading>Number Base Converter</Heading>
-        <Text tone="muted">Convert between binary, octal, decimal and hex, locally.</Text>
-      </header>
+    <ToolPage toolId="number-base">
       <NumberBaseConverter />
-    </Page>
+    </ToolPage>
   );
 }

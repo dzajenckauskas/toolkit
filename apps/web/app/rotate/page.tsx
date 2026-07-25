@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import ImageRotator from '@/components/ImageRotator';
-import { Heading, Page, Text } from '@/components/ui';
+import { ToolPage } from '@/components/ToolPage';
 
 export const metadata: Metadata = {
   title: 'Rotate & Flip Image — Free Tools',
@@ -9,12 +9,8 @@ export const metadata: Metadata = {
 
 export default function RotatePage() {
   return (
-    <Page>
-      <header>
-        <Heading>Rotate &amp; Flip</Heading>
-        <Text tone="muted">Rotate or flip an image, locally in your browser.</Text>
-      </header>
+    <ToolPage toolId="rotate">
       <ImageRotator />
-    </Page>
+    </ToolPage>
   );
 }

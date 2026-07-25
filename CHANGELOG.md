@@ -6,6 +6,18 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 
 ### Added
 
+- **Landing-page layout for every tool.** Each of the 48 tool pages now renders
+  through a shared `ToolPage` template: a hero (category eyebrow, heading,
+  tagline and the interactive tool in a framed workspace), a "How it works"
+  three-step walkthrough, highlight cards, a per-tool FAQ, and a dark
+  "Explore more tools" band linking related tools in the same category. The
+  layout follows the reference design while keeping the existing warm/teal
+  palette. Content comes from `src/tools/content.ts`: bespoke copy for the
+  flagship image tools (Compress, Crop, Resize, Convert, Rotate, QR, Favicon,
+  Images→PDF) and sensible defaults derived from the registry for the rest.
+- **Shared FAQ accordion** (`FaqAccordion`) used by both the standalone FAQ page
+  and each tool page's "Frequent questions" section.
+
 - **Global search dialog.** A search icon in the header (and ⌘K / Ctrl-K from
   anywhere) opens a command palette that searches every tool by name,
   description, category and action keywords, with arrow-key navigation and

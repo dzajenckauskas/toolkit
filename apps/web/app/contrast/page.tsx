@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import ContrastChecker from '@/components/ContrastChecker';
-import { Heading, Page, Text } from '@/components/ui';
+import { ToolPage } from '@/components/ToolPage';
 
 export const metadata: Metadata = {
   title: 'Color Contrast Checker (WCAG) — Free Tools',
@@ -9,12 +9,8 @@ export const metadata: Metadata = {
 
 export default function ContrastPage() {
   return (
-    <Page>
-      <header>
-        <Heading>Color Contrast Checker</Heading>
-        <Text tone="muted">Check text and background contrast against WCAG AA/AAA.</Text>
-      </header>
+    <ToolPage toolId="contrast">
       <ContrastChecker />
-    </Page>
+    </ToolPage>
   );
 }

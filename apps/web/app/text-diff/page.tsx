@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import TextDiff from '@/components/TextDiff';
-import { Heading, Page, Text } from '@/components/ui';
+import { ToolPage } from '@/components/ToolPage';
 
 export const metadata: Metadata = {
   title: 'Text Diff — Free Tools',
@@ -9,12 +9,8 @@ export const metadata: Metadata = {
 
 export default function TextDiffPage() {
   return (
-    <Page>
-      <header>
-        <Heading>Text Diff</Heading>
-        <Text tone="muted">Compare two blocks of text line by line, locally in your browser.</Text>
-      </header>
+    <ToolPage toolId="text-diff">
       <TextDiff />
-    </Page>
+    </ToolPage>
   );
 }

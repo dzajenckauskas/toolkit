@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import LineTools from '@/components/LineTools';
-import { Heading, Page, Text } from '@/components/ui';
+import { ToolPage } from '@/components/ToolPage';
 
 export const metadata: Metadata = {
   title: 'Line Tools — sort, dedupe, reverse — Free Tools',
@@ -9,12 +9,8 @@ export const metadata: Metadata = {
 
 export default function LineToolsPage() {
   return (
-    <Page>
-      <header>
-        <Heading>Line Tools</Heading>
-        <Text tone="muted">Sort, de-duplicate, reverse, shuffle and clean lines of text.</Text>
-      </header>
+    <ToolPage toolId="line-tools">
       <LineTools />
-    </Page>
+    </ToolPage>
   );
 }
