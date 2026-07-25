@@ -145,6 +145,17 @@ export function GlobalStyles() {
           color: var(--text);
         }
 
+        /* Consistent affordances for native buttons across every tool. Styled
+           components set their own cursor/disabled treatment and still win; this
+           only upgrades anything that doesn't. */
+        button:not(:disabled) {
+          cursor: pointer;
+        }
+        button:disabled {
+          cursor: not-allowed;
+          opacity: 0.55;
+        }
+
         select {
           appearance: none;
           -webkit-appearance: none;
@@ -163,6 +174,45 @@ export function GlobalStyles() {
             box-shadow 0.2s ease;
         }
         select:hover {
+          border-color: var(--accent);
+        }
+
+        /* Base styling for text-like inputs and textareas. This is an element
+           selector (low specificity), so any component that styles its own
+           fields still wins — it only brings the un-styled or lightly-styled
+           fields up to a consistent, polished baseline across every tool. */
+        input[type='text'],
+        input[type='search'],
+        input[type='email'],
+        input[type='url'],
+        input[type='tel'],
+        input[type='password'],
+        input[type='number'],
+        input[type='datetime-local'],
+        input:not([type]),
+        textarea {
+          padding: 0.55rem 0.8rem;
+          color: var(--text);
+          background-color: var(--surface);
+          border: 1px solid var(--border-strong);
+          border-radius: 0.85rem;
+          line-height: 1.4;
+          transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease;
+        }
+        textarea {
+          resize: vertical;
+        }
+        input[type='text']:hover,
+        input[type='search']:hover,
+        input[type='email']:hover,
+        input[type='url']:hover,
+        input[type='tel']:hover,
+        input[type='password']:hover,
+        input[type='number']:hover,
+        input:not([type]):hover,
+        textarea:hover {
           border-color: var(--accent);
         }
 

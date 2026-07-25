@@ -79,11 +79,12 @@ const Tagline = styled('p')(({ theme }) => ({
 const Workspace = styled('div')(({ theme }) => ({
   marginTop: theme.space(8),
   textAlign: 'left',
-  padding: theme.space(5),
+  padding: theme.space(4),
   background: theme.color.surface,
   border: `1px solid ${theme.color.border}`,
   borderRadius: theme.radius.lg,
   boxShadow: theme.shadow,
+  '@media (min-width: 640px)': { padding: theme.space(6) },
 }));
 
 // Generic section scaffolding.
