@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { Button, Stack, Text } from '@/components/ui';
+import { ImageDropzone } from '@/components/ImageDropzone';
 import { validateImageFile } from '@/lib/image';
 import { buildPdf, type PdfImage } from '@/lib/images-to-pdf';
 
@@ -23,16 +24,6 @@ const HiddenFileInput = styled('input')({
   whiteSpace: 'nowrap',
   border: 0,
 });
-
-const Dropzone = styled('div')(({ theme }) => ({
-  border: `2px dashed ${theme.color.borderStrong}`,
-  borderRadius: theme.radius.md,
-  background: theme.color.surface,
-  padding: '2rem 1.5rem',
-  textAlign: 'center',
-  cursor: 'pointer',
-  '&:hover': { borderColor: theme.color.accent },
-}));
 
 const Thumbs = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -169,28 +160,18 @@ export default function ImagesToPdf() {
         data-testid="pdf-file-input"
       />
 
-      <Dropzone
-        role="button"
-        tabIndex={0}
+      <ImageDropzone
         onClick={() => inputRef.current?.click()}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            inputRef.current?.click();
-          }
-        }}
         onDragOver={(e) => e.preventDefault()}
         onDrop={(e) => {
           e.preventDefault();
           if (e.dataTransfer.files) void addFiles(e.dataTransfer.files);
         }}
-        data-testid="pdf-dropzone"
-      >
-        <Text weight={600}>Add images (JPG, PNG, WebP…)</Text>
-        <Text tone="muted" size="sm">
-          One image per page, in order. Built into a PDF in your browser.
-        </Text>
-      </Dropzone>
+        title="Add images (JPG, PNG, WebP…)"
+        cta="Select images"
+        hint="One image per page, in order · built into a PDF in your browser"
+        testId="pdf-dropzone"
+      />
 
       {error ? (
         <Text tone="danger" size="sm" data-testid="pdf-error">

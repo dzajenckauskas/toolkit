@@ -26,6 +26,7 @@ import { buildZip, type ZipEntry } from '@/lib/zip';
 import { clipboardImageFiles } from '@/lib/clipboard';
 import styled from '@emotion/styled';
 import { Button, DownloadLink, Stack, Text } from '@/components/ui';
+import { ImageDropzone } from '@/components/ImageDropzone';
 
 const HiddenFileInput = styled('input')({
   position: 'absolute',
@@ -38,26 +39,6 @@ const HiddenFileInput = styled('input')({
   whiteSpace: 'nowrap',
   border: 0,
 });
-
-const Dropzone = styled('div', {
-  shouldForwardProp: (prop) => prop !== 'active',
-})<{ active?: boolean }>(({ theme, active }) => ({
-  border: `2px dashed ${active ? theme.color.accent : theme.color.borderStrong}`,
-  borderRadius: theme.radius.md,
-  background: active
-    ? `color-mix(in srgb, ${theme.color.accent} 8%, ${theme.color.surface})`
-    : theme.color.surface,
-  padding: '2.5rem 1.5rem',
-  textAlign: 'center',
-  cursor: 'pointer',
-  transition: 'border-color 0.15s ease, background 0.15s ease',
-  '&:hover': { borderColor: theme.color.accent },
-  '&:focus-visible': {
-    borderColor: theme.color.accent,
-    outline: 'none',
-    boxShadow: `0 0 0 3px color-mix(in srgb, ${theme.color.accent} 35%, transparent)`,
-  },
-}));
 
 const QualityFieldset = styled('fieldset')(({ theme }) => ({
   margin: 0,
@@ -421,31 +402,21 @@ export default function Optimizer() {
       />
 
       <Stack gap={4}>
-        <Dropzone
+        <ImageDropzone
           active={isDragging}
-          role="button"
-          tabIndex={0}
-          aria-label="Add JPEG images by choosing files or dropping them here"
+          ariaLabel="Add JPEG images by choosing files, dropping them, or pasting"
           onClick={openPicker}
-          onKeyDown={(event) => {
-            if (event.key === 'Enter' || event.key === ' ') {
-              event.preventDefault();
-              openPicker();
-            }
-          }}
           onDragOver={(event) => {
             event.preventDefault();
             setIsDragging(true);
           }}
           onDragLeave={() => setIsDragging(false)}
           onDrop={handleDrop}
-          data-testid="dropzone"
-        >
-          <Text weight={600}>Drop product photos here, paste, or choose JPEGs.</Text>
-          <Text tone="muted" size="sm">
-            Add one or many, or paste with Cmd/Ctrl+V. They are optimized in your browser.
-          </Text>
-        </Dropzone>
+          title="Drop product photos here"
+          cta="Select JPEGs"
+          hint="Add one or many, or paste with Cmd/Ctrl+V · optimized in your browser"
+          testId="dropzone"
+        />
 
         <QualityFieldset data-testid="quality" disabled={!summary.settled}>
           <legend>Compression level</legend>

@@ -24,6 +24,7 @@ import {
   type Rect,
 } from '@/lib/crop';
 import { Button, Stack, Text } from '@/components/ui';
+import { ImageDropzone } from '@/components/ImageDropzone';
 
 const MAX_DISPLAY = 560;
 const KEY_STEP = 10;
@@ -61,26 +62,6 @@ const HiddenFileInput = styled('input')({
   whiteSpace: 'nowrap',
   border: 0,
 });
-
-const Dropzone = styled('div', {
-  shouldForwardProp: (prop) => prop !== 'active',
-})<{ active?: boolean }>(({ theme, active }) => ({
-  border: `2px dashed ${active ? theme.color.accent : theme.color.borderStrong}`,
-  borderRadius: theme.radius.md,
-  background: active
-    ? `color-mix(in srgb, ${theme.color.accent} 8%, ${theme.color.surface})`
-    : theme.color.surface,
-  padding: '2.5rem 1.5rem',
-  textAlign: 'center',
-  cursor: 'pointer',
-  transition: 'border-color 0.15s ease, background 0.15s ease',
-  '&:hover': { borderColor: theme.color.accent },
-  '&:focus-visible': {
-    borderColor: theme.color.accent,
-    outline: 'none',
-    boxShadow: `0 0 0 3px color-mix(in srgb, ${theme.color.accent} 35%, transparent)`,
-  },
-}));
 
 const Viewport = styled('div')(({ theme }) => ({
   maxWidth: '100%',
@@ -387,18 +368,10 @@ export default function Cropper() {
 
       <Stack gap={4}>
         {!source ? (
-          <Dropzone
+          <ImageDropzone
             active={isDragging}
-            role="button"
-            tabIndex={0}
-            aria-label="Add a JPEG image by choosing a file, dropping it, or pasting"
+            ariaLabel="Add a JPEG image by choosing a file, dropping it, or pasting"
             onClick={openPicker}
-            onKeyDown={(event) => {
-              if (event.key === 'Enter' || event.key === ' ') {
-                event.preventDefault();
-                openPicker();
-              }
-            }}
             onDragOver={(event) => {
               event.preventDefault();
               setIsDragging(true);
@@ -410,13 +383,11 @@ export default function Cropper() {
               const file = event.dataTransfer.files?.[0];
               if (file) loadFile(file);
             }}
-            data-testid="crop-dropzone"
-          >
-            <Text weight={600}>Drop a product photo here, paste, or choose a JPEG.</Text>
-            <Text tone="muted" size="sm">
-              Crop it in your browser, then download.
-            </Text>
-          </Dropzone>
+            title="Drop a product photo here"
+            cta="Select a JPEG"
+            hint="Crop it in your browser, then download · paste with Cmd/Ctrl+V"
+            testId="crop-dropzone"
+          />
         ) : null}
 
         {error ? (

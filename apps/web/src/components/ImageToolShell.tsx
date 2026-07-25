@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import styled from '@emotion/styled';
 import { Button, Stack, Text } from '@/components/ui';
+import { ImageDropzone } from '@/components/ImageDropzone';
 import { clipboardImageFiles } from '@/lib/clipboard';
 import { ACCEPTED_IMAGE_EXTENSIONS, ACCEPTED_IMAGE_MIME, validateImageFile } from '@/lib/image';
 
@@ -17,26 +18,6 @@ const HiddenFileInput = styled('input')({
   whiteSpace: 'nowrap',
   border: 0,
 });
-
-const Dropzone = styled('div', {
-  shouldForwardProp: (prop) => prop !== 'active',
-})<{ active?: boolean }>(({ theme, active }) => ({
-  border: `2px dashed ${active ? theme.color.accent : theme.color.borderStrong}`,
-  borderRadius: theme.radius.md,
-  background: active
-    ? `color-mix(in srgb, ${theme.color.accent} 8%, ${theme.color.surface})`
-    : theme.color.surface,
-  padding: '2.5rem 1.5rem',
-  textAlign: 'center',
-  cursor: 'pointer',
-  transition: 'border-color 0.15s ease, background 0.15s ease',
-  '&:hover': { borderColor: theme.color.accent },
-  '&:focus-visible': {
-    borderColor: theme.color.accent,
-    outline: 'none',
-    boxShadow: `0 0 0 3px color-mix(in srgb, ${theme.color.accent} 35%, transparent)`,
-  },
-}));
 
 const Preview = styled('img')(({ theme }) => ({
   display: 'block',
@@ -169,18 +150,9 @@ export default function ImageToolShell({
 
       <Stack gap={4}>
         {!image ? (
-          <Dropzone
+          <ImageDropzone
             active={dragging}
-            role="button"
-            tabIndex={0}
-            aria-label="Add an image by choosing a file, dropping it, or pasting"
             onClick={openPicker}
-            onKeyDown={(event) => {
-              if (event.key === 'Enter' || event.key === ' ') {
-                event.preventDefault();
-                openPicker();
-              }
-            }}
             onDragOver={(event) => {
               event.preventDefault();
               setDragging(true);
@@ -192,13 +164,9 @@ export default function ImageToolShell({
               const file = event.dataTransfer.files?.[0];
               if (file) loadFile(file);
             }}
-            data-testid={`${testIdPrefix}-dropzone`}
-          >
-            <Text weight={600}>Drop an image here, paste, or choose a file.</Text>
-            <Text tone="muted" size="sm">
-              JPG, PNG, WebP, GIF or BMP. Everything runs in your browser.
-            </Text>
-          </Dropzone>
+            hint="JPG, PNG, WebP, GIF or BMP · paste from the clipboard · runs in your browser"
+            testId={`${testIdPrefix}-dropzone`}
+          />
         ) : null}
 
         {error ? (

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { Button, Stack, Text } from '@/components/ui';
+import { ImageDropzone } from '@/components/ImageDropzone';
 import { clipboardImageFiles } from '@/lib/clipboard';
 import { validateImageFile } from '@/lib/image';
 import { extractPalette } from '@/lib/image-palette';
@@ -20,18 +21,6 @@ const HiddenFileInput = styled('input')({
   whiteSpace: 'nowrap',
   border: 0,
 });
-
-const Dropzone = styled('div', {
-  shouldForwardProp: (prop) => prop !== 'active',
-})<{ active?: boolean }>(({ theme, active }) => ({
-  border: `2px dashed ${active ? theme.color.accent : theme.color.borderStrong}`,
-  borderRadius: theme.radius.md,
-  background: theme.color.surface,
-  padding: '2.5rem 1.5rem',
-  textAlign: 'center',
-  cursor: 'pointer',
-  '&:hover': { borderColor: theme.color.accent },
-}));
 
 const Preview = styled('img')(({ theme }) => ({
   maxWidth: '100%',
@@ -148,17 +137,9 @@ export default function ImagePalette() {
       />
 
       {!url ? (
-        <Dropzone
+        <ImageDropzone
           active={dragging}
-          role="button"
-          tabIndex={0}
           onClick={openPicker}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              openPicker();
-            }
-          }}
           onDragOver={(e) => {
             e.preventDefault();
             setDragging(true);
@@ -170,13 +151,9 @@ export default function ImagePalette() {
             const file = e.dataTransfer.files?.[0];
             if (file) loadFile(file);
           }}
-          data-testid="imgpal-dropzone"
-        >
-          <Text weight={600}>Drop an image here, paste, or choose a file.</Text>
-          <Text tone="muted" size="sm">
-            The palette is extracted in your browser — nothing is uploaded.
-          </Text>
-        </Dropzone>
+          hint="The palette is extracted in your browser — nothing is uploaded"
+          testId="imgpal-dropzone"
+        />
       ) : null}
 
       {error ? (

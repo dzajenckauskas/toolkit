@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { Button, Stack, Text } from '@/components/ui';
+import { ImageDropzone } from '@/components/ImageDropzone';
 import { clipboardImageFiles } from '@/lib/clipboard';
 import { validateImageFile } from '@/lib/image';
 import { BACKGROUNDS, framedSize, type Background } from '@/lib/screenshot';
@@ -18,18 +19,6 @@ const HiddenFileInput = styled('input')({
   whiteSpace: 'nowrap',
   border: 0,
 });
-
-const Dropzone = styled('div', {
-  shouldForwardProp: (prop) => prop !== 'active',
-})<{ active?: boolean }>(({ theme, active }) => ({
-  border: `2px dashed ${active ? theme.color.accent : theme.color.borderStrong}`,
-  borderRadius: theme.radius.md,
-  background: theme.color.surface,
-  padding: '2.5rem 1.5rem',
-  textAlign: 'center',
-  cursor: 'pointer',
-  '&:hover': { borderColor: theme.color.accent },
-}));
 
 const Stage = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -200,17 +189,9 @@ export default function ScreenshotBeautifier() {
       />
 
       {!source ? (
-        <Dropzone
+        <ImageDropzone
           active={dragging}
-          role="button"
-          tabIndex={0}
           onClick={openPicker}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              openPicker();
-            }
-          }}
           onDragOver={(e) => {
             e.preventDefault();
             setDragging(true);
@@ -222,13 +203,11 @@ export default function ScreenshotBeautifier() {
             const file = e.dataTransfer.files?.[0];
             if (file) loadFile(file);
           }}
-          data-testid="ss-dropzone"
-        >
-          <Text weight={600}>Drop a screenshot here, paste, or choose a file.</Text>
-          <Text tone="muted" size="sm">
-            Add a background, padding, rounded corners and a shadow — all in your browser.
-          </Text>
-        </Dropzone>
+          title="Drop a screenshot here"
+          cta="Select a screenshot"
+          hint="Add a background, padding, rounded corners and a shadow — all in your browser"
+          testId="ss-dropzone"
+        />
       ) : null}
 
       {error ? (
