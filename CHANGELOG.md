@@ -21,13 +21,17 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 ### Fixed
 
 - **Mobile menu drawer horizontal overflow / phantom header.** The off-canvas
-  drawer is `position: fixed` and slid off to the right when closed, which
-  widened the page by its own width — producing a horizontal scrollbar and
-  making the drawer's header peek in at the top-right (most visible in full-page
-  screenshots). Added `overflow-x: clip` on the root (the danielius pattern) so
-  the off-canvas drawer no longer extends the page, and made the closed drawer
-  `visibility: hidden` (after its slide-out) so its links are also out of the
-  keyboard tab order.
+  drawer was `position: fixed` and slid off to the right when closed, which
+  widened the page by its own width — producing a horizontal scrollbar, an empty
+  gap on the right, and the drawer's header peeking in at the top-right (most
+  visible in full-page screenshots). Refactored the drawer so it is fully
+  self-contained: overlay and panel now live inside a single fixed,
+  viewport-sized container (`inset: 0; overflow: hidden`); the panel is
+  absolutely positioned within it and slides in from off its clipped right edge,
+  so it can never extend the document or produce a scrollbar. When closed the
+  container is inert (`pointer-events: none`) and `visibility: hidden` (after the
+  slide-out), keeping its links out of the keyboard tab order. No global
+  overflow hacks needed. Verified at 1280 / 768 / 375 widths.
 
 ### Changed
 
