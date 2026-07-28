@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
-import { Stack } from '@/components/ui';
+import { Stack } from '@toolkit/ui';
 import { renderMarkdown } from '@/lib/markdown';
 
 const Split = styled('div')(({ theme }) => ({

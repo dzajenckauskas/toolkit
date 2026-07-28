@@ -1,4 +1,4 @@
-import { Heading, Page, Stack, Text } from '@/components/ui';
+import { Heading, Page, Stack, Text } from '@toolkit/ui';
 import { ToolCatalog } from '@/components/ToolCatalog';
 
 export default function HomePage() {

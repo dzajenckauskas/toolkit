@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import styled from '@emotion/styled';
-import { Stack, Text } from '@/components/ui';
+import { Stack, Text } from '@toolkit/ui';
 import { detectUnit, fromEpoch, relativeTime, toEpoch } from '@/lib/timestamp';
 
 const Input = styled('input')(({ theme }) => ({

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import styled from '@emotion/styled';
-import { Heading } from '@/components/ui';
+import { Heading } from '@toolkit/ui';
 import { CategoryIcon } from '@/components/CategoryIcon';
 import { FaqAccordion } from '@/components/FaqAccordion';
 import { TOOLS, type Tool } from '@/tools/registry';

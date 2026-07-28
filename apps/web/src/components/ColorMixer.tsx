@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
-import { Stack, Text } from '@/components/ui';
+import { Stack, Text } from '@toolkit/ui';
 import { blendSteps, mixHex } from '@/lib/color-harmony';
 
 const Row = styled('div')(({ theme }) => ({

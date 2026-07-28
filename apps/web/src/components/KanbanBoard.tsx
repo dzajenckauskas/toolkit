@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { Button, Stack, Text } from '@/components/ui';
+import { Button, Stack, Text } from '@toolkit/ui';
 import { addCard, columnIndex, defaultBoard, moveCard, removeCard, type Board } from '@/lib/kanban';
 
 const STORAGE_KEY = 'toolkit:kanban';

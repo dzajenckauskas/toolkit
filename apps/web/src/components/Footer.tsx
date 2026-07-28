@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import styled from '@emotion/styled';
 import { AUTHOR_NAME, AUTHOR_URL, CONTACT_MAILTO, SITE_NAME } from '@/lib/site';
-import type { AppTheme } from '@/theme/theme';
+import type { AppTheme } from '@toolkit/ui';
 
 /**
  * Site footer: an author credit (built by Danielius, linking to the personal

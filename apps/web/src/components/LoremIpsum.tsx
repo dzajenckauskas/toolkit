@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { Button, Stack, Text } from '@/components/ui';
+import { Button, Stack, Text } from '@toolkit/ui';
 import { MAX_PARAGRAPHS, generateParagraphs } from '@/lib/lorem';
 
 const Field = styled('label')(({ theme }) => ({

@@ -9,7 +9,7 @@ import { CategoryIcon } from '@/components/CategoryIcon';
 import { Logo } from '@/components/Logo';
 import ThemeToggle from '@/components/ThemeToggle';
 import { CONTACT_MAILTO } from '@/lib/site';
-import type { AppTheme } from '@/theme/theme';
+import type { AppTheme } from '@toolkit/ui';
 
 /**
  * Slide-in navigation drawer (mobile / narrow screens).

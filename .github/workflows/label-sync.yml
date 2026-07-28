@@ -10,8 +10,8 @@ on:
   push:
     branches: [main, claude/ecommerce-toolkit-project-os-282zd7]
     paths:
-      - ".github/labels.yml"
-      - ".github/workflows/label-sync.yml"
+      - '.github/labels.yml'
+      - '.github/workflows/label-sync.yml'
   workflow_dispatch: {}
 
 permissions:

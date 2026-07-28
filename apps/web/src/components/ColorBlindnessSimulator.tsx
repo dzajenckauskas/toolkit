@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
-import { Button, Stack, Text } from '@/components/ui';
+import { Button, Stack, Text } from '@toolkit/ui';
 import { VISION_LABELS, VISION_TYPES, simulateHex } from '@/lib/color-vision';
 
 const Controls = styled('div')(({ theme }) => ({

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import styled from '@emotion/styled';
 import type { CSSObject } from '@emotion/react';
-import type { AppTheme } from '@/theme/theme';
+import type { AppTheme } from '@toolkit/ui';
 import { Logo } from '@/components/Logo';
 import ThemeToggle from '@/components/ThemeToggle';
 import MobileMenu from '@/components/MobileMenu';

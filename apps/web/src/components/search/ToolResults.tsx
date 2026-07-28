@@ -4,7 +4,7 @@ import Link from 'next/link';
 import styled from '@emotion/styled';
 import { type Tool } from '@/tools/registry';
 import { CategoryIcon } from '@/components/CategoryIcon';
-import type { AppTheme } from '@/theme/theme';
+import type { AppTheme } from '@toolkit/ui';
 
 /**
  * The tool-palette results list. Shared verbatim by the inline catalog search

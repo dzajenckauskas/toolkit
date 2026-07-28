@@ -1,4 +1,4 @@
-import { Heading, Page, Stack, Text } from '@/components/ui';
+import { Heading, Page, Stack, Text } from '@toolkit/ui';
 import { Prose } from '@/components/LegalDoc';
 import { CONTACT_EMAIL, CONTACT_MAILTO } from '@/lib/site';
 import { pageMetadata } from '@/lib/seo';

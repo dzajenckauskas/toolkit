@@ -1,5 +1,5 @@
 import { Faq } from '@/components/Faq';
-import { Heading, Page, Stack, Text } from '@/components/ui';
+import { Heading, Page, Stack, Text } from '@toolkit/ui';
 import { pageMetadata } from '@/lib/seo';
 
 export const metadata = pageMetadata({

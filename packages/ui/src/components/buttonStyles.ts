@@ -1,5 +1,5 @@
 import type { CSSObject } from '@emotion/react';
-import type { AppTheme } from '@/theme/theme';
+import type { AppTheme } from '../theme/theme';
 
 export type ButtonVariant = 'primary' | 'ghost';
 export type ButtonSize = 'md' | 'sm';

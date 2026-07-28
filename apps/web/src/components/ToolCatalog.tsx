@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import styled from '@emotion/styled';
-import { Stack, Text } from '@/components/ui';
+import { Stack, Text } from '@toolkit/ui';
 import { CATEGORY_ORDER, toolsByCategory, type Tool, type ToolCategory } from '@/tools/registry';
 import { CategoryIcon } from '@/components/CategoryIcon';
 import { useToolSearch } from '@/components/search/useToolSearch';
@@ -68,7 +68,7 @@ const Grid = styled('div')(({ theme }) => ({
   gap: theme.space(3),
 }));
 
-const cardStyles = (theme: import('@/theme/theme').AppTheme) => ({
+const cardStyles = (theme: import('@toolkit/ui').AppTheme) => ({
   display: 'flex',
   flexDirection: 'column' as const,
   gap: theme.space(1),

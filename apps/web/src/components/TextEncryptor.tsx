@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import styled from '@emotion/styled';
-import { Button, Stack, Text } from '@/components/ui';
+import { Button, Stack, Text } from '@toolkit/ui';
 import { decryptText, encryptText } from '@/lib/crypto-text';
 
 const Area = styled('textarea')(({ theme }) => ({

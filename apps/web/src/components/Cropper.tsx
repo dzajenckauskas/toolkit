@@ -23,7 +23,7 @@ import {
   type Handle,
   type Rect,
 } from '@/lib/crop';
-import { Button, Stack, Text } from '@/components/ui';
+import { Button, Stack, Text } from '@toolkit/ui';
 import { ImageDropzone } from '@/components/ImageDropzone';
 
 const MAX_DISPLAY = 560;

@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
-import { Stack, Text } from '@/components/ui';
+import { Stack, Text } from '@toolkit/ui';
 import { evaluateLines } from '@/lib/calc';
 
 const Grid = styled('div')(({ theme }) => ({

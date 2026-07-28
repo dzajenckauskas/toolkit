@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { Stack, Text } from '@/components/ui';
+import { Stack, Text } from '@toolkit/ui';
 import { HASH_ALGORITHMS, type HashAlgorithm, hashText } from '@/lib/hash';
 
 const Area = styled('textarea')(({ theme }) => ({

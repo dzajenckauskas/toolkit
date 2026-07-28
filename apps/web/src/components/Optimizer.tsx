@@ -25,7 +25,7 @@ import { loadQualityLevel, saveQualityLevel } from '@/lib/settings';
 import { buildZip, type ZipEntry } from '@/lib/zip';
 import { clipboardImageFiles } from '@/lib/clipboard';
 import styled from '@emotion/styled';
-import { Button, DownloadLink, Stack, Text } from '@/components/ui';
+import { Button, DownloadLink, Stack, Text } from '@toolkit/ui';
 import { ImageDropzone } from '@/components/ImageDropzone';
 
 const HiddenFileInput = styled('input')({

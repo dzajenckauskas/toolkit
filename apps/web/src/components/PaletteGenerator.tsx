@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
-import { Stack, Text } from '@/components/ui';
+import { Stack, Text } from '@toolkit/ui';
 import { harmonies, shades, tints } from '@/lib/color-harmony';
 
 const Controls = styled('div')(({ theme }) => ({

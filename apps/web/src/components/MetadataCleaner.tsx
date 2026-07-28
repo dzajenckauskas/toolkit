@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import styled from '@emotion/styled';
-import { Stack, Text } from '@/components/ui';
+import { Stack, Text } from '@toolkit/ui';
 import ImageToolShell, { type LoadedImage } from '@/components/ImageToolShell';
 import { extensionFor, outputImageName, renderResized, type ImageFormat } from '@/lib/image';
 

@@ -1,7 +1,7 @@
 name: Feature
 description: Define a focused product or technical feature
-title: "[Feature]: "
-labels: ["type:feature"]
+title: '[Feature]: '
+labels: ['type:feature']
 body:
   - type: textarea
     id: problem

@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useState } from 'react';
-import { Button, Stack, Text } from '@/components/ui';
+import { Button, Stack, Text } from '@toolkit/ui';
 import ImageToolShell, { type LoadedImage } from '@/components/ImageToolShell';
 import {
   IDENTITY_TRANSFORM,

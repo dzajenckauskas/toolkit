@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
-import { Stack, Text } from '@/components/ui';
+import { Stack, Text } from '@toolkit/ui';
 import { textStats } from '@/lib/text-stats';
 
 const Area = styled('textarea')(({ theme }) => ({

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import styled from '@emotion/styled';
-import { Stack, Text } from '@/components/ui';
+import { Stack, Text } from '@toolkit/ui';
 import ImageToolShell, { type LoadedImage } from '@/components/ImageToolShell';
 import { renderResized } from '@/lib/image';
 import { buildZip, type ZipEntry } from '@/lib/zip';

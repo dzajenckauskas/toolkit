@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
-import { Button, Stack, Text } from '@/components/ui';
+import { Button, Stack, Text } from '@toolkit/ui';
 import { gradientCss, type GradientStop, type GradientType } from '@/lib/gradient';
 
 const Preview = styled('div')(({ theme }) => ({

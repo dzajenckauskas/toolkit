@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import localFont from 'next/font/local';
 import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
-import EmotionRegistry from '@/theme/EmotionRegistry';
+import { EmotionRegistry } from '@toolkit/ui';
 import { AppHeader } from '@/components/AppHeader';
 import { Footer } from '@/components/Footer';
 import { NO_FLASH_SCRIPT } from '@/lib/theme-mode';
