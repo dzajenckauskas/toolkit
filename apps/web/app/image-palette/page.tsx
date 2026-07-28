@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import ImagePalette from '@/components/ImagePalette';
-import { ToolPage } from '@/components/ToolPage';
+import ImagePalette from '@/components/tools/design/ImagePalette';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('image-palette');
 

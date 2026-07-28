@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import PaletteGenerator from '@/components/PaletteGenerator';
-import { ToolPage } from '@/components/ToolPage';
+import PaletteGenerator from '@/components/tools/design/PaletteGenerator';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('palette');
 

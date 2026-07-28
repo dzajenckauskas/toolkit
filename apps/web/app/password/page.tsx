@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import PasswordGenerator from '@/components/PasswordGenerator';
-import { ToolPage } from '@/components/ToolPage';
+import PasswordGenerator from '@/components/tools/developer/PasswordGenerator';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('password');
 

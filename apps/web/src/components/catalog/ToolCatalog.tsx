@@ -11,7 +11,7 @@ import {
   type Tool,
   type ToolCategory,
 } from '@toolkit/tools/registry';
-import { CategoryIcon } from '@/components/CategoryIcon';
+import { CategoryIcon } from '@/components/layout/CategoryIcon';
 import { useToolSearch } from '@/components/search/useToolSearch';
 import { ToolResults } from '@/components/search/ToolResults';
 

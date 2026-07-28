@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import ImageResizer from '@/components/ImageResizer';
-import { ToolPage } from '@/components/ToolPage';
+import ImageResizer from '@/components/tools/images/ImageResizer';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('resize');
 

@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import UnitConverter from '@/components/UnitConverter';
-import { ToolPage } from '@/components/ToolPage';
+import UnitConverter from '@/components/tools/calculators/UnitConverter';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('unit-converter');
 

@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import WordCounter from '@/components/WordCounter';
-import { ToolPage } from '@/components/ToolPage';
+import WordCounter from '@/components/tools/text/WordCounter';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('word-count');
 

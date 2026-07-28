@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import PercentageCalculator from '@/components/PercentageCalculator';
-import { ToolPage } from '@/components/ToolPage';
+import PercentageCalculator from '@/components/tools/calculators/PercentageCalculator';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('percentage');
 

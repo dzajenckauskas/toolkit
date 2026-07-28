@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import LineTools from '@/components/LineTools';
-import { ToolPage } from '@/components/ToolPage';
+import LineTools from '@/components/tools/text/LineTools';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('line-tools');
 

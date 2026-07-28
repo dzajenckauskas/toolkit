@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import MarkdownEditor from '@/components/MarkdownEditor';
-import { ToolPage } from '@/components/ToolPage';
+import MarkdownEditor from '@/components/tools/text/MarkdownEditor';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('markdown');
 

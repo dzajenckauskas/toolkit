@@ -1,7 +1,7 @@
 'use client';
 
 import { CONTACT_EMAIL, CONTACT_MAILTO } from '@/lib/site';
-import { FaqAccordion, type FaqItem } from '@/components/FaqAccordion';
+import { FaqAccordion, type FaqItem } from '@/components/catalog/FaqAccordion';
 
 /**
  * Site-wide FAQ, rendered with the shared {@link FaqAccordion}. Content is

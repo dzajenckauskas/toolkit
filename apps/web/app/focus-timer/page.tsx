@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import FocusTimer from '@/components/FocusTimer';
-import { ToolPage } from '@/components/ToolPage';
+import FocusTimer from '@/components/tools/productivity/FocusTimer';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('focus-timer');
 

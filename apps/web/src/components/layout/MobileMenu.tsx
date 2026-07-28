@@ -5,9 +5,9 @@ import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import styled from '@emotion/styled';
 import { toolsByCategory } from '@toolkit/tools/registry';
-import { CategoryIcon } from '@/components/CategoryIcon';
-import { Logo } from '@/components/Logo';
-import ThemeToggle from '@/components/ThemeToggle';
+import { CategoryIcon } from '@/components/layout/CategoryIcon';
+import { Logo } from '@/components/layout/Logo';
+import ThemeToggle from '@/components/layout/ThemeToggle';
 import { CONTACT_MAILTO } from '@/lib/site';
 import type { AppTheme } from '@toolkit/ui';
 

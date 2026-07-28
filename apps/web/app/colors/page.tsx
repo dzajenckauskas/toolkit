@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import ColorConverter from '@/components/ColorConverter';
-import { ToolPage } from '@/components/ToolPage';
+import ColorConverter from '@/components/tools/design/ColorConverter';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('colors');
 

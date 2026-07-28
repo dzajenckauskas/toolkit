@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import HtmlEntitiesTool from '@/components/HtmlEntitiesTool';
-import { ToolPage } from '@/components/ToolPage';
+import HtmlEntitiesTool from '@/components/tools/developer/HtmlEntitiesTool';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('html-entities');
 

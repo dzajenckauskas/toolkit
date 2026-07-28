@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import Base64Tool from '@/components/Base64Tool';
-import { ToolPage } from '@/components/ToolPage';
+import Base64Tool from '@/components/tools/developer/Base64Tool';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('base64');
 

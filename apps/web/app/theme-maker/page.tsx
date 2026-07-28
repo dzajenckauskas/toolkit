@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import ThemeMaker from '@/components/ThemeMaker';
-import { ToolPage } from '@/components/ToolPage';
+import ThemeMaker from '@/components/tools/design/ThemeMaker';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('theme-maker');
 

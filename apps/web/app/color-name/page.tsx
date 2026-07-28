@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import ColorNameFinder from '@/components/ColorNameFinder';
-import { ToolPage } from '@/components/ToolPage';
+import ColorNameFinder from '@/components/tools/design/ColorNameFinder';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('color-name');
 

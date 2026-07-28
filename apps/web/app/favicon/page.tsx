@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import FaviconGenerator from '@/components/FaviconGenerator';
-import { ToolPage } from '@/components/ToolPage';
+import FaviconGenerator from '@/components/tools/images/FaviconGenerator';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('favicon');
 

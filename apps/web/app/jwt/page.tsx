@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import JwtDecoder from '@/components/JwtDecoder';
-import { ToolPage } from '@/components/ToolPage';
+import JwtDecoder from '@/components/tools/developer/JwtDecoder';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('jwt');
 

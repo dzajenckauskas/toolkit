@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import ChecksumVerifier from '@/components/ChecksumVerifier';
-import { ToolPage } from '@/components/ToolPage';
+import ChecksumVerifier from '@/components/tools/developer/ChecksumVerifier';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('checksum');
 

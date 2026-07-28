@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { Button, Stack, Text } from '@toolkit/ui';
-import { ImageDropzone } from '@/components/ImageDropzone';
+import { ImageDropzone } from '@/components/tools/shared/ImageDropzone';
 import { validateImageFile } from '@toolkit/lib/image';
 import { buildPdf, type PdfImage } from '@toolkit/lib/images-to-pdf';
 

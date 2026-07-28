@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import CaseConverter from '@/components/CaseConverter';
-import { ToolPage } from '@/components/ToolPage';
+import CaseConverter from '@/components/tools/text/CaseConverter';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('case-converter');
 

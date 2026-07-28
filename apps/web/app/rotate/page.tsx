@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import ImageRotator from '@/components/ImageRotator';
-import { ToolPage } from '@/components/ToolPage';
+import ImageRotator from '@/components/tools/images/ImageRotator';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('rotate');
 

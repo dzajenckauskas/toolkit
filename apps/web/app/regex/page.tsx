@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import RegexTester from '@/components/RegexTester';
-import { ToolPage } from '@/components/ToolPage';
+import RegexTester from '@/components/tools/developer/RegexTester';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('regex');
 

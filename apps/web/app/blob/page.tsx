@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import BlobGenerator from '@/components/BlobGenerator';
-import { ToolPage } from '@/components/ToolPage';
+import BlobGenerator from '@/components/tools/design/BlobGenerator';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('blob');
 

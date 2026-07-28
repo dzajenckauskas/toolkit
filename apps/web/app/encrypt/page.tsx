@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import TextEncryptor from '@/components/TextEncryptor';
-import { ToolPage } from '@/components/ToolPage';
+import TextEncryptor from '@/components/tools/privacy/TextEncryptor';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('encrypt');
 

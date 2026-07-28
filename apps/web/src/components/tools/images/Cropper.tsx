@@ -24,7 +24,7 @@ import {
   type Rect,
 } from '@toolkit/lib/crop';
 import { Button, Stack, Text } from '@toolkit/ui';
-import { ImageDropzone } from '@/components/ImageDropzone';
+import { ImageDropzone } from '@/components/tools/shared/ImageDropzone';
 
 const MAX_DISPLAY = 560;
 const KEY_STEP = 10;

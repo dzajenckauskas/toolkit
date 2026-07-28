@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import Cropper from '@/components/Cropper';
-import { ToolPage } from '@/components/ToolPage';
+import Cropper from '@/components/tools/images/Cropper';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('crop');
 

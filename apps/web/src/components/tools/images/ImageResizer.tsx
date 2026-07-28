@@ -3,7 +3,7 @@
 import { useCallback, useState } from 'react';
 import styled from '@emotion/styled';
 import { Stack, Text } from '@toolkit/ui';
-import ImageToolShell, { type LoadedImage } from '@/components/ImageToolShell';
+import ImageToolShell, { type LoadedImage } from '@/components/tools/shared/ImageToolShell';
 import {
   clampSize,
   extensionFor,

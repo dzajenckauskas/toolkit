@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from 'react';
 import { Button, Stack, Text } from '@toolkit/ui';
-import ImageToolShell, { type LoadedImage } from '@/components/ImageToolShell';
+import ImageToolShell, { type LoadedImage } from '@/components/tools/shared/ImageToolShell';
 import {
   IDENTITY_TRANSFORM,
   extensionFor,

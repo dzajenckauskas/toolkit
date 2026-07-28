@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import KanbanBoard from '@/components/KanbanBoard';
-import { ToolPage } from '@/components/ToolPage';
+import KanbanBoard from '@/components/tools/productivity/KanbanBoard';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('kanban');
 

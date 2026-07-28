@@ -6,10 +6,10 @@ import { usePathname } from 'next/navigation';
 import styled from '@emotion/styled';
 import type { CSSObject } from '@emotion/react';
 import type { AppTheme } from '@toolkit/ui';
-import { Logo } from '@/components/Logo';
-import ThemeToggle from '@/components/ThemeToggle';
-import MobileMenu from '@/components/MobileMenu';
-import SearchDialog from '@/components/SearchDialog';
+import { Logo } from '@/components/layout/Logo';
+import ThemeToggle from '@/components/layout/ThemeToggle';
+import MobileMenu from '@/components/layout/MobileMenu';
+import SearchDialog from '@/components/layout/SearchDialog';
 import { CONTACT_MAILTO } from '@/lib/site';
 
 /**

@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import ColorBlindnessSimulator from '@/components/ColorBlindnessSimulator';
-import { ToolPage } from '@/components/ToolPage';
+import ColorBlindnessSimulator from '@/components/tools/design/ColorBlindnessSimulator';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('color-blindness');
 

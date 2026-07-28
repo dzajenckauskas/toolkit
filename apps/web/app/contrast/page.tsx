@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import ContrastChecker from '@/components/ContrastChecker';
-import { ToolPage } from '@/components/ToolPage';
+import ContrastChecker from '@/components/tools/design/ContrastChecker';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('contrast');
 

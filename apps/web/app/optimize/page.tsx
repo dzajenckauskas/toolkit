@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import Optimizer from '@/components/Optimizer';
-import { ToolPage } from '@/components/ToolPage';
+import Optimizer from '@/components/tools/images/Optimizer';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('optimize');
 

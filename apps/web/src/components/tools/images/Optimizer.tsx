@@ -26,7 +26,7 @@ import { buildZip, type ZipEntry } from '@toolkit/lib/zip';
 import { clipboardImageFiles } from '@toolkit/lib/clipboard';
 import styled from '@emotion/styled';
 import { Button, DownloadLink, Stack, Text } from '@toolkit/ui';
-import { ImageDropzone } from '@/components/ImageDropzone';
+import { ImageDropzone } from '@/components/tools/shared/ImageDropzone';
 
 const HiddenFileInput = styled('input')({
   position: 'absolute',

@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import QrGenerator from '@/components/QrGenerator';
-import { ToolPage } from '@/components/ToolPage';
+import QrGenerator from '@/components/tools/images/QrGenerator';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('qr');
 

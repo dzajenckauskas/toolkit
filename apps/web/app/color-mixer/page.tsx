@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import ColorMixer from '@/components/ColorMixer';
-import { ToolPage } from '@/components/ToolPage';
+import ColorMixer from '@/components/tools/design/ColorMixer';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('color-mixer');
 

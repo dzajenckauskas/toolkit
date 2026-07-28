@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import styled from '@emotion/styled';
 import { Button, Stack, Text } from '@toolkit/ui';
-import { ImageDropzone } from '@/components/ImageDropzone';
+import { ImageDropzone } from '@/components/tools/shared/ImageDropzone';
 import { clipboardImageFiles } from '@toolkit/lib/clipboard';
 import {
   ACCEPTED_IMAGE_EXTENSIONS,

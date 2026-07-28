@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import JsonFormatter from '@/components/JsonFormatter';
-import { ToolPage } from '@/components/ToolPage';
+import JsonFormatter from '@/components/tools/developer/JsonFormatter';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('json');
 

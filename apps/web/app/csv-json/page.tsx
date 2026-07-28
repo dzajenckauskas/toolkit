@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import CsvJsonConverter from '@/components/CsvJsonConverter';
-import { ToolPage } from '@/components/ToolPage';
+import CsvJsonConverter from '@/components/tools/developer/CsvJsonConverter';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('csv-json');
 

@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import styled from '@emotion/styled';
 import { type Tool } from '@toolkit/tools/registry';
-import { CategoryIcon } from '@/components/CategoryIcon';
+import { CategoryIcon } from '@/components/layout/CategoryIcon';
 import type { AppTheme } from '@toolkit/ui';
 
 /**

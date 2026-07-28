@@ -1,5 +1,5 @@
 import { Heading, Page, Stack, Text } from '@toolkit/ui';
-import { ToolCatalog } from '@/components/ToolCatalog';
+import { ToolCatalog } from '@/components/catalog/ToolCatalog';
 
 export default function HomePage() {
   return (

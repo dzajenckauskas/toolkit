@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import MetadataCleaner from '@/components/MetadataCleaner';
-import { ToolPage } from '@/components/ToolPage';
+import MetadataCleaner from '@/components/tools/privacy/MetadataCleaner';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('metadata-cleaner');
 

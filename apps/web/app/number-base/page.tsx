@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import NumberBaseConverter from '@/components/NumberBaseConverter';
-import { ToolPage } from '@/components/ToolPage';
+import NumberBaseConverter from '@/components/tools/developer/NumberBaseConverter';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('number-base');
 

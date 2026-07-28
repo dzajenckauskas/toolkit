@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import ScreenshotBeautifier from '@/components/ScreenshotBeautifier';
-import { ToolPage } from '@/components/ToolPage';
+import ScreenshotBeautifier from '@/components/tools/images/ScreenshotBeautifier';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('screenshot');
 

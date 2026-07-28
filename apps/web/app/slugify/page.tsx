@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import Slugifier from '@/components/Slugifier';
-import { ToolPage } from '@/components/ToolPage';
+import Slugifier from '@/components/tools/text/Slugifier';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('slugify');
 

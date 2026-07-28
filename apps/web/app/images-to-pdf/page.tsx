@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import ImagesToPdf from '@/components/ImagesToPdf';
-import { ToolPage } from '@/components/ToolPage';
+import ImagesToPdf from '@/components/tools/pdf/ImagesToPdf';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('images-to-pdf');
 

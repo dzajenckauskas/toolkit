@@ -1,4 +1,4 @@
-import { Faq } from '@/components/Faq';
+import { Faq } from '@/components/catalog/Faq';
 import { Heading, Page, Stack, Text } from '@toolkit/ui';
 import { pageMetadata } from '@/lib/seo';
 

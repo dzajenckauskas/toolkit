@@ -1,6 +1,6 @@
 import { toolMetadata } from '@/lib/seo';
-import UuidGenerator from '@/components/UuidGenerator';
-import { ToolPage } from '@/components/ToolPage';
+import UuidGenerator from '@/components/tools/developer/UuidGenerator';
+import { ToolPage } from '@/components/catalog/ToolPage';
 
 export const metadata = toolMetadata('uuid');
 
