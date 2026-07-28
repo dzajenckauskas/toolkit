@@ -1,0 +1,20 @@
+{
+  "name": "@toolkit/tools",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "description": "The tool registry (ADR-008) — the single source of truth for the catalog: each tool's metadata plus its per-tool landing content.",
+  "sideEffects": false,
+  "exports": {
+    "./*": "./src/*.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@toolkit/typescript-config": "*",
+    "typescript": "^5.7.3",
+    "vitest": "^2.1.8"
+  }
+}

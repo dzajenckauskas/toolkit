@@ -5,7 +5,12 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import styled from '@emotion/styled';
 import { Stack, Text } from '@toolkit/ui';
-import { CATEGORY_ORDER, toolsByCategory, type Tool, type ToolCategory } from '@/tools/registry';
+import {
+  CATEGORY_ORDER,
+  toolsByCategory,
+  type Tool,
+  type ToolCategory,
+} from '@toolkit/tools/registry';
 import { CategoryIcon } from '@/components/CategoryIcon';
 import { useToolSearch } from '@/components/search/useToolSearch';
 import { ToolResults } from '@/components/search/ToolResults';

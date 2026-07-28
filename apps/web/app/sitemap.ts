@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { LIVE_TOOLS } from '@/tools/registry';
+import { LIVE_TOOLS } from '@toolkit/tools/registry';
 import { SITE_URL } from '@/lib/site';
 
 /**

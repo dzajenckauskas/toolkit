@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { searchTools, type Tool } from '@/tools/registry';
+import { searchTools, type Tool } from '@toolkit/tools/registry';
 
 /**
  * Shared search state + keyboard behaviour for the tool palette, used by both

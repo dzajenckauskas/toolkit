@@ -5,8 +5,8 @@ import styled from '@emotion/styled';
 import { Heading } from '@toolkit/ui';
 import { CategoryIcon } from '@/components/CategoryIcon';
 import { FaqAccordion } from '@/components/FaqAccordion';
-import { TOOLS, type Tool } from '@/tools/registry';
-import { getToolContent } from '@/tools/content';
+import { TOOLS, type Tool } from '@toolkit/tools/registry';
+import { getToolContent } from '@toolkit/tools/content';
 
 /**
  * Shared landing-page shell for every tool. Wraps the tool's interactive

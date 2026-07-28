@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import styled from '@emotion/styled';
-import { toolsByCategory } from '@/tools/registry';
+import { toolsByCategory } from '@toolkit/tools/registry';
 import { CategoryIcon } from '@/components/CategoryIcon';
 import { Logo } from '@/components/Logo';
 import ThemeToggle from '@/components/ThemeToggle';

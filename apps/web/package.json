@@ -19,6 +19,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@toolkit/lib": "*",
+    "@toolkit/tools": "*",
     "@toolkit/ui": "*",
     "geist": "^1.7.2",
     "next": "^15.1.6",

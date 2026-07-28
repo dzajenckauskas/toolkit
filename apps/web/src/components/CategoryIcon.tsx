@@ -1,4 +1,4 @@
-import type { ToolCategory } from '@/tools/registry';
+import type { ToolCategory } from '@toolkit/tools/registry';
 
 /**
  * Small, dependency-free line icon per tool category, used in the command

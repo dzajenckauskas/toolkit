@@ -5,8 +5,8 @@
  * toolMetadata('<id>')`; canonical URL, OpenGraph and Twitter cards are derived.
  */
 import type { Metadata } from 'next';
-import { TOOLS } from '@/tools/registry';
-import { getToolContent } from '@/tools/content';
+import { TOOLS } from '@toolkit/tools/registry';
+import { getToolContent } from '@toolkit/tools/content';
 import { SITE_NAME, SITE_URL, SITE_DESCRIPTION } from '@/lib/site';
 
 /** Metadata for a tool page, derived from its registry entry + landing content. */

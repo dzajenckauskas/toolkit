@@ -1,4 +1,4 @@
-import type { Tool } from '@/tools/registry';
+import type { Tool } from './registry';
 
 /**
  * Per-tool landing-page content: the "how it works" steps, the highlight cards,
