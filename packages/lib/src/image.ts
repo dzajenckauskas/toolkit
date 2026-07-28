@@ -173,6 +173,25 @@ export async function renderResized(
   return { blob: await encodeCanvas(canvas, format, quality), size };
 }
 
+/** Decode `input`, crop to a source-pixel rectangle, and encode to `format`. */
+export async function renderCropped(
+  input: Blob,
+  rect: { x: number; y: number; width: number; height: number },
+  format: ImageFormat,
+  quality = 0.9,
+): Promise<{ blob: Blob; size: Size }> {
+  const { image } = await decodeImage(input);
+  const size = clampSize({ width: rect.width, height: rect.height });
+  const canvas = document.createElement('canvas');
+  canvas.width = size.width;
+  canvas.height = size.height;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) throw new ImageEncodeError();
+  ctx.imageSmoothingQuality = 'high';
+  ctx.drawImage(image, rect.x, rect.y, rect.width, rect.height, 0, 0, size.width, size.height);
+  return { blob: await encodeCanvas(canvas, format, quality), size };
+}
+
 /** Decode `input`, apply a rotate/flip transform, and encode to `format`. */
 export async function renderTransformed(
   input: Blob,

@@ -84,10 +84,10 @@ export const TOOLS: Tool[] = [
   {
     id: 'image-editor',
     name: 'Image editor',
-    description: 'Adjust and edit images in one workspace.',
+    description: 'Compress, resize, crop, rotate and convert — all in one editor.',
     href: '/image-editor',
     category: 'Images & Media',
-    status: 'planned',
+    status: 'live',
   },
   {
     id: 'screenshot',
@@ -535,6 +535,16 @@ export const TOOLS: Tool[] = [
  * Keyed by tool id; tools without an entry still match name/description/category.
  */
 export const TOOL_KEYWORDS: Record<string, string[]> = {
+  'image-editor': [
+    'edit',
+    'photo',
+    'compress',
+    'resize',
+    'crop',
+    'rotate',
+    'convert',
+    'all in one',
+  ],
   optimize: ['compress', 'shrink', 'reduce', 'jpeg', 'size'],
   crop: ['trim', 'cut', 'aspect ratio'],
   resize: ['scale', 'dimensions', 'width', 'height', 'shrink', 'enlarge'],
