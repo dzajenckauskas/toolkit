@@ -1,64 +1,111 @@
-# Ecommerce Toolkit
+# toolkit
 
-A focused toolkit for preparing ecommerce product images quickly and consistently.
+**Free, private, browser-based tools for everyday development and creative work.**
+No account, no upload, no paywall — every tool runs entirely on your device.
 
-The project starts with small, reliable standalone image tools. Once those tools work well independently, they can be connected into larger project-based workflows.
+🔗 **Live:** [toolkit.zajenckauskas.lt](https://toolkit.zajenckauskas.lt)
 
-## Current status
+[![CI](https://github.com/dzajenckauskas/toolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/dzajenckauskas/toolkit/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+![Next.js](https://img.shields.io/badge/Next.js-15-black)
+![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6)
 
-**Stage:** Product definition  
-**Current milestone:** MVP — Image Tools  
-**Immediate focus:** Define and build the first standalone image utility
+---
 
-## Product direction
+## What it is
 
-The toolkit should help ecommerce operators, designers, developers, and small business owners prepare product images without needing complex desktop software.
+A hub of **48 small, focused tools** — image compression and cropping, JSON/JWT/regex
+helpers, hashing and encoding, colour and design utilities, PDF and text tools, and
+more — grouped into a searchable, keyboard-driven catalog (⌘K from anywhere).
 
-Core principles:
+Everything happens **client-side**: images are processed with the Canvas API, hashing
+and encryption with the Web Crypto API, zipping with `fflate`. Nothing you drop into a
+tool is ever uploaded — there is no backend that receives your files.
 
-- Start simple.
-- Make each tool useful on its own.
-- Prefer fast client-side processing where practical.
-- Avoid forcing project setup before a user can complete a task.
-- Add connected workflows only after the individual tools are reliable.
-- Design for occasional users and repeat users.
+## Why I built it
 
-## MVP tools
+Two goals, held at once:
 
-1. Image optimizer
-2. Image cropper
-3. Image converter
-4. Image resizer
+1. **A genuinely useful, free product.** A no-friction place to do the small tasks
+   developers and creators reach for constantly, without hunting for an ad-riddled
+   site or installing desktop software. It's open-source so anyone can read it, run
+   it, or learn from it.
 
-Project-aware workflows, shared presets, image generation, and automation belong after the core tools are dependable.
+2. **A deliberate practice ground for working with AI coding agents.** I use this
+   project to get better at **AI-assisted engineering end to end** — research and
+   competitive analysis, breaking work into GitHub issues and sprints, project
+   management, code review, CI/CD, and the day-to-day engineering workflows that make
+   an agent-driven codebase stay clean and maintainable rather than sprawl. The commit
+   history intentionally reflects that human + AI collaboration.
+
+The two reinforce each other: shipping and maintaining a real, deployed product is the
+honest test of whether an AI-assisted workflow actually produces professional results.
+
+## Architecture
+
+A **Turborepo monorepo** (npm workspaces). One app, plus focused packages for the
+parts that are genuinely shared — with boundaries the compiler enforces (see
+[ADR-009](docs/decisions/ADR-009-turborepo-monorepo.md), which also explains why
+Module Federation micro-frontends were deliberately **not** used).
+
+```
+apps/
+  web/                       Next.js 15 (App Router) — the shell + every tool route
+packages/
+  ui/                        Emotion theme + typed design-system primitives (ADR-006)
+  lib/                       framework-agnostic, unit-tested tool logic
+  tools/                     the tool registry — single source of truth (ADR-008)
+  typescript-config/         shared tsconfig presets
+```
+
+- **Registry-driven.** The home page, search/command palette, navigation, sitemap and
+  per-page SEO metadata all read from one `registry.ts`. Shipping a tool is: add a pure
+  function + tests in `@toolkit/lib`, a component in `apps/web`, a route, and a registry
+  entry.
+- **Stack.** Next.js 15 / React 19, **TypeScript in strict mode**
+  (`noUncheckedIndexedAccess`, `noUnusedLocals`, …), Emotion CSS-in-JS with a typed
+  theme and zero-JS light/dark mode, deployed as a static-optimised app.
+- Packages are consumed from source via `transpilePackages` (no separate build step);
+  Turbo caches `build` / `lint` / `typecheck` / `test` across the graph.
+
+## Engineering practices
+
+- **Tested.** 261 unit tests (Vitest) covering the pure logic, plus 77 end-to-end
+  browser tests (Playwright, real Chromium) covering the tools in the browser.
+- **Typed & linted.** Strict TypeScript, ESLint (zero warnings), one shared Prettier
+  config across the whole workspace.
+- **CI/CD.** Every push runs install → lint → format → typecheck → unit → build → e2e
+  on GitHub Actions; green pushes to `main` auto-deploy to production (PM2 + nginx).
+- **Decisions are written down.** Architecture and product decisions live as ADRs in
+  [`docs/decisions/`](docs/decisions/).
+
+## Getting started
+
+Requires **Node 22+**.
+
+```bash
+npm install            # installs the whole workspace
+
+npm run dev            # start the app (http://localhost:3000)
+npm run build          # production build (via Turbo)
+npm run lint           # ESLint across packages
+npm run typecheck      # tsc across packages
+npm test               # Vitest unit tests
+npm run test:e2e       # Playwright browser tests
+```
+
+All scripts run through Turborepo from the repo root.
 
 ## Repository map
 
-- [`ROADMAP.md`](ROADMAP.md) — high-level development plan
-- [`CHANGELOG.md`](CHANGELOG.md) — meaningful project changes
-- [`AGENTS.md`](AGENTS.md) — instructions for AI coding and product agents
-- [`docs/product/vision.md`](docs/product/vision.md) — product vision
-- [`docs/product/mvp-scope.md`](docs/product/mvp-scope.md) — MVP boundaries
-- [`docs/product/target-users.md`](docs/product/target-users.md) — target users
-- [`docs/tools/image-tools-overview.md`](docs/tools/image-tools-overview.md) — initial tool definitions
-- [`docs/ux/design-principles.md`](docs/ux/design-principles.md) — UX rules
-- [`docs/decisions/`](docs/decisions/) — architecture and product decisions
-- [`docs/project-management/`](docs/project-management/) — issue-driven workflow, agent operating rules, and Project board setup
+- [`apps/web`](apps/web) — the Next.js app: routes, components (grouped by
+  `layout` / `catalog` / `tools/<category>`), and app-specific glue.
+- [`packages/`](packages) — `ui`, `lib`, `tools`, `typescript-config`.
+- [`ROADMAP.md`](ROADMAP.md) — direction and the tool catalog.
+- [`CHANGELOG.md`](CHANGELOG.md) — meaningful changes over time.
+- [`docs/decisions/`](docs/decisions/) — architecture decision records (ADRs).
+- [`docs/PROJECT-STATE.md`](docs/PROJECT-STATE.md) — a living "start here" handoff.
 
-## Working method
+## License
 
-Work should move through:
-
-`Discovery → Specification → Design → Development → Testing → Release`
-
-Use GitHub Issues for actionable work. Use ADRs for decisions that should remain understandable months later.
-
-Work is tracked on the **Ecommerce Toolkit Development** GitHub Project, and a
-coding agent operates under a label-gated loop — it starts an issue only when
-the owner marks it `agent:ready`. See
-[`docs/project-management/`](docs/project-management/) for the workflow, issue
-lifecycle, and one-time board setup.
-
-## Next action
-
-Create the specification and first wireframe for the Image Optimizer, then turn the specification into implementation issues.
+[MIT](LICENSE) © Danielius Zajenčkauskas
