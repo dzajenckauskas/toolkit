@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
 import { Stack, Text } from '@toolkit/ui';
-import { formatHsl, formatRgb, parseHex, rgbToHex, rgbToHsl } from '@/lib/color';
+import { formatHsl, formatRgb, parseHex, rgbToHex, rgbToHsl } from '@toolkit/lib/color';
 
 const Controls = styled('div')(({ theme }) => ({
   display: 'flex',

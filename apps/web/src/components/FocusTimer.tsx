@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { Button, Stack, Text } from '@toolkit/ui';
-import { formatClock, nextPhase, phaseSeconds, type TimerPhase } from '@/lib/timer';
+import { formatClock, nextPhase, phaseSeconds, type TimerPhase } from '@toolkit/lib/timer';
 
 const Clock = styled('div')(({ theme }) => ({
   fontSize: 'clamp(3rem, 12vw, 5rem)',

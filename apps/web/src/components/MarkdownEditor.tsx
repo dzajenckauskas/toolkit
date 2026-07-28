@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
 import { Stack } from '@toolkit/ui';
-import { renderMarkdown } from '@/lib/markdown';
+import { renderMarkdown } from '@toolkit/lib/markdown';
 
 const Split = styled('div')(({ theme }) => ({
   display: 'grid',

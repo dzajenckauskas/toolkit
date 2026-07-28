@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
 import { Button, Stack, Text } from '@toolkit/ui';
-import { formatJson, minifyJson } from '@/lib/json-format';
+import { formatJson, minifyJson } from '@toolkit/lib/json-format';
 
 const Area = styled('textarea')(({ theme }) => ({
   width: '100%',

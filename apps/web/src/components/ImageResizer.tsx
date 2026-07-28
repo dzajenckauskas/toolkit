@@ -12,7 +12,7 @@ import {
   renderResized,
   type ImageFormat,
   type Size,
-} from '@/lib/image';
+} from '@toolkit/lib/image';
 
 const Field = styled('label')(({ theme }) => ({
   display: 'flex',

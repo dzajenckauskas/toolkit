@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
 import { Stack, Text } from '@toolkit/ui';
-import { decodeJwt } from '@/lib/jwt';
+import { decodeJwt } from '@toolkit/lib/jwt';
 
 const Area = styled('textarea')(({ theme }) => ({
   width: '100%',

@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
 import { Button, Stack, Text } from '@toolkit/ui';
-import { slugify } from '@/lib/slugify';
+import { slugify } from '@toolkit/lib/slugify';
 
 const Input = styled('input')(({ theme }) => ({
   width: '100%',

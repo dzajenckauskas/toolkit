@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import styled from '@emotion/styled';
 import { Stack, Text } from '@toolkit/ui';
-import { detectUnit, fromEpoch, relativeTime, toEpoch } from '@/lib/timestamp';
+import { detectUnit, fromEpoch, relativeTime, toEpoch } from '@toolkit/lib/timestamp';
 
 const Input = styled('input')(({ theme }) => ({
   width: '100%',

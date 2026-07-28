@@ -11,7 +11,7 @@ import {
   shuffleLines,
   sortLines,
   trimLines,
-} from '@/lib/line-tools';
+} from '@toolkit/lib/line-tools';
 
 const Area = styled('textarea')(({ theme }) => ({
   width: '100%',

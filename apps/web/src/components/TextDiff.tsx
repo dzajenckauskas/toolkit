@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
 import { Stack, Text } from '@toolkit/ui';
-import { diffLines, diffStats } from '@/lib/diff';
+import { diffLines, diffStats } from '@toolkit/lib/diff';
 
 const Inputs = styled('div')(({ theme }) => ({
   display: 'grid',

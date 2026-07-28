@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { Button, Stack, Text } from '@toolkit/ui';
-import { DEFAULT_PERIOD, generateTotp, totpTimeRemaining } from '@/lib/totp';
+import { DEFAULT_PERIOD, generateTotp, totpTimeRemaining } from '@toolkit/lib/totp';
 
 const Input = styled('input')(({ theme }) => ({
   width: '100%',

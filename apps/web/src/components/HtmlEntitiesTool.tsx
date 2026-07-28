@@ -1,7 +1,7 @@
 'use client';
 
 import EncodeDecodeTool from '@/components/EncodeDecodeTool';
-import { decodeHtml, encodeHtml } from '@/lib/html-entities';
+import { decodeHtml, encodeHtml } from '@toolkit/lib/html-entities';
 
 export default function HtmlEntitiesTool() {
   return (

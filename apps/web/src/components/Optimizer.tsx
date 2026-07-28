@@ -1,11 +1,11 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { validateFile } from '@/lib/validation';
-import { generateOutputFilename } from '@/lib/filename';
-import { formatBytes } from '@/lib/format';
-import { ImageDecodeError, ImageEncodeError, optimizeJpeg } from '@/lib/optimize';
-import { ACCEPTED_EXTENSIONS } from '@/lib/constants';
+import { validateFile } from '@toolkit/lib/validation';
+import { generateOutputFilename } from '@toolkit/lib/filename';
+import { formatBytes } from '@toolkit/lib/format';
+import { ImageDecodeError, ImageEncodeError, optimizeJpeg } from '@toolkit/lib/optimize';
+import { ACCEPTED_EXTENSIONS } from '@toolkit/lib/constants';
 import {
   DEFAULT_QUALITY_LEVEL,
   QUALITY_LEVELS,
@@ -13,17 +13,17 @@ import {
   qualityLabel,
   qualityValue,
   type QualityLevel,
-} from '@/lib/quality';
+} from '@toolkit/lib/quality';
 import {
   batchSummary,
   removeItem as removeQueueItem,
   updateItem,
   type QueueItem,
-} from '@/lib/queue';
-import { calculateSavings } from '@/lib/savings';
-import { loadQualityLevel, saveQualityLevel } from '@/lib/settings';
-import { buildZip, type ZipEntry } from '@/lib/zip';
-import { clipboardImageFiles } from '@/lib/clipboard';
+} from '@toolkit/lib/queue';
+import { calculateSavings } from '@toolkit/lib/savings';
+import { loadQualityLevel, saveQualityLevel } from '@toolkit/lib/settings';
+import { buildZip, type ZipEntry } from '@toolkit/lib/zip';
+import { clipboardImageFiles } from '@toolkit/lib/clipboard';
 import styled from '@emotion/styled';
 import { Button, DownloadLink, Stack, Text } from '@toolkit/ui';
 import { ImageDropzone } from '@/components/ImageDropzone';

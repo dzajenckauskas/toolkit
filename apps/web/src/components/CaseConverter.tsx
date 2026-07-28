@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
 import { Button, Stack, Text } from '@toolkit/ui';
-import { CASE_LABELS, type CaseName, convertCase } from '@/lib/case-convert';
+import { CASE_LABELS, type CaseName, convertCase } from '@toolkit/lib/case-convert';
 
 const Area = styled('textarea')(({ theme }) => ({
   width: '100%',

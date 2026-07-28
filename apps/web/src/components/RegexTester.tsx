@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
 import { Stack, Text } from '@toolkit/ui';
-import { runRegex } from '@/lib/regex';
+import { runRegex } from '@toolkit/lib/regex';
 
 const Input = styled('input')(({ theme }) => ({
   width: '100%',

@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { Stack, Text } from '@toolkit/ui';
-import { HASH_ALGORITHMS, type HashAlgorithm } from '@/lib/hash';
-import { hmac } from '@/lib/hmac';
+import { HASH_ALGORITHMS, type HashAlgorithm } from '@toolkit/lib/hash';
+import { hmac } from '@toolkit/lib/hmac';
 
 const Area = styled('textarea')(({ theme }) => ({
   width: '100%',

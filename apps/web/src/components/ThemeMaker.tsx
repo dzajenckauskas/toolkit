@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
 import { Button, Stack, Text } from '@toolkit/ui';
-import { buildTheme, themeToCss, type Theme } from '@/lib/theme-maker';
+import { buildTheme, themeToCss, type Theme } from '@toolkit/lib/theme-maker';
 
 const Controls = styled('div')(({ theme }) => ({
   display: 'flex',

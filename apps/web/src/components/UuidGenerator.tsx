@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { Button, Stack, Text } from '@toolkit/ui';
-import { MAX_UUIDS, generateUuids } from '@/lib/uuid';
+import { MAX_UUIDS, generateUuids } from '@toolkit/lib/uuid';
 
 const Field = styled('label')(({ theme }) => ({
   display: 'flex',

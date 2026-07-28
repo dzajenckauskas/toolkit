@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { Button, Stack, Text } from '@toolkit/ui';
-import { MAX_PARAGRAPHS, generateParagraphs } from '@/lib/lorem';
+import { MAX_PARAGRAPHS, generateParagraphs } from '@toolkit/lib/lorem';
 
 const Field = styled('label')(({ theme }) => ({
   display: 'flex',

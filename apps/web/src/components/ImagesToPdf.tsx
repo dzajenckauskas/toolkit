@@ -4,8 +4,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { Button, Stack, Text } from '@toolkit/ui';
 import { ImageDropzone } from '@/components/ImageDropzone';
-import { validateImageFile } from '@/lib/image';
-import { buildPdf, type PdfImage } from '@/lib/images-to-pdf';
+import { validateImageFile } from '@toolkit/lib/image';
+import { buildPdf, type PdfImage } from '@toolkit/lib/images-to-pdf';
 
 interface Item extends PdfImage {
   id: string;

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import styled from '@emotion/styled';
 import { Stack, Text } from '@toolkit/ui';
 import ImageToolShell, { type LoadedImage } from '@/components/ImageToolShell';
-import { extensionFor, outputImageName, renderResized, type ImageFormat } from '@/lib/image';
+import { extensionFor, outputImageName, renderResized, type ImageFormat } from '@toolkit/lib/image';
 
 const Field = styled('label')(({ theme }) => ({
   display: 'flex',

@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
 import { Button, DownloadLink, Stack, Text } from '@toolkit/ui';
-import { blobPath, blobSvg } from '@/lib/blob';
+import { blobPath, blobSvg } from '@toolkit/lib/blob';
 
 const SIZE = 240;
 

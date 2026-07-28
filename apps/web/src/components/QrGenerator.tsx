@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { DownloadLink, Stack, Text } from '@toolkit/ui';
-import { ERROR_LEVELS, type ErrorLevel, qrToDataUrl } from '@/lib/qr';
+import { ERROR_LEVELS, type ErrorLevel, qrToDataUrl } from '@toolkit/lib/qr';
 
 const Area = styled('textarea')(({ theme }) => ({
   width: '100%',

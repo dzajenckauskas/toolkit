@@ -3,7 +3,7 @@
 import { useCallback, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { Button, Stack, Text } from '@toolkit/ui';
-import { HASH_ALGORITHMS, type HashAlgorithm, checksumsMatch, hashBytes } from '@/lib/hash';
+import { HASH_ALGORITHMS, type HashAlgorithm, checksumsMatch, hashBytes } from '@toolkit/lib/hash';
 
 const Input = styled('input')(({ theme }) => ({
   width: '100%',

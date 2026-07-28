@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
 import { Stack, Text } from '@toolkit/ui';
-import { hexContrast } from '@/lib/contrast';
+import { hexContrast } from '@toolkit/lib/contrast';
 
 const Controls = styled('div')(({ theme }) => ({
   display: 'flex',

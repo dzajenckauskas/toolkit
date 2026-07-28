@@ -9,7 +9,7 @@ import {
   MIN_PASSWORD_LENGTH,
   generatePassword,
   type PasswordOptions,
-} from '@/lib/password';
+} from '@toolkit/lib/password';
 
 const Output = styled('input')(({ theme }) => ({
   width: '100%',

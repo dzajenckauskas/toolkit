@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
 import { Stack, Text } from '@toolkit/ui';
-import { evaluateLines } from '@/lib/calc';
+import { evaluateLines } from '@toolkit/lib/calc';
 
 const Grid = styled('div')(({ theme }) => ({
   display: 'grid',

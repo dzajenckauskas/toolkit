@@ -2,10 +2,10 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
-import { validateFile } from '@/lib/validation';
-import { generateOutputFilename } from '@/lib/filename';
-import { clipboardImageFiles } from '@/lib/clipboard';
-import { BALANCED_JPEG_QUALITY, ACCEPTED_EXTENSIONS } from '@/lib/constants';
+import { validateFile } from '@toolkit/lib/validation';
+import { generateOutputFilename } from '@toolkit/lib/filename';
+import { clipboardImageFiles } from '@toolkit/lib/clipboard';
+import { BALANCED_JPEG_QUALITY, ACCEPTED_EXTENSIONS } from '@toolkit/lib/constants';
 import {
   ASPECT_KEYS,
   ASPECT_RATIOS,
@@ -22,7 +22,7 @@ import {
   type ExportSizeKey,
   type Handle,
   type Rect,
-} from '@/lib/crop';
+} from '@toolkit/lib/crop';
 import { Button, Stack, Text } from '@toolkit/ui';
 import { ImageDropzone } from '@/components/ImageDropzone';
 

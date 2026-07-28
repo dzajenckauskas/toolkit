@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
 import { Stack, Text } from '@toolkit/ui';
-import { percentChange, percentOf, tip, whatPercent } from '@/lib/percentage';
+import { percentChange, percentOf, tip, whatPercent } from '@toolkit/lib/percentage';
 
 const Field = styled('label')(({ theme }) => ({
   display: 'flex',

@@ -4,8 +4,12 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import styled from '@emotion/styled';
 import { Button, Stack, Text } from '@toolkit/ui';
 import { ImageDropzone } from '@/components/ImageDropzone';
-import { clipboardImageFiles } from '@/lib/clipboard';
-import { ACCEPTED_IMAGE_EXTENSIONS, ACCEPTED_IMAGE_MIME, validateImageFile } from '@/lib/image';
+import { clipboardImageFiles } from '@toolkit/lib/clipboard';
+import {
+  ACCEPTED_IMAGE_EXTENSIONS,
+  ACCEPTED_IMAGE_MIME,
+  validateImageFile,
+} from '@toolkit/lib/image';
 
 const HiddenFileInput = styled('input')({
   position: 'absolute',

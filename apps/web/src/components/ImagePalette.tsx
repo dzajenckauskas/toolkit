@@ -4,9 +4,9 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import { Button, Stack, Text } from '@toolkit/ui';
 import { ImageDropzone } from '@/components/ImageDropzone';
-import { clipboardImageFiles } from '@/lib/clipboard';
-import { validateImageFile } from '@/lib/image';
-import { extractPalette } from '@/lib/image-palette';
+import { clipboardImageFiles } from '@toolkit/lib/clipboard';
+import { validateImageFile } from '@toolkit/lib/image';
+import { extractPalette } from '@toolkit/lib/image-palette';
 
 const SAMPLE_SIZE = 120; // downscale before sampling for speed
 

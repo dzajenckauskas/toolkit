@@ -1,7 +1,7 @@
 'use client';
 
 import EncodeDecodeTool from '@/components/EncodeDecodeTool';
-import { encodeUrl, tryDecodeUrl } from '@/lib/url-encode';
+import { encodeUrl, tryDecodeUrl } from '@toolkit/lib/url-encode';
 
 export default function UrlEncoder() {
   return (

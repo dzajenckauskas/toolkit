@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
 import { Stack, Text } from '@toolkit/ui';
-import { COMMON_BASES, convertBase } from '@/lib/number-base';
+import { COMMON_BASES, convertBase } from '@toolkit/lib/number-base';
 
 const Input = styled('input')(({ theme }) => ({
   flex: '1 1 12rem',

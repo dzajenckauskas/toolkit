@@ -4,8 +4,8 @@ import { useState } from 'react';
 import styled from '@emotion/styled';
 import { Stack, Text } from '@toolkit/ui';
 import ImageToolShell, { type LoadedImage } from '@/components/ImageToolShell';
-import { renderResized } from '@/lib/image';
-import { buildZip, type ZipEntry } from '@/lib/zip';
+import { renderResized } from '@toolkit/lib/image';
+import { buildZip, type ZipEntry } from '@toolkit/lib/zip';
 
 const FAVICON_SIZES = [16, 32, 48, 64, 128, 180, 192, 256] as const;
 

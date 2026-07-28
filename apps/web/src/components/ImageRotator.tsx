@@ -13,7 +13,7 @@ import {
   rotateSize,
   type ImageFormat,
   type Transform,
-} from '@/lib/image';
+} from '@toolkit/lib/image';
 
 export default function ImageRotator() {
   const [transform, setTransform] = useState<Transform>(IDENTITY_TRANSFORM);
