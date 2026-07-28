@@ -133,7 +133,7 @@ export function AppHeader() {
   return (
     <Bar>
       <Inner>
-        <Brand href="/" aria-label="toolkit — home" data-testid="brand-home">
+        <Brand href="/" aria-label="Toolkit — home" data-testid="brand-home">
           <Logo />
         </Brand>
 

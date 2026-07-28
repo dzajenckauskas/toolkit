@@ -5,7 +5,7 @@ import { pageMetadata } from '@/lib/seo';
 export const metadata = pageMetadata({
   title: 'FAQ',
   description:
-    'Answers to common questions about toolkit: whether it’s free, whether anything is uploaded, privacy, offline use and browser support.',
+    'Answers to common questions about Toolkit: whether it’s free, whether anything is uploaded, privacy, offline use and browser support.',
   path: '/faq',
 });
 

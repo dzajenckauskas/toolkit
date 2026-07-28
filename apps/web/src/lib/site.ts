@@ -4,7 +4,7 @@
  */
 
 /** Product / brand working name. */
-export const SITE_NAME = 'toolkit';
+export const SITE_NAME = 'Toolkit';
 
 /** Canonical production origin — used for metadataBase, canonicals and the sitemap. */
 export const SITE_URL = 'https://toolkit.zajenckauskas.lt';
@@ -20,5 +20,5 @@ export const AUTHOR_URL = 'https://zajenckauskas.lt';
 /** Contact address used by the "Contact" links (opens the user's mail client). */
 export const CONTACT_EMAIL = 'danielius@zajenckauskas.lt';
 export const CONTACT_MAILTO = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
-  'toolkit — hello',
+  'Toolkit — hello',
 )}`;

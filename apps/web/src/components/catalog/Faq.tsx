@@ -10,7 +10,7 @@ import { FaqAccordion, type FaqItem } from '@/components/catalog/FaqAccordion';
 
 const FAQS: FaqItem[] = [
   {
-    q: 'Is toolkit really free?',
+    q: 'Is Toolkit really free?',
     a: 'Yes. Every tool is free to use — no account, no sign-up, no trial, and no paywall. There are no usage limits.',
   },
   {
@@ -19,7 +19,7 @@ const FAQS: FaqItem[] = [
   },
   {
     q: 'Do I need to create an account?',
-    a: 'No. toolkit has no accounts and no login. Just open a tool and use it.',
+    a: 'No. Toolkit has no accounts and no login. Just open a tool and use it.',
   },
   {
     q: 'Is any of my data stored?',

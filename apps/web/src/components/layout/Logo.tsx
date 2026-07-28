@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 /**
- * The "toolkit" brand: a hand-drawn glasses doodle (recreated as SVG paths from
+ * The "Toolkit" brand: a hand-drawn glasses doodle (recreated as SVG paths from
  * the source strokes) plus the wordmark. `stroke`/`color` inherit currentColor
  * so it themes automatically.
  */
@@ -56,7 +56,7 @@ export function Logo({ size = 24 }: { size?: number }) {
   return (
     <Wrap>
       <GlassesMark size={size} />
-      {/* <Word>toolkit</Word> */}
+      {/* <Word>Toolkit</Word> */}
     </Wrap>
   );
 }

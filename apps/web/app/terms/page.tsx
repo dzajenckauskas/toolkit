@@ -6,7 +6,7 @@ import { pageMetadata } from '@/lib/seo';
 export const metadata = pageMetadata({
   title: 'Terms & Conditions',
   description:
-    'The terms that govern your use of toolkit — a free collection of tools that run entirely in your browser.',
+    'The terms that govern your use of Toolkit — a free collection of tools that run entirely in your browser.',
   path: '/terms',
 });
 
@@ -25,14 +25,14 @@ export default function TermsPage() {
 
         <Prose>
           <p>
-            These Terms &amp; Conditions (the “Terms”) govern your use of toolkit (the “Service”), a
+            These Terms &amp; Conditions (the “Terms”) govern your use of Toolkit (the “Service”), a
             free collection of small utilities that run entirely in your web browser. By using the
             Service you agree to these Terms. If you do not agree, please do not use the Service.
           </p>
 
           <h2>1. The service</h2>
           <p>
-            toolkit provides browser-based tools for working with images, text, data and other
+            Toolkit provides browser-based tools for working with images, text, data and other
             files. <strong>All processing happens locally on your device.</strong> The Service has
             no user accounts and no backend that receives your content: the files and text you work
             with are not uploaded to, transmitted to, or stored on any server operated by us.
