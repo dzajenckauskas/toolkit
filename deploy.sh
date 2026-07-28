@@ -1,6 +1,15 @@
 #!/bin/bash
 set -euo pipefail
 
+# Production deploy for toolkit.zajenckauskas.lt.
+#
+# The repo is a Turborepo monorepo (ADR-009): dependencies install from the
+# ROOT (a single hoisted lockfile) and the build runs through Turbo. This script
+# is intentionally layout-detecting so the *transition* deploy — where the
+# server still holds the pre-monorepo copy of this file for one run — degrades
+# gracefully: with no root lockfile yet it falls back to the old app-local flow.
+# Once the monorepo commit is live, every deploy uses the root flow.
+
 export NVM_DIR="$HOME/.nvm"
 source "$NVM_DIR/nvm.sh"
 nvm use 22 >/dev/null
@@ -20,13 +29,18 @@ echo "→ Pulling latest code..."
 git fetch origin main
 git reset --hard origin/main
 
-cd "$APP_DIR"
-
-echo "→ Installing dependencies..."
-npm ci
-
-echo "→ Building..."
-npm run build
+if [ -f "$REPO_DIR/package-lock.json" ]; then
+  echo "→ Monorepo layout detected — installing from root..."
+  npm ci
+  echo "→ Building (turbo)..."
+  npm run build
+else
+  echo "→ Legacy layout — installing in apps/web..."
+  cd "$APP_DIR"
+  npm ci
+  echo "→ Building..."
+  npm run build
+fi
 
 echo "→ Restarting service..."
 if "$PM2_BIN" describe toolkit >/dev/null 2>&1; then
