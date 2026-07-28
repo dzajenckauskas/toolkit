@@ -39,41 +39,36 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: apps/web/package-lock.json
+          cache-dependency-path: package-lock.json
 
+      # Turborepo monorepo (ADR-009): install once from the root (single hoisted
+      # lockfile), then run each task through Turbo from the repo root.
       - name: Install
         if: steps.detect.outputs.has_app == 'true'
-        working-directory: apps/web
         run: npm ci
 
       - name: Lint
         if: steps.detect.outputs.has_app == 'true'
-        working-directory: apps/web
         run: npm run lint
 
       - name: Format check
         if: steps.detect.outputs.has_app == 'true'
-        working-directory: apps/web
         run: npm run format
 
       - name: Typecheck
         if: steps.detect.outputs.has_app == 'true'
-        working-directory: apps/web
         run: npm run typecheck
 
       - name: Unit tests
         if: steps.detect.outputs.has_app == 'true'
-        working-directory: apps/web
         run: npm test
 
       - name: Build
         if: steps.detect.outputs.has_app == 'true'
-        working-directory: apps/web
         run: npm run build
 
       - name: Browser tests
         if: steps.detect.outputs.has_app == 'true'
-        working-directory: apps/web
         run: |
           set -euo pipefail
           npx playwright install --with-deps chromium

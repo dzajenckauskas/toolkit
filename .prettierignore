@@ -1,0 +1,17 @@
+# Build output & deps
+node_modules
+.next
+out
+dist
+coverage
+playwright-report
+test-results
+.turbo
+
+# Generated
+apps/web/next-env.d.ts
+**/*.tsbuildinfo
+package-lock.json
+
+# Prose/docs are hand-formatted (kept out of Prettier to avoid churn)
+**/*.md

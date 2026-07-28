@@ -9,74 +9,74 @@
 # routing signals that are useful in issue lists and Actions.
 
 # --- type: what kind of work this is ---
-- name: 'type:feature'
-  color: '1d76db'
+- name: "type:feature"
+  color: "1d76db"
   description: A focused product or technical capability.
-- name: 'type:bug'
-  color: 'd73a4a'
+- name: "type:bug"
+  color: "d73a4a"
   description: Incorrect or unexpected behavior.
-- name: 'type:research'
-  color: '8250df'
+- name: "type:research"
+  color: "8250df"
   description: Investigate an unknown before implementation.
-- name: 'type:documentation'
-  color: '0075ca'
+- name: "type:documentation"
+  color: "0075ca"
   description: Documentation-only change.
-- name: 'type:maintenance'
-  color: 'fbca04'
+- name: "type:maintenance"
+  color: "fbca04"
   description: Chores, tooling, dependencies, housekeeping.
 
 # --- agent: the coding-agent operating signals ---
-- name: 'agent:ready'
-  color: '0e8a16'
+- name: "agent:ready"
+  color: "0e8a16"
   description: Explicit permission for a coding agent to start this issue.
-- name: 'agent:working'
-  color: 'fbca04'
+- name: "agent:working"
+  color: "fbca04"
   description: A coding agent is actively implementing this issue.
-- name: 'agent:blocked'
-  color: 'b60205'
+- name: "agent:blocked"
+  color: "b60205"
   description: Agent work cannot continue without a decision or dependency.
-- name: 'agent:review-needed'
-  color: '5319e7'
+- name: "agent:review-needed"
+  color: "5319e7"
   description: A PR exists and needs human review.
 
 # --- area: which surface it touches ---
-- name: 'area:optimizer'
-  color: 'c2e0c6'
+- name: "area:optimizer"
+  color: "c2e0c6"
   description: Image Optimizer tool.
-- name: 'area:cropper'
-  color: 'c2e0c6'
+- name: "area:cropper"
+  color: "c2e0c6"
   description: Image Cropper tool.
-- name: 'area:converter'
-  color: 'c2e0c6'
+- name: "area:converter"
+  color: "c2e0c6"
   description: Image Converter tool.
-- name: 'area:resizer'
-  color: 'c2e0c6'
+- name: "area:resizer"
+  color: "c2e0c6"
   description: Image Resizer tool.
-- name: 'area:platform'
-  color: 'bfd4f2'
+- name: "area:platform"
+  color: "bfd4f2"
   description: Shared app, tooling, CI, and repository platform.
 
 # --- priority: mirrors the Project Priority field for list/Action use ---
-- name: 'priority:p0'
-  color: 'b60205'
+- name: "priority:p0"
+  color: "b60205"
   description: Critical. Drop other work.
-- name: 'priority:p1'
-  color: 'd93f0b'
+- name: "priority:p1"
+  color: "d93f0b"
   description: High priority.
-- name: 'priority:p2'
-  color: 'fbca04'
+- name: "priority:p2"
+  color: "fbca04"
   description: Normal priority.
-- name: 'priority:p3'
-  color: 'c5def5'
+- name: "priority:p3"
+  color: "c5def5"
   description: Low priority / nice to have.
 
 # --- needs: what is missing before work can proceed ---
-- name: 'needs:decision'
-  color: 'd876e3'
+- name: "needs:decision"
+  color: "d876e3"
   description: Blocked on a product or technical decision by the owner.
-- name: 'needs:design'
-  color: 'd876e3'
+- name: "needs:design"
+  color: "d876e3"
   description: Requires UX or interaction design first.
-- name: 'needs:testing'
-  color: 'd876e3'
+- name: "needs:testing"
+  color: "d876e3"
   description: Requires testing or verification before it can close.

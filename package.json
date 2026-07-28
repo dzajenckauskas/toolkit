@@ -1,0 +1,29 @@
+{
+  "name": "toolkit",
+  "version": "0.1.0",
+  "private": true,
+  "description": "toolkit — a hub of free, private, client-side browser tools. Turborepo monorepo (ADR-009).",
+  "license": "MIT",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "packageManager": "npm@10.9.2",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "test:e2e": "turbo run test:e2e",
+    "format": "prettier --check .",
+    "format:write": "prettier --write ."
+  },
+  "devDependencies": {
+    "prettier": "^3.4.2",
+    "turbo": "^2.3.3"
+  }
+}

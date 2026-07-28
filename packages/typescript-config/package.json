@@ -1,0 +1,15 @@
+{
+  "name": "@toolkit/typescript-config",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "description": "Shared TypeScript configs for the toolkit monorepo. Not a runtime package — it only ships tsconfig JSON that other packages `extends`.",
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "files": [
+    "base.json",
+    "nextjs.json",
+    "react-library.json"
+  ]
+}

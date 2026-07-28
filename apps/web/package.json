@@ -2,7 +2,7 @@
   "name": "@toolkit/web",
   "version": "0.1.0",
   "private": true,
-  "description": "Ecommerce Toolkit web app. Sprint 001 delivers the Image Optimizer foundation.",
+  "description": "toolkit web app — the shell and every tool route (Next.js App Router).",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -37,6 +37,7 @@
     "@types/react": "^19.0.7",
     "@types/react-dom": "^19.0.3",
     "@vitejs/plugin-react": "^4.3.4",
+    "@toolkit/typescript-config": "*",
     "eslint": "^8.57.1",
     "eslint-config-next": "^15.1.6",
     "eslint-config-prettier": "^9.1.0",

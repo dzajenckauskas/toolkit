@@ -1,2 +1,25 @@
+# Dependencies (single hoisted install at the workspace root)
+node_modules/
+
+# Turborepo / build output
+.turbo/
+.next/
+out/
+dist/
+*.tsbuildinfo
+
+# Test / coverage artifacts
+coverage/
+playwright-report/
+test-results/
+.playwright/
+
+# Generated
+apps/web/next-env.d.ts
+
+# Env / OS / editor
+.env*.local
+.DS_Store
+
 # Local, machine-specific Claude Code settings (permissions etc.)
 .claude/settings.local.json
