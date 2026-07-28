@@ -1,4 +1,4 @@
-# toolkit
+# Toolkit
 
 **Free, private, browser-based tools for everyday development and creative work.**
 No account, no upload, no paywall — every tool runs entirely on your device.
