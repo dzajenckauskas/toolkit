@@ -11,7 +11,7 @@ upload, and no paywall. The catalog is registry-driven
 read from a single source of truth, and shipping a tool means adding a route +
 component and flipping its `status` from `planned` to `live`.
 
-Tools are drawn from a competitor scan (`docs/research/`). Build order favours
+Tools are drawn from UX research of existing browser-tool suites. Build order favours
 small, pure, high-value utilities first; heavy tools (PDF/video editors, AI
 upscale) come later.
 
@@ -100,7 +100,7 @@ for that slice only; full multi-format, batch, and controls remain open. See
 
 ### Image Rotate / Flip
 
-Added after a competitor scan (`docs/research/competitor-images-net.md`).
+Added after UX research of existing image-tool suites.
 Client-side via Canvas; no new dependencies (ADR-005).
 
 - [ ] Rotate 90° left / right
@@ -119,7 +119,7 @@ Client-side via Canvas; no new dependencies (ADR-005).
 - [ ] Accessible keyboard workflows
 - [ ] Performance telemetry without collecting user images
 - [ ] **Unified "My Images" workspace** — one place to add images, then route
-      them into any tool (bridges Phase 4). Pulled forward from the competitor
+      them into any tool (bridges Phase 4). Pulled forward from the UX
       scan; the shared file queue is its foundation.
 
 ## Phase 4 — Project workflows
@@ -141,8 +141,7 @@ Client-side via Canvas; no new dependencies (ADR-005).
 - [ ] **Upscale image** — real quality needs AI super-resolution (heavy WASM or
       a paid/hosted model), which conflicts with our no-backend / privacy-local
       MVP stance. Approach is an **open owner decision**; a naive Canvas
-      "upscale" (interpolation only) is not worth shipping. See the competitor
-      scan.
+      "upscale" (interpolation only) is not worth shipping.
 - [ ] **Remove Watermark** — ⚠️ **legal/ethical: needs an explicit owner policy
       decision before any work.** Dual-use (removing your own vs. others'
       watermarks); a general remover would mostly enable copyright infringement

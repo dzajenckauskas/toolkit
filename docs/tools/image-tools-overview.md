@@ -13,7 +13,7 @@ Suggested routes:
 - `/rotate`
 
 A later project workflow may combine these operations, but that is not required
-initially. A competitor scan (`docs/research/competitor-images-net.md`) suggests
+initially. UX research of existing image-tool suites suggests
 a future **unified "My Images" workspace** — add images once, then route them
 into any tool — as the natural evolution of the shared file queue (Phase 3/4).
 
@@ -106,7 +106,7 @@ Change image dimensions without manually calculating ratios.
 
 ## Image Rotate / Flip
 
-Added from the competitor scan (`docs/research/competitor-images-net.md`).
+Added from UX research of existing image-tool suites.
 
 ### User outcome
 
@@ -127,7 +127,7 @@ a chosen color) is a small design decision.
 
 ## Post-MVP / AI utilities (Phase 5 — decisions required)
 
-These appear on competitor tools but do **not** fit the current no-backend,
+These appear on some existing tools but do **not** fit the current no-backend,
 privacy-local, no-AI-in-MVP stance (ADR-004/005). Parked pending owner decisions.
 
 ### Upscale image

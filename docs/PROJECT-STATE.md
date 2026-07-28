@@ -88,7 +88,7 @@ Reusable helpers worth knowing:
   `/unit-converter`, Percentage `/percentage`
 
 **Command palette:** the home-page search (`ToolCatalog`) is a DevToys /
-free-tooling-style palette — searches names, descriptions, categories and
+command-palette style — searches names, descriptions, categories and
 action keywords; rows show a category icon + tag; ↑/↓ + Enter navigate; global
 ⌘K/Ctrl-K focuses it; empty query falls back to grouped browse cards.
 
@@ -143,6 +143,6 @@ Diagram builder, and the rest of the PDF set (PDF editor, Redact PDF —
 ## Pointers
 
 - Decisions: `docs/decisions/` (ADR-008 = the pivot).
-- Competitor scans: `docs/research/` (images.net, free-tooling.com).
+- Research notes: `docs/research/`.
 - Direction: `ROADMAP.md`. Change log: `CHANGELOG.md`.
 - GitHub: hub epic **#30**; deferred/decision items #23, #27, #28, #29.

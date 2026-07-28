@@ -42,7 +42,7 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
   inline catalog search is unchanged; the duplicate ⌘K binding was moved to the
   header so the two no longer conflict.
 - **Mobile drawer lists individual tools.** The slide-in menu now groups every
-  live tool under its category (free-tooling.com style) with a theme toggle and
+  live tool under its category with a theme toggle and
   "Send feedback" in a pinned footer, and slides in from the left. Category
   labels remain jump-links to the catalog sections.
 
@@ -191,7 +191,7 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
     registry offered here was an anomalous `5.2.2` (real latest is 4.x) flagged
     with a critical advisory, so the package was not adopted.
 - **Command-palette search:** the home-page search is now a keyboard-driven
-  command palette (inspired by DevToys / free-tooling). It searches tool names,
+  command palette (DevToys-style). It searches tool names,
   descriptions, categories and action-style keywords (e.g. "encode" → Base64,
   "minify" → JSON, "pomodoro" → Focus timer), shows results as rows with a
   category icon and tag, supports ↑/↓ + Enter navigation and a global ⌘K/Ctrl-K

@@ -6,15 +6,16 @@
 ## Context
 
 The project began as a focused ecommerce image toolkit (ADR-001, `vision.md`).
-Competitor scans of **images.net** (paywalled image tools) and **free-tooling.com**
-(a free, client-side, generalist tool suite) — see `docs/research/` — showed a
-clear opening: free-tooling.com's positioning *"No account. No paywall. No
-nonsense. Just a tool running in your browser"* is exactly the direction we
-already lean toward, applied to a **broad** catalog of ~30 utilities.
+Market/UX research of the browser-tool space — paywalled image-tool sites on one
+end and free, client-side generalist tool suites on the other — showed a clear
+opening: the strongest positioning in the category is *"no account, no paywall,
+no nonsense — just a tool running in your browser,"* which is exactly the
+direction we already lean toward, applied to a **broad** catalog of ~30
+utilities.
 
-The owner has decided to **build the full set of tools** gathered from those
-sites (image tools + developer/text/PDF/design/productivity utilities), as a
-personal project, with monetization deferred.
+The owner has decided to **build the full set of tools** the research surfaced
+(image tools + developer/text/PDF/design/productivity utilities), as a personal
+project, with monetization deferred.
 
 ## Decision
 
@@ -27,7 +28,7 @@ purpose, free, client-side browser tool hub**.
   more of them, organized by category.
 - A **tool registry** (`src/tools/registry.ts`) is the single source of truth;
   a **catalog landing page with search** and category grouping is the entry
-  point (modeled on free-tooling.com's UX).
+  point (a command-palette-style catalog, a familiar pattern for tool suites).
 - The existing image tools (Optimizer, Cropper, and planned Resize/Convert/
   Rotate) remain a first-class category, not the whole product.
 
@@ -38,7 +39,7 @@ purpose, free, client-side browser tool hub**.
 - Much larger surface; each tool is small and independent, so incremental.
 - Our architecture already fits: shared `ui` primitives, per-tool routes,
   client-side processing, a typed theme — the registry just scales it.
-- Strong, honest positioning (free/private/in-browser) vs. paywalled competitors.
+- Strong, honest positioning (free/private/in-browser) vs. paywalled alternatives.
 
 ### Negative / open
 
@@ -48,7 +49,7 @@ purpose, free, client-side browser tool hub**.
   mitigate by keeping tools small, standalone, and well-tested.
 - Some tools are heavy (Video/PDF/Image editors, AI upscale, watermark removal);
   those stay later-stage and, where AI is required, still gated (ADR-004) and —
-  for watermark removal — behind the policy flag (see the research doc).
+  for watermark removal — behind the policy flag (ADR-004).
 - **Monetization** is explicitly deferred; nothing here commits to a model.
 
 ## Scope
