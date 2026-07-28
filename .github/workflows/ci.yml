@@ -69,6 +69,9 @@ jobs:
 
       - name: Browser tests
         if: steps.detect.outputs.has_app == 'true'
+        # Run from the app: the Playwright binary and its config live there
+        # (workspace-dep bins are not hoisted to the root node_modules/.bin).
+        working-directory: apps/web
         run: |
           set -euo pipefail
           npx playwright install --with-deps chromium
