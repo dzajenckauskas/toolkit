@@ -1,11 +1,8 @@
-import type { Metadata } from 'next';
+import { toolMetadata } from '@/lib/seo';
 import GradientGenerator from '@/components/GradientGenerator';
 import { ToolPage } from '@/components/ToolPage';
 
-export const metadata: Metadata = {
-  title: 'CSS Gradient Generator — Free Tools',
-  description: 'Build linear and radial CSS gradients and copy the CSS, in your browser.',
-};
+export const metadata = toolMetadata('gradient');
 
 export default function GradientPage() {
   return (

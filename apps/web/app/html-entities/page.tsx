@@ -1,11 +1,8 @@
-import type { Metadata } from 'next';
+import { toolMetadata } from '@/lib/seo';
 import HtmlEntitiesTool from '@/components/HtmlEntitiesTool';
 import { ToolPage } from '@/components/ToolPage';
 
-export const metadata: Metadata = {
-  title: 'HTML Entity Encode / Decode — Free Tools',
-  description: 'Escape and unescape HTML entities in your browser. No account, no upload.',
-};
+export const metadata = toolMetadata('html-entities');
 
 export default function HtmlEntitiesPage() {
   return (

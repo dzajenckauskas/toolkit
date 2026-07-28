@@ -1,11 +1,8 @@
-import type { Metadata } from 'next';
+import { toolMetadata } from '@/lib/seo';
 import ImageConverter from '@/components/ImageConverter';
 import { ToolPage } from '@/components/ToolPage';
 
-export const metadata: Metadata = {
-  title: 'Convert Image (JPG / PNG / WebP) — Free Tools',
-  description: 'Convert images between JPG, PNG and WebP in your browser. No account, no upload.',
-};
+export const metadata = toolMetadata('convert');
 
 export default function ConvertPage() {
   return (

@@ -1,11 +1,8 @@
-import type { Metadata } from 'next';
+import { toolMetadata } from '@/lib/seo';
 import NotepadCalculator from '@/components/NotepadCalculator';
 import { ToolPage } from '@/components/ToolPage';
 
-export const metadata: Metadata = {
-  title: 'Notepad Calculator — Free Tools',
-  description: 'Calculate as you type, line by line, in your browser. No account, no upload.',
-};
+export const metadata = toolMetadata('calculator');
 
 export default function CalculatorPage() {
   return (

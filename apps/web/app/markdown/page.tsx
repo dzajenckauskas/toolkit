@@ -1,11 +1,8 @@
-import type { Metadata } from 'next';
+import { toolMetadata } from '@/lib/seo';
 import MarkdownEditor from '@/components/MarkdownEditor';
 import { ToolPage } from '@/components/ToolPage';
 
-export const metadata: Metadata = {
-  title: 'Markdown Editor & Preview — Free Tools',
-  description: 'Write Markdown with a live preview in your browser. No account, no upload.',
-};
+export const metadata = toolMetadata('markdown');
 
 export default function MarkdownPage() {
   return (

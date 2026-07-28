@@ -1,11 +1,8 @@
-import type { Metadata } from 'next';
+import { toolMetadata } from '@/lib/seo';
 import QrGenerator from '@/components/QrGenerator';
 import { ToolPage } from '@/components/ToolPage';
 
-export const metadata: Metadata = {
-  title: 'QR Code Generator — Free Tools',
-  description: 'Generate a QR code for any link or text in your browser. No account, no upload.',
-};
+export const metadata = toolMetadata('qr');
 
 export default function QrPage() {
   return (

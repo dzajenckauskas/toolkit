@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Danielius white sphere mark">
+  <defs>
+    <radialGradient id="sphere" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(23 21) rotate(48) scale(43)">
+      <stop stop-color="#fff"/><stop offset=".2" stop-color="#fbfcfa"/><stop offset=".5" stop-color="#ecefeb"/><stop offset=".76" stop-color="#d0d5d1"/><stop offset="1" stop-color="#a7afab"/>
+    </radialGradient>
+    <radialGradient id="highlight" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(22 21) rotate(38) scale(12 10)">
+      <stop stop-color="#fff" stop-opacity=".9"/><stop offset=".45" stop-color="#fff" stop-opacity=".28"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="edge-shade" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(23 21) scale(37)">
+      <stop offset=".5" stop-color="#5d6863" stop-opacity="0"/><stop offset=".78" stop-color="#5d6863" stop-opacity=".08"/><stop offset="1" stop-color="#46514c" stop-opacity=".48"/>
+    </radialGradient>
+    <radialGradient id="bounce" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(23 47) scale(14 5)"><stop stop-color="#fff" stop-opacity=".34"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+    <filter id="shadow" x="-55%" y="-45%" width="210%" height="230%"><feDropShadow dx="0" dy="5" stdDeviation="4.5" flood-opacity=".46"/></filter>
+  </defs>
+  <g id="favicon-ball">
+    <circle cx="32" cy="30" r="23" fill="url(#sphere)" filter="url(#shadow)"/>
+    <circle cx="32" cy="30" r="23" fill="url(#edge-shade)"/>
+    <ellipse cx="22" cy="20" rx="11" ry="9" fill="url(#highlight)"/>
+    <ellipse cx="23" cy="47" rx="14" ry="5" fill="url(#bounce)"/>
+  </g>
+</svg>

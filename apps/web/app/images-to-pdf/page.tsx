@@ -1,11 +1,8 @@
-import type { Metadata } from 'next';
+import { toolMetadata } from '@/lib/seo';
 import ImagesToPdf from '@/components/ImagesToPdf';
 import { ToolPage } from '@/components/ToolPage';
 
-export const metadata: Metadata = {
-  title: 'Images to PDF — Free Tools',
-  description: 'Combine images into a single PDF in your browser. No account, no upload.',
-};
+export const metadata = toolMetadata('images-to-pdf');
 
 export default function ImagesToPdfPage() {
   return (

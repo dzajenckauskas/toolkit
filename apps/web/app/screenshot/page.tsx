@@ -1,11 +1,8 @@
-import type { Metadata } from 'next';
+import { toolMetadata } from '@/lib/seo';
 import ScreenshotBeautifier from '@/components/ScreenshotBeautifier';
 import { ToolPage } from '@/components/ToolPage';
 
-export const metadata: Metadata = {
-  title: 'Screenshot Beautifier — Free Tools',
-  description: 'Add a background, padding, rounded corners and shadow to a screenshot, in-browser.',
-};
+export const metadata = toolMetadata('screenshot');
 
 export default function ScreenshotPage() {
   return (

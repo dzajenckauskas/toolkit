@@ -1,11 +1,8 @@
-import type { Metadata } from 'next';
+import { toolMetadata } from '@/lib/seo';
 import KanbanBoard from '@/components/KanbanBoard';
 import { ToolPage } from '@/components/ToolPage';
 
-export const metadata: Metadata = {
-  title: 'Kanban Board — Free Tools',
-  description: 'A lightweight local kanban board saved in your browser. No account, no upload.',
-};
+export const metadata = toolMetadata('kanban');
 
 export default function KanbanPage() {
   return (

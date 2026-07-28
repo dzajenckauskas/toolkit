@@ -1,11 +1,8 @@
-import type { Metadata } from 'next';
+import { toolMetadata } from '@/lib/seo';
 import ColorConverter from '@/components/ColorConverter';
 import { ToolPage } from '@/components/ToolPage';
 
-export const metadata: Metadata = {
-  title: 'Color Converter (HEX / RGB / HSL) — Free Tools',
-  description: 'Pick a color and convert between HEX, RGB and HSL in your browser.',
-};
+export const metadata = toolMetadata('colors');
 
 export default function ColorsPage() {
   return (

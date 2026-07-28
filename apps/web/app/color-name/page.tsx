@@ -1,11 +1,8 @@
-import type { Metadata } from 'next';
+import { toolMetadata } from '@/lib/seo';
 import ColorNameFinder from '@/components/ColorNameFinder';
 import { ToolPage } from '@/components/ToolPage';
 
-export const metadata: Metadata = {
-  title: 'Color Name Finder — Free Tools',
-  description: 'Find the nearest CSS named color for any hex value, in your browser.',
-};
+export const metadata = toolMetadata('color-name');
 
 export default function ColorNamePage() {
   return (

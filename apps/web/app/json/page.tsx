@@ -1,11 +1,8 @@
-import type { Metadata } from 'next';
+import { toolMetadata } from '@/lib/seo';
 import JsonFormatter from '@/components/JsonFormatter';
 import { ToolPage } from '@/components/ToolPage';
 
-export const metadata: Metadata = {
-  title: 'JSON Formatter & Validator — Free Tools',
-  description: 'Validate, format and minify JSON in your browser. No account, no upload.',
-};
+export const metadata = toolMetadata('json');
 
 export default function JsonPage() {
   return (

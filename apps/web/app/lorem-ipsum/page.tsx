@@ -1,11 +1,8 @@
-import type { Metadata } from 'next';
+import { toolMetadata } from '@/lib/seo';
 import LoremIpsum from '@/components/LoremIpsum';
 import { ToolPage } from '@/components/ToolPage';
 
-export const metadata: Metadata = {
-  title: 'Lorem Ipsum Generator — Free Tools',
-  description: 'Generate placeholder text for layouts and mockups. No account, no upload.',
-};
+export const metadata = toolMetadata('lorem-ipsum');
 
 export default function LoremIpsumPage() {
   return (

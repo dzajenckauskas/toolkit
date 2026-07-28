@@ -1,11 +1,8 @@
-import type { Metadata } from 'next';
+import { toolMetadata } from '@/lib/seo';
 import TimestampConverter from '@/components/TimestampConverter';
 import { ToolPage } from '@/components/ToolPage';
 
-export const metadata: Metadata = {
-  title: 'Unix Timestamp Converter — Free Tools',
-  description: 'Convert between Unix timestamps and human dates in your browser.',
-};
+export const metadata = toolMetadata('timestamp');
 
 export default function TimestampPage() {
   return (

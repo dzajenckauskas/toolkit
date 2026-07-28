@@ -1,11 +1,8 @@
-import type { Metadata } from 'next';
+import { toolMetadata } from '@/lib/seo';
 import BlobGenerator from '@/components/BlobGenerator';
 import { ToolPage } from '@/components/ToolPage';
 
-export const metadata: Metadata = {
-  title: 'SVG Blob Generator — Free Tools',
-  description: 'Generate organic SVG blob shapes and download them, in your browser.',
-};
+export const metadata = toolMetadata('blob');
 
 export default function BlobPage() {
   return (

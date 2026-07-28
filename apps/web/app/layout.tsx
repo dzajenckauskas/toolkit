@@ -6,6 +6,7 @@ import EmotionRegistry from '@/theme/EmotionRegistry';
 import { AppHeader } from '@/components/AppHeader';
 import { Footer } from '@/components/Footer';
 import { NO_FLASH_SCRIPT } from '@/lib/theme-mode';
+import { SITE_NAME, SITE_URL, SITE_DESCRIPTION } from '@/lib/site';
 
 // Neris — the display/body sans, self-hosted via next/font so the @font-face
 // rules are inlined into the document head (no render-blocking CSS request) and
@@ -22,10 +23,47 @@ const neris = localFont({
   display: 'swap',
 });
 
+const DEFAULT_TITLE = `${SITE_NAME} — free tools that run in your browser`;
+
 export const metadata: Metadata = {
-  title: 'toolkit — free tools that run in your browser',
-  description:
-    'A hub of free, private tools that run entirely in your browser. No account, no upload, no paywall.',
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: DEFAULT_TITLE,
+    // Tool pages set their own title; this frames anything that doesn't.
+    template: `%s · ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  keywords: [
+    'free online tools',
+    'browser tools',
+    'privacy',
+    'no upload',
+    'image tools',
+    'developer tools',
+    'text tools',
+  ],
+  alternates: { canonical: '/' },
+  icons: {
+    // Light/dark SVG favicons — the browser picks by prefers-color-scheme.
+    icon: [
+      { url: '/favicon-light.svg', type: 'image/svg+xml', media: '(prefers-color-scheme: light)' },
+      { url: '/favicon-dark.svg', type: 'image/svg+xml', media: '(prefers-color-scheme: dark)' },
+    ],
+  },
+  openGraph: {
+    type: 'website',
+    siteName: SITE_NAME,
+    url: '/',
+    title: DEFAULT_TITLE,
+    description: SITE_DESCRIPTION,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: DEFAULT_TITLE,
+    description: SITE_DESCRIPTION,
+  },
+  robots: { index: true, follow: true },
 };
 
 export const viewport: Viewport = {

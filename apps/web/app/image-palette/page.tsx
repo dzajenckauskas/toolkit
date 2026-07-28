@@ -1,12 +1,8 @@
-import type { Metadata } from 'next';
+import { toolMetadata } from '@/lib/seo';
 import ImagePalette from '@/components/ImagePalette';
 import { ToolPage } from '@/components/ToolPage';
 
-export const metadata: Metadata = {
-  title: 'Palette from Image — Free Tools',
-  description:
-    'Extract a dominant-color palette from an image in your browser. Nothing is uploaded.',
-};
+export const metadata = toolMetadata('image-palette');
 
 export default function ImagePalettePage() {
   return (

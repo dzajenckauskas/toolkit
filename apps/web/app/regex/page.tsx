@@ -1,11 +1,8 @@
-import type { Metadata } from 'next';
+import { toolMetadata } from '@/lib/seo';
 import RegexTester from '@/components/RegexTester';
 import { ToolPage } from '@/components/ToolPage';
 
-export const metadata: Metadata = {
-  title: 'Regex Tester — Free Tools',
-  description: 'Test regular expressions live in your browser. No account, no upload.',
-};
+export const metadata = toolMetadata('regex');
 
 export default function RegexPage() {
   return (

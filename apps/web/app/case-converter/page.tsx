@@ -1,11 +1,8 @@
-import type { Metadata } from 'next';
+import { toolMetadata } from '@/lib/seo';
 import CaseConverter from '@/components/CaseConverter';
 import { ToolPage } from '@/components/ToolPage';
 
-export const metadata: Metadata = {
-  title: 'Case Converter — Free Tools',
-  description: 'Convert text between camelCase, snake_case, Title Case and more, in your browser.',
-};
+export const metadata = toolMetadata('case-converter');
 
 export default function CaseConverterPage() {
   return (

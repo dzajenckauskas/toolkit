@@ -1,12 +1,8 @@
-import type { Metadata } from 'next';
+import { toolMetadata } from '@/lib/seo';
 import Cropper from '@/components/Cropper';
 import { ToolPage } from '@/components/ToolPage';
 
-export const metadata: Metadata = {
-  title: 'Image Cropper — Ecommerce Toolkit',
-  description:
-    'Crop a product image to the right framing and aspect ratio in your browser, then download it.',
-};
+export const metadata = toolMetadata('crop');
 
 export default function CropPage() {
   return (

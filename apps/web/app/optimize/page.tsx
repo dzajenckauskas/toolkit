@@ -1,12 +1,8 @@
-import type { Metadata } from 'next';
+import { toolMetadata } from '@/lib/seo';
 import Optimizer from '@/components/Optimizer';
 import { ToolPage } from '@/components/ToolPage';
 
-export const metadata: Metadata = {
-  title: 'Image Optimizer — Ecommerce Toolkit',
-  description:
-    'Reduce JPEG file size in your browser. Add a photo, optimize it locally, and download the result.',
-};
+export const metadata = toolMetadata('optimize');
 
 export default function OptimizePage() {
   return (

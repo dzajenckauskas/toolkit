@@ -1,13 +1,14 @@
-import type { Metadata } from 'next';
 import { Heading, Page, Stack, Text } from '@/components/ui';
 import { Prose } from '@/components/LegalDoc';
 import { CONTACT_EMAIL, CONTACT_MAILTO } from '@/lib/site';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Terms & Conditions — toolkit',
+export const metadata = pageMetadata({
+  title: 'Terms & Conditions',
   description:
     'The terms that govern your use of toolkit — a free collection of tools that run entirely in your browser.',
-};
+  path: '/terms',
+});
 
 const LAST_UPDATED = '24 July 2026';
 

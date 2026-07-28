@@ -1,11 +1,8 @@
-import type { Metadata } from 'next';
+import { toolMetadata } from '@/lib/seo';
 import JwtDecoder from '@/components/JwtDecoder';
 import { ToolPage } from '@/components/ToolPage';
 
-export const metadata: Metadata = {
-  title: 'JWT Decoder — Free Tools',
-  description: 'Decode and inspect JSON Web Tokens in your browser. Nothing leaves your device.',
-};
+export const metadata = toolMetadata('jwt');
 
 export default function JwtPage() {
   return (

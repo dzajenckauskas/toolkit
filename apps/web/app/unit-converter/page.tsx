@@ -1,11 +1,8 @@
-import type { Metadata } from 'next';
+import { toolMetadata } from '@/lib/seo';
 import UnitConverter from '@/components/UnitConverter';
 import { ToolPage } from '@/components/ToolPage';
 
-export const metadata: Metadata = {
-  title: 'Unit Converter — Free Tools',
-  description: 'Convert length, weight, data, time and temperature units in your browser.',
-};
+export const metadata = toolMetadata('unit-converter');
 
 export default function UnitConverterPage() {
   return (

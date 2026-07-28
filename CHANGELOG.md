@@ -6,6 +6,23 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 
 ### Added
 
+- **SEO & discoverability pass.** Now that the site is live at
+  toolkit.zajenckauskas.lt, added the metadata plumbing a public 48-page site
+  needs, all driven off the tool registry so it stays in sync automatically:
+  - **`app/sitemap.ts`** — generated from `LIVE_TOOLS` (+ home/FAQ/Terms), so a
+    tool is indexed the moment its `status` flips to `live` (51 URLs today).
+  - **`app/robots.ts`** — allow-all with a `Sitemap:`/`Host:` pointer.
+  - **`app/manifest.ts`** — installable web manifest themed to the paper palette.
+  - **Root metadata** gained `metadataBase`, a `%s · toolkit` title template,
+    site-wide OpenGraph/Twitter card defaults, keywords, and a canonical base.
+  - **Per-tool metadata** now comes from `src/lib/seo.ts` (`toolMetadata`/
+    `pageMetadata`): every one of the 48 tool pages plus FAQ/Terms gets an
+    accurate title, description, **canonical URL** and OG/Twitter cards derived
+    from the registry — replacing hand-written blocks that had already drifted
+    (e.g. Crop still said "Ecommerce Toolkit").
+  - **Light/dark SVG favicons** (`favicon-light.svg`/`favicon-dark.svg`, shared
+    with the danielius site) wired via `metadata.icons` with
+    `prefers-color-scheme` media queries.
 - **Landing-page layout for every tool.** Each of the 48 tool pages now renders
   through a shared `ToolPage` template: a hero (category eyebrow, heading,
   tagline and the interactive tool in a framed workspace), a "How it works"
