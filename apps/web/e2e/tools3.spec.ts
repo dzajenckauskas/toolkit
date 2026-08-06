@@ -65,12 +65,13 @@ test('Text diff side-by-side view remains within a narrow viewport', async ({ pa
   await page.getByTestId('diff-after').fill('a very long changed line that must wrap safely');
   await page.getByTestId('diff-view-side').click();
 
-  // window.innerWidth is the real viewport size; document.documentElement
-  // .clientWidth is shrunk by `scrollbar-gutter: stable` even when no
-  // scrollbar is actually showing, which reads as false overflow on
-  // platforms with non-overlay scrollbars (e.g. CI's Linux runner).
+  // `scrollbar-gutter: stable` (see GlobalStyles) permanently reserves a
+  // scrollbar-width strip on platforms with non-overlay scrollbars (e.g. CI's
+  // Linux runner), even with no vertical overflow. That makes scrollWidth
+  // legitimately *narrower* than window.innerWidth — harmless, so only a
+  // positive gap (real horizontal overflow) counts.
   const overflow = await page.evaluate(
-    () => document.documentElement.scrollWidth - window.innerWidth,
+    () => Math.max(0, document.documentElement.scrollWidth - window.innerWidth),
   );
   expect(overflow).toBe(0);
 });

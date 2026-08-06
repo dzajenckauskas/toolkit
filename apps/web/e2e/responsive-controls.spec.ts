@@ -9,10 +9,8 @@ test('live tool pages keep native controls inside the narrow viewport', async ({
     await page.goto(tool.href);
 
     const overflow = await page.evaluate(() => {
-      // window.innerWidth is the real viewport size; document.documentElement
-      // .clientWidth is shrunk by `scrollbar-gutter: stable` even when no
-      // scrollbar is actually showing, which reads as false overflow on
-      // platforms with non-overlay scrollbars (e.g. CI's Linux runner).
+      // window.innerWidth is the real viewport size, used to judge whether a
+      // control actually renders past the visible edge.
       const viewportWidth = window.innerWidth;
       const controls = [...document.querySelectorAll<HTMLElement>('input, select, textarea')];
       const outside = controls
@@ -22,8 +20,13 @@ test('live tool pages keep native controls inside the narrow viewport', async ({
         })
         .map((control) => control.getAttribute('data-testid') ?? control.outerHTML.slice(0, 80));
 
+      // `scrollbar-gutter: stable` (see GlobalStyles) permanently reserves a
+      // scrollbar-width strip on platforms with non-overlay scrollbars (e.g.
+      // CI's Linux runner), even on pages with no vertical overflow. That
+      // makes scrollWidth legitimately *narrower* than window.innerWidth —
+      // harmless, so only a positive gap (real horizontal overflow) counts.
       return {
-        documentOverflow: document.documentElement.scrollWidth - viewportWidth,
+        documentOverflow: Math.max(0, document.documentElement.scrollWidth - viewportWidth),
         controls: outside,
       };
     });
