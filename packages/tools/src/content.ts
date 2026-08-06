@@ -1,10 +1,9 @@
 import type { Tool } from './registry';
 
 /**
- * Per-tool landing-page content: the "how it works" steps, the highlight cards,
- * and the FAQ shown on each tool page. Flagship tools get bespoke copy; every
- * other tool falls back to sensible content derived from its registry entry, so
- * every page is complete without hand-authoring all of them.
+ * Optional, deliberately authored landing-page content. A tool only renders a
+ * walkthrough, highlights, or FAQs when its entry contains specific guidance;
+ * empty sections are preferable to generic marketing and repeated privacy copy.
  */
 
 export interface ToolStep {
@@ -30,64 +29,7 @@ export interface ToolContent {
   faqs: ToolFaq[];
 }
 
-// --- Generic fallbacks, derived from the registry entry ------------------
-
-function genericSteps(tool: Tool): ToolStep[] {
-  return [
-    {
-      title: 'Open it in your browser',
-      body: `${tool.name} runs entirely on your device — no upload, no account, and nothing to install.`,
-    },
-    {
-      title: 'Do the work',
-      body: `${tool.description} Everything happens instantly as you go.`,
-    },
-    {
-      title: 'Save your result',
-      body: 'Download or copy the output straight away. Your data never leaves your device.',
-    },
-  ];
-}
-
-function genericHighlights(tool: Tool): ToolHighlight[] {
-  return [
-    {
-      title: 'Completely private',
-      body: `${tool.name} works locally in your browser — your files and text are never sent to a server.`,
-    },
-    {
-      title: 'Free, with no account',
-      body: 'No sign-up, no trial, and no usage limits. Open the tool and start straight away.',
-    },
-    {
-      title: 'Works on any device',
-      body: 'Runs in any modern browser on desktop, tablet or phone — nothing to download.',
-    },
-  ];
-}
-
-function genericFaqs(tool: Tool): ToolFaq[] {
-  return [
-    {
-      q: `Is ${tool.name} free to use?`,
-      a: 'Yes — every tool here is completely free, with no account, sign-up, or usage limits.',
-    },
-    {
-      q: 'Is anything uploaded to a server?',
-      a: `No. ${tool.name} runs entirely in your browser, so your data never leaves your device.`,
-    },
-    {
-      q: 'Do I need to install anything?',
-      a: 'No. It works in any modern browser on desktop or mobile — there is nothing to download or install.',
-    },
-    {
-      q: 'Does it work offline?',
-      a: 'Once the page has loaded, the processing happens locally, so it keeps working even on a flaky connection.',
-    },
-  ];
-}
-
-// --- Bespoke content for flagship tools ----------------------------------
+// --- Bespoke content for tools that benefit from extra guidance ----------
 
 const BESPOKE: Record<string, Partial<ToolContent>> = {
   'text-diff': {
@@ -145,10 +87,6 @@ const BESPOKE: Record<string, Partial<ToolContent>> = {
       {
         q: 'What formats can I compress?',
         a: 'This tool focuses on JPEG, the best format for photographic product images. To change format, use the Convert image tool first.',
-      },
-      {
-        q: 'Are my photos uploaded anywhere?',
-        a: 'No. Compression runs entirely in your browser using the Canvas API — your images never leave your device.',
       },
       {
         q: 'Can I optimise many images at once?',
@@ -226,10 +164,6 @@ const BESPOKE: Record<string, Partial<ToolContent>> = {
         q: 'Can I enlarge an image?',
         a: 'You can, though enlarging a small image past its native size will soften detail, as with any resize.',
       },
-      {
-        q: 'Is anything uploaded?',
-        a: 'No. Resizing runs locally in your browser; your image never leaves your device.',
-      },
     ],
   },
   convert: {
@@ -257,10 +191,6 @@ const BESPOKE: Record<string, Partial<ToolContent>> = {
         q: 'Does converting lose quality?',
         a: 'Converting to a lossless format (PNG) preserves detail. Converting to JPG or WebP applies compression, which you can keep high for near-lossless output.',
       },
-      {
-        q: 'Are my files uploaded?',
-        a: 'No — conversion runs entirely in your browser, so nothing is sent to a server.',
-      },
     ],
   },
   rotate: {
@@ -277,10 +207,6 @@ const BESPOKE: Record<string, Partial<ToolContent>> = {
       {
         q: 'Does rotating re-compress the image?',
         a: 'Rotating and flipping redraw the image on a canvas. Keep the quality high on export for a near-lossless result.',
-      },
-      {
-        q: 'Is anything uploaded?',
-        a: 'No. Everything runs in your browser; your image never leaves your device.',
       },
     ],
   },
@@ -302,10 +228,6 @@ const BESPOKE: Record<string, Partial<ToolContent>> = {
         q: 'Do the QR codes expire?',
         a: 'No. The code encodes your content directly, so it works forever and needs no tracking service.',
       },
-      {
-        q: 'Is my data sent anywhere?',
-        a: 'No. The QR code is generated in your browser — the content you enter never leaves your device.',
-      },
     ],
   },
   favicon: {
@@ -325,10 +247,6 @@ const BESPOKE: Record<string, Partial<ToolContent>> = {
       {
         q: 'What image should I use?',
         a: 'A square image with clear, simple shapes works best, since favicons are shown very small.',
-      },
-      {
-        q: 'Is my image uploaded?',
-        a: 'No. The favicons are generated in your browser; your image never leaves your device.',
       },
     ],
   },
@@ -350,10 +268,6 @@ const BESPOKE: Record<string, Partial<ToolContent>> = {
         q: 'Can I control the page order?',
         a: 'Yes. Reorder the images before exporting and each becomes a page in that order.',
       },
-      {
-        q: 'Are my images uploaded?',
-        a: 'No. The PDF is built in your browser, so your images never leave your device.',
-      },
     ],
   },
 };
@@ -362,8 +276,8 @@ export function getToolContent(tool: Tool): ToolContent {
   const bespoke = BESPOKE[tool.id] ?? {};
   return {
     tagline: bespoke.tagline ?? tool.description,
-    steps: bespoke.steps ?? genericSteps(tool),
-    highlights: bespoke.highlights ?? genericHighlights(tool),
-    faqs: bespoke.faqs ?? genericFaqs(tool),
+    steps: bespoke.steps ?? [],
+    highlights: bespoke.highlights ?? [],
+    faqs: bespoke.faqs ?? [],
   };
 }

@@ -63,6 +63,10 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 
 ### Changed
 
+- **Tool pages only show useful authored guidance.** Removed the repeated generic
+  walkthrough, “Why use” cards and FAQs from tools without bespoke content, and
+  pruned repeated upload/privacy questions from the remaining tool-specific
+  FAQs. Empty content sections are no longer rendered.
 - **More restrained corner-radius system.** Replaced oversized rounded inputs
   and cards with a compact 6/8/12/16px surface scale, while retaining fully
   rounded buttons, chips and circular icon controls. Native fields and remaining
@@ -75,6 +79,9 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 
 ### Fixed
 
+- **Related-tools band floated above the footer on short pages.** Tool-page
+  shells now fill the available height and keep “Explore more tools” attached
+  directly to the footer, placing any spare vertical space before the band.
 - **Form controls could overflow cards on narrow screens.** Native inputs,
   selects and textareas now shrink within flex/grid parents; responsive grids
   use container-safe minimum tracks; the image editor's paired resize fields

@@ -1,5 +1,34 @@
 import { test, expect } from '@playwright/test';
 
+test('tool pages render only deliberately authored guidance', async ({ page }) => {
+  await page.goto('/uuid');
+  await expect(page.getByTestId('tool-steps')).toHaveCount(0);
+  await expect(page.getByTestId('tool-highlights')).toHaveCount(0);
+  await expect(page.getByTestId('tool-faqs')).toHaveCount(0);
+
+  await page.goto('/text-diff');
+  await expect(page.getByTestId('tool-steps')).toBeVisible();
+  await expect(page.getByTestId('tool-highlights')).toHaveCount(0);
+  await expect(page.getByTestId('tool-faqs')).toHaveCount(0);
+
+  await page.goto('/optimize');
+  await expect(page.getByTestId('tool-steps')).toBeVisible();
+  await expect(page.getByTestId('tool-highlights')).toBeVisible();
+  await expect(page.getByTestId('tool-faqs')).toBeVisible();
+});
+
+test('related tools band stays attached to the footer on short tool pages', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1200 });
+  await page.goto('/screenshot');
+
+  const band = await page.getByTestId('related-tools-band').boundingBox();
+  const footer = await page.locator('footer').boundingBox();
+
+  expect(band).not.toBeNull();
+  expect(footer).not.toBeNull();
+  expect(Math.abs(band!.y + band!.height - footer!.y)).toBeLessThanOrEqual(1);
+});
+
 test('Text diff highlights added and removed lines', async ({ page }) => {
   await page.goto('/text-diff');
   await page.getByTestId('diff-before').fill('a\nb\nc');

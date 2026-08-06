@@ -9,13 +9,16 @@ import { TOOLS, type Tool } from '@toolkit/tools/registry';
 import { getToolContent } from '@toolkit/tools/content';
 
 /**
- * Shared landing-page shell for every tool. Wraps the tool's interactive
- * component in a hero, then adds a "how it works" walkthrough, highlight cards,
- * an FAQ and a related-tools band — all driven by the registry entry and
- * {@link getToolContent}, so a page is just `<ToolPage toolId="…"><Tool/></ToolPage>`.
+ * Shared landing-page shell for every tool. Bespoke walkthrough, highlight and
+ * FAQ sections render only when the tool has useful authored content; the shell
+ * never fills space with generic fallback copy.
  */
 
-const Main = styled('main')({});
+const Main = styled('main')({
+  flex: '1 0 auto',
+  display: 'flex',
+  flexDirection: 'column',
+});
 
 // Centred column shared by the light sections.
 const Shell = styled('div')({
@@ -102,13 +105,6 @@ const SectionTitle = styled('h2')(({ theme }) => ({
   color: theme.color.text,
 }));
 
-const SectionLead = styled('p')(({ theme }) => ({
-  margin: `${theme.space(2)} auto 0`,
-  maxWidth: 640,
-  textAlign: 'center',
-  color: theme.color.muted,
-}));
-
 const Grid3 = styled('div')(({ theme }) => ({
   marginTop: theme.space(8),
   display: 'grid',
@@ -165,6 +161,7 @@ const FaqWrap = styled('div')(({ theme }) => ({
 
 // Dark "explore more" band, mirroring the reference's footer grid.
 const RelatedBand = styled('section')({
+  marginTop: 'auto',
   background: '#191a1c',
   color: '#f2f0ec',
   padding: '4rem 0',
@@ -259,46 +256,51 @@ export function ToolPage({ toolId, children }: { toolId: string; children: React
         </Shell>
       </Hero>
 
-      <Section>
-        <Shell>
-          <SectionTitle>How it works</SectionTitle>
-          <SectionLead>Three simple steps — all in your browser.</SectionLead>
-          <Grid3>
-            {content.steps.map((step, i) => (
-              <StepCard key={i}>
-                <StepNumber>{i + 1}</StepNumber>
-                <CardTitle>{step.title}</CardTitle>
-                <CardBody>{step.body}</CardBody>
-              </StepCard>
-            ))}
-          </Grid3>
-        </Shell>
-      </Section>
+      {content.steps.length > 0 ? (
+        <Section data-testid="tool-steps">
+          <Shell>
+            <SectionTitle>How it works</SectionTitle>
+            <Grid3>
+              {content.steps.map((step, i) => (
+                <StepCard key={i}>
+                  <StepNumber>{i + 1}</StepNumber>
+                  <CardTitle>{step.title}</CardTitle>
+                  <CardBody>{step.body}</CardBody>
+                </StepCard>
+              ))}
+            </Grid3>
+          </Shell>
+        </Section>
+      ) : null}
 
-      <Section>
-        <Shell>
-          <SectionTitle>Why use {tool.name}</SectionTitle>
-          <Grid3>
-            {content.highlights.map((h, i) => (
-              <HighlightCard key={i}>
-                <CardTitle>{h.title}</CardTitle>
-                <CardBody>{h.body}</CardBody>
-              </HighlightCard>
-            ))}
-          </Grid3>
-        </Shell>
-      </Section>
+      {content.highlights.length > 0 ? (
+        <Section data-testid="tool-highlights">
+          <Shell>
+            <SectionTitle>Why use {tool.name}</SectionTitle>
+            <Grid3>
+              {content.highlights.map((h, i) => (
+                <HighlightCard key={i}>
+                  <CardTitle>{h.title}</CardTitle>
+                  <CardBody>{h.body}</CardBody>
+                </HighlightCard>
+              ))}
+            </Grid3>
+          </Shell>
+        </Section>
+      ) : null}
 
-      <Section>
-        <Shell>
-          <SectionTitle>Frequent questions</SectionTitle>
-          <FaqWrap>
-            <FaqAccordion items={content.faqs.map((f) => ({ q: f.q, a: f.a }))} />
-          </FaqWrap>
-        </Shell>
-      </Section>
+      {content.faqs.length > 0 ? (
+        <Section data-testid="tool-faqs">
+          <Shell>
+            <SectionTitle>Frequent questions</SectionTitle>
+            <FaqWrap>
+              <FaqAccordion items={content.faqs.map((f) => ({ q: f.q, a: f.a }))} />
+            </FaqWrap>
+          </Shell>
+        </Section>
+      ) : null}
 
-      <RelatedBand>
+      <RelatedBand data-testid="related-tools-band">
         <Shell>
           <RelatedTitle>Explore more tools</RelatedTitle>
           <RelatedGrid>
