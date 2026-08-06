@@ -70,8 +70,8 @@ test('Text diff side-by-side view remains within a narrow viewport', async ({ pa
   // Linux runner), even with no vertical overflow. That makes scrollWidth
   // legitimately *narrower* than window.innerWidth — harmless, so only a
   // positive gap (real horizontal overflow) counts.
-  const overflow = await page.evaluate(
-    () => Math.max(0, document.documentElement.scrollWidth - window.innerWidth),
+  const overflow = await page.evaluate(() =>
+    Math.max(0, document.documentElement.scrollWidth - window.innerWidth),
   );
   expect(overflow).toBe(0);
 });
