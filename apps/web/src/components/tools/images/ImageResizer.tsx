@@ -30,7 +30,7 @@ const NumberInput = styled('input')(({ theme }) => ({
   color: theme.color.text,
   background: theme.color.surface,
   border: `1px solid ${theme.color.borderStrong}`,
-  borderRadius: '8px',
+  borderRadius: theme.radius.md,
 }));
 
 const Toggle = styled('label')(({ theme }) => ({

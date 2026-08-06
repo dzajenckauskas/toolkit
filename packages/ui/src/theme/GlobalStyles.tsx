@@ -13,7 +13,8 @@ import { Global, css } from '@emotion/react';
 // CV — a warm off-white paper with a muted teal/sage "ink" accent; dark is a
 // restrained blue-slate companion. `--accent` is danielius' `--ink`,
 // `--accent-strong` its `--ink-strong` (accent hover), and `--subtle` its
-// third-tier text. Radii are large and soft (pill buttons, rounded cards).
+// third-tier text. Radii are restrained so controls and surfaces feel precise
+// rather than inflated; true circles opt into 50% explicitly.
 const LIGHT = `
   --bg: #f7f5f2;
   --surface: #ffffff;
@@ -52,13 +53,13 @@ const DARK = `
   --shadow: 0 26px 60px -50px rgba(0, 0, 0, 0.75);
 `;
 
-// Radii + fluid tokens shared by both themes (danielius: utility 1.1rem,
-// card 1.5rem, feature 2rem, inputs ~0.85rem, pill buttons).
+// Compact surface radius scale shared by both themes. Interactive pills remain
+// fully rounded so buttons and chips are distinct from text-entry controls.
 const TOKENS = `
-  --radius-sm: 0.7rem;
-  --radius-md: 1.1rem;
-  --radius-lg: 1.5rem;
-  --radius-xl: 2rem;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
   --radius-pill: 999px;
 `;
 
@@ -171,7 +172,7 @@ export function GlobalStyles() {
           background-repeat: no-repeat;
           background-position: right 0.7rem center;
           border: 1px solid var(--border-strong);
-          border-radius: 0.85rem;
+          border-radius: var(--radius-md);
           cursor: pointer;
           line-height: 1.2;
           transition:
@@ -200,7 +201,7 @@ export function GlobalStyles() {
           color: var(--text);
           background-color: var(--surface);
           border: 1px solid var(--border-strong);
-          border-radius: 0.85rem;
+          border-radius: var(--radius-md);
           line-height: 1.4;
           transition:
             border-color 0.2s ease,
@@ -254,7 +255,7 @@ export function GlobalStyles() {
           height: 2.4rem;
           padding: 0;
           border: 1px solid var(--border-strong);
-          border-radius: 0.85rem;
+          border-radius: var(--radius-md);
           background: none;
           cursor: pointer;
         }
@@ -263,7 +264,7 @@ export function GlobalStyles() {
         }
         input[type='color']::-webkit-color-swatch {
           border: none;
-          border-radius: 0.6rem;
+          border-radius: var(--radius-sm);
         }
 
         input[type='file'] {

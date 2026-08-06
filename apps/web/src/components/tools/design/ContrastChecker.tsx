@@ -28,14 +28,14 @@ const HexInput = styled('input')(({ theme }) => ({
   color: theme.color.text,
   background: theme.color.surface,
   border: `1px solid ${theme.color.borderStrong}`,
-  borderRadius: '8px',
+  borderRadius: theme.radius.md,
 }));
 
-const Sample = styled('div')({
+const Sample = styled('div')(({ theme }) => ({
   padding: '2rem 1.5rem',
-  borderRadius: '12px',
+  borderRadius: theme.radius.lg,
   textAlign: 'center',
-});
+}));
 
 const Badges = styled('div')(({ theme }) => ({
   display: 'grid',

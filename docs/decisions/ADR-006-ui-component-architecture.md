@@ -38,6 +38,15 @@ Server components (the page shells) render client primitives at their boundary.
 SSR is handled by an App Router registry (`useServerInsertedHTML`) so first
 paint is styled with no FOUC.
 
+### Visual tokens: restrained corner radii
+
+Use a compact radius scale: 6px for small elements, 8px for standard controls,
+12px for cards and panels, and 16px only for the largest feature surfaces.
+Buttons and category chips remain fully rounded pills so actions stay visually
+distinct from text-entry controls. Square icon buttons declare `50%` explicitly
+to remain circular. This keeps inputs and surfaces visually precise without
+flattening interactive controls.
+
 ### Component structure: organize in-app now, extract later
 
 Build reusable primitives under `apps/web/src/components/ui/` (`Button`, `Card`,

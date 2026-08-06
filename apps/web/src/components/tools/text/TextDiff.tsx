@@ -44,14 +44,14 @@ const SwapButton = styled('button')(({ theme }) => ({
   display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'center',
-  width: '2.35rem',
-  height: '2.35rem',
+  width: '2.25rem',
+  height: '2.25rem',
   marginTop: '1.45rem',
   padding: 0,
   color: theme.color.muted,
   background: theme.color.surface,
   border: `1px solid ${theme.color.border}`,
-  borderRadius: theme.radius.pill,
+  borderRadius: '50%',
   transition: 'color 0.15s ease, border-color 0.15s ease, background 0.15s ease',
   '&:hover': {
     color: theme.color.text,
@@ -261,10 +261,10 @@ export default function TextDiff() {
             strokeLinejoin="round"
             aria-hidden
           >
-            <path d="m7 7-4 4 4 4" />
-            <path d="M3 11h14" />
-            <path d="m17 3 4 4-4 4" />
-            <path d="M21 7H7" />
+            <path d="M4 8h13" />
+            <path d="m14 5 3 3-3 3" />
+            <path d="M20 16H7" />
+            <path d="m10 13-3 3 3 3" />
           </svg>
         </SwapButton>
         <InputField>

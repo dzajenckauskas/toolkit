@@ -69,7 +69,7 @@ const QualityOption = styled('label')(({ theme }) => ({
   minWidth: '8rem',
   padding: '0.6rem 0.75rem',
   border: `1px solid ${theme.color.borderStrong}`,
-  borderRadius: '8px',
+  borderRadius: theme.radius.md,
   cursor: 'pointer',
   '&:focus-within': {
     borderColor: theme.color.accent,

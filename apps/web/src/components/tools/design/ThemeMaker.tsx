@@ -48,7 +48,7 @@ function Mockup({ theme, label, testid }: { theme: Theme; label: string; testid:
       style={{
         background: theme.bg,
         border: `1px solid ${theme.border}`,
-        borderRadius: 12,
+        borderRadius: 8,
         padding: 16,
         color: theme.text,
       }}
@@ -58,7 +58,7 @@ function Mockup({ theme, label, testid }: { theme: Theme; label: string; testid:
         style={{
           background: theme.surface,
           border: `1px solid ${theme.border}`,
-          borderRadius: 8,
+          borderRadius: 6,
           padding: 12,
         }}
       >
@@ -72,7 +72,7 @@ function Mockup({ theme, label, testid }: { theme: Theme; label: string; testid:
             background: theme.accent,
             color: theme.accentContrast,
             padding: '6px 12px',
-            borderRadius: 8,
+            borderRadius: 6,
             fontWeight: 600,
             fontSize: '0.85rem',
           }}

@@ -42,6 +42,31 @@ test('Text diff side-by-side view remains within a narrow viewport', async ({ pa
   expect(overflow).toBe(0);
 });
 
+test('Text diff uses the compact radius scale for inputs and swap control', async ({ page }) => {
+  await page.goto('/text-diff');
+
+  const radii = await page.evaluate(() => {
+    const root = window.getComputedStyle(document.documentElement);
+    const before = document.querySelector<HTMLElement>('[data-testid="diff-before"]')!;
+    const swap = document.querySelector<HTMLElement>('[data-testid="diff-swap"]')!;
+    return {
+      tokens: ['--radius-sm', '--radius-md', '--radius-lg', '--radius-xl', '--radius-pill'].map(
+        (token) => root.getPropertyValue(token).trim(),
+      ),
+      input: window.getComputedStyle(before).borderRadius,
+      swap: window.getComputedStyle(swap).borderRadius,
+      swapSize: [swap.getBoundingClientRect().width, swap.getBoundingClientRect().height],
+    };
+  });
+
+  expect(radii).toEqual({
+    tokens: ['0.375rem', '0.5rem', '0.75rem', '1rem', '999px'],
+    input: '8px',
+    swap: '50%',
+    swapSize: [36, 36],
+  });
+});
+
 test('Notepad calculator evaluates each line', async ({ page }) => {
   await page.goto('/calculator');
   await page.getByTestId('calc-input').fill('2 + 3\n10 * -2\nbad');

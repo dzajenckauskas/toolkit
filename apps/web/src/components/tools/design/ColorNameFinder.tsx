@@ -33,7 +33,12 @@ const Result = styled('div')(({ theme }) => ({
   background: theme.color.surface,
 }));
 
-const Big = styled('span')({ width: 64, height: 64, borderRadius: 10, display: 'block' });
+const Big = styled('span')(({ theme }) => ({
+  width: 64,
+  height: 64,
+  borderRadius: theme.radius.lg,
+  display: 'block',
+}));
 
 export default function ColorNameFinder() {
   const [hex, setHex] = useState('#4682b4');

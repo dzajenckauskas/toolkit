@@ -224,7 +224,7 @@ export default function ScreenshotBeautifier() {
               style={{
                 background: bg.css,
                 padding,
-                borderRadius: 8,
+                borderRadius: 6,
                 maxWidth: '100%',
               }}
             >

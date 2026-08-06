@@ -73,7 +73,7 @@ const Input = styled('input')(({ theme }) => ({
   color: theme.color.text,
   background: theme.color.bg,
   border: `1px solid ${theme.color.borderStrong}`,
-  borderRadius: '8px',
+  borderRadius: theme.radius.md,
 }));
 
 export default function KanbanBoard() {

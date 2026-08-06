@@ -41,15 +41,15 @@ const Inner = styled('div')({
   gap: '1rem',
 });
 
-const Brand = styled(Link)({
+const Brand = styled(Link)(({ theme }) => ({
   textDecoration: 'none',
   display: 'inline-flex',
-  borderRadius: '0.7rem',
+  borderRadius: theme.radius.sm,
   '&:focus-visible': {
     outline: 'none',
     boxShadow: '0 0 0 3px color-mix(in srgb, var(--accent) 32%, transparent)',
   },
-});
+}));
 
 const Right = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -66,7 +66,7 @@ const QuickNav = styled('nav')(({ theme }) => ({
 
 const navLinkStyles = (theme: AppTheme, active?: boolean): CSSObject => ({
   padding: '0.5rem 0.75rem',
-  borderRadius: '0.6rem',
+  borderRadius: theme.radius.sm,
   fontWeight: 600,
   fontSize: '0.875rem',
   textDecoration: 'none',
@@ -102,7 +102,7 @@ const IconButton = styled('button')(({ theme }) => ({
   color: theme.color.text,
   background: theme.color.surface,
   border: `1px solid ${theme.color.border}`,
-  borderRadius: theme.radius.md,
+  borderRadius: '50%',
   cursor: 'pointer',
   '&:hover': { borderColor: theme.color.accent },
   '&:focus-visible': {

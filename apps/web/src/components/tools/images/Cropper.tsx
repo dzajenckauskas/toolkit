@@ -138,7 +138,7 @@ const RatioOption = styled('label')(({ theme }) => ({
   gap: theme.space(2),
   padding: '0.5rem 0.75rem',
   border: `1px solid ${theme.color.borderStrong}`,
-  borderRadius: '8px',
+  borderRadius: theme.radius.md,
   cursor: 'pointer',
   fontSize: '0.9rem',
   fontWeight: 600,

@@ -82,7 +82,7 @@ const Close = styled('button')(({ theme }) => ({
   color: theme.color.text,
   background: 'transparent',
   border: `1px solid ${theme.color.border}`,
-  borderRadius: theme.radius.md,
+  borderRadius: '50%',
   cursor: 'pointer',
   '&:hover': { borderColor: theme.color.accent },
 }));

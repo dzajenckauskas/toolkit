@@ -13,7 +13,7 @@ const Button = styled('button')(({ theme }) => ({
   color: theme.color.text,
   background: theme.color.surface,
   border: `1px solid ${theme.color.border}`,
-  borderRadius: theme.radius.md,
+  borderRadius: '50%',
   cursor: 'pointer',
   transition: 'border-color 0.12s ease, background 0.12s ease',
   '&:hover': { borderColor: theme.color.accent },
