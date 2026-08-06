@@ -23,7 +23,7 @@ const Input = styled('input')(({ theme }) => ({
 
 const Grid = styled('div')(({ theme }) => ({
   display: 'grid',
-  gridTemplateColumns: '1fr auto 1fr',
+  gridTemplateColumns: 'minmax(0, 1fr) auto minmax(0, 1fr)',
   gap: theme.space(2),
   alignItems: 'center',
 }));

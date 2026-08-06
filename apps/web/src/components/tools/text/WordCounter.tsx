@@ -20,7 +20,7 @@ const Area = styled('textarea')(({ theme }) => ({
 
 const Stats = styled('div')(({ theme }) => ({
   display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 120px), 1fr))',
   gap: theme.space(2),
 }));
 

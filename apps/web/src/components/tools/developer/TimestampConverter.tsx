@@ -25,7 +25,7 @@ const Panel = styled('div')(({ theme }) => ({
 
 const Row = styled('div')(({ theme }) => ({
   display: 'grid',
-  gridTemplateColumns: '6rem 1fr',
+  gridTemplateColumns: '6rem minmax(0, 1fr)',
   gap: theme.space(2),
   padding: `${theme.space(1)} 0`,
 }));

@@ -19,7 +19,7 @@ const Area = styled('textarea')(({ theme }) => ({
 
 const Row = styled('div')(({ theme }) => ({
   display: 'grid',
-  gridTemplateColumns: 'minmax(5rem, auto) 1fr',
+  gridTemplateColumns: 'minmax(5rem, auto) minmax(0, 1fr)',
   gap: theme.space(2),
   alignItems: 'baseline',
   padding: `${theme.space(2)} 0`,

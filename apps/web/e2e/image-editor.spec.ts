@@ -18,6 +18,24 @@ test('loads an image and reports its dimensions', async ({ page }) => {
   await expect(page.getByTestId('editor-panel')).toBeVisible();
 });
 
+test('resize controls stay inside the panel on a narrow screen', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.getByTestId('image-editor-file-input').setInputFiles(sampleJpeg);
+  await page.getByTestId('editor-tab-resize').click();
+
+  const panel = await page.getByTestId('editor-panel').boundingBox();
+  const widthInput = await page.getByTestId('editor-resize-width').boundingBox();
+  const heightInput = await page.getByTestId('editor-resize-height').boundingBox();
+
+  expect(panel).not.toBeNull();
+  expect(widthInput).not.toBeNull();
+  expect(heightInput).not.toBeNull();
+  expect(widthInput!.x).toBeGreaterThanOrEqual(panel!.x);
+  expect(heightInput!.x + heightInput!.width).toBeLessThanOrEqual(panel!.x + panel!.width);
+  expect(widthInput!.width).toBeGreaterThan(60);
+  expect(heightInput!.width).toBeGreaterThan(60);
+});
+
 test('resize with locked aspect updates the working dimensions', async ({ page }) => {
   await page.getByTestId('image-editor-file-input').setInputFiles(sampleJpeg);
   await page.getByTestId('editor-tab-resize').click();

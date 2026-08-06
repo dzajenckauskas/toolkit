@@ -16,6 +16,11 @@ export interface DiffStats {
   unchanged: number;
 }
 
+export interface SideBySideDiffRow {
+  before: DiffLine | null;
+  after: DiffLine | null;
+}
+
 function splitLines(value: string): string[] {
   if (value === '') return [];
   return value.replace(/\r\n/g, '\n').split('\n');
@@ -68,4 +73,36 @@ export function diffStats(lines: DiffLine[]): DiffStats {
     },
     { added: 0, removed: 0, unchanged: 0 },
   );
+}
+
+/**
+ * Align a linear diff into review-style rows. Consecutive deleted and added
+ * lines are paired by position; unmatched lines leave an empty cell.
+ */
+export function alignDiffLines(lines: DiffLine[]): SideBySideDiffRow[] {
+  const rows: SideBySideDiffRow[] = [];
+
+  for (let index = 0; index < lines.length;) {
+    const line = lines[index]!;
+    if (line.type === 'same') {
+      rows.push({ before: line, after: line });
+      index++;
+      continue;
+    }
+
+    const removed: DiffLine[] = [];
+    const added: DiffLine[] = [];
+    while (index < lines.length && lines[index]!.type !== 'same') {
+      const changed = lines[index++]!;
+      if (changed.type === 'del') removed.push(changed);
+      else added.push(changed);
+    }
+
+    const count = Math.max(removed.length, added.length);
+    for (let row = 0; row < count; row++) {
+      rows.push({ before: removed[row] ?? null, after: added[row] ?? null });
+    }
+  }
+
+  return rows;
 }

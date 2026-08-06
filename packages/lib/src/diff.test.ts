@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { diffLines, diffStats } from './diff';
+import { alignDiffLines, diffLines, diffStats } from './diff';
 
 describe('diff', () => {
   it('marks identical text as unchanged', () => {
@@ -30,5 +30,25 @@ describe('diff', () => {
   it('handles empty inputs', () => {
     expect(diffLines('', '')).toEqual([]);
     expect(diffStats(diffLines('', 'x'))).toEqual({ added: 1, removed: 0, unchanged: 0 });
+  });
+
+  it('aligns changed blocks into side-by-side rows', () => {
+    const lines = diffLines('same\nold one\nold two\nend', 'same\nnew one\nend');
+
+    expect(alignDiffLines(lines)).toEqual([
+      {
+        before: { type: 'same', text: 'same' },
+        after: { type: 'same', text: 'same' },
+      },
+      {
+        before: { type: 'del', text: 'old one' },
+        after: { type: 'add', text: 'new one' },
+      },
+      { before: { type: 'del', text: 'old two' }, after: null },
+      {
+        before: { type: 'same', text: 'end' },
+        after: { type: 'same', text: 'end' },
+      },
+    ]);
   });
 });

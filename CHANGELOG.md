@@ -6,6 +6,9 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 
 ### Added
 
+- **Side-by-side text diff.** Text diff can now switch between unified and
+  aligned two-pane review views with line numbers, and a swap action exchanges
+  the original and changed sides. The paired view stacks cleanly on mobile.
 - **SEO & discoverability pass.** Now that the site is live at
   toolkit.zajenckauskas.lt, added the metadata plumbing a public 48-page site
   needs, all driven off the tool registry so it stays in sync automatically:
@@ -67,6 +70,11 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 
 ### Fixed
 
+- **Form controls could overflow cards on narrow screens.** Native inputs,
+  selects and textareas now shrink within flex/grid parents; responsive grids
+  use container-safe minimum tracks; the image editor's paired resize fields
+  stay within their panel. Number steppers now follow the active light/dark
+  theme instead of showing a bright browser-default control in dark mode.
 - **Home search text overlapped its search icon.** The catalog search now keeps
   its intended left inset even when the global native-input styles are applied.
 - **Layout width jumped when the scrollbar appeared/disappeared.** Reserved the

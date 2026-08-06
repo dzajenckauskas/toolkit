@@ -7,7 +7,7 @@ import { renderMarkdown } from '@toolkit/lib/markdown';
 
 const Split = styled('div')(({ theme }) => ({
   display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))',
   gap: theme.space(3),
 }));
 

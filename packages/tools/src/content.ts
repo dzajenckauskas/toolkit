@@ -90,6 +90,23 @@ function genericFaqs(tool: Tool): ToolFaq[] {
 // --- Bespoke content for flagship tools ----------------------------------
 
 const BESPOKE: Record<string, Partial<ToolContent>> = {
+  'text-diff': {
+    tagline: 'Compare two texts in a unified or side-by-side code-review view.',
+    steps: [
+      {
+        title: 'Paste both versions',
+        body: 'Put the original on the left and the changed text on the right, or swap them with one click.',
+      },
+      {
+        title: 'Choose a view',
+        body: 'Review additions and removals in one unified list or as aligned, side-by-side lines with line numbers.',
+      },
+      {
+        title: 'Review the changes',
+        body: 'See added, removed and unchanged line counts instantly. Everything stays in your browser.',
+      },
+    ],
+  },
   optimize: {
     tagline: 'Shrink JPEG file size in your browser without a visible drop in quality.',
     steps: [

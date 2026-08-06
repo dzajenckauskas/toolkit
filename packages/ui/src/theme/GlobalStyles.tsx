@@ -71,14 +71,17 @@ export function GlobalStyles() {
     <Global
       styles={css`
         :root {
+          color-scheme: light;
           ${TOKENS}
           ${LIGHT}
         }
         :root[data-theme='dark'] {
+          color-scheme: dark;
           ${DARK}
         }
         @media (prefers-color-scheme: dark) {
           :root:not([data-theme='light']) {
+            color-scheme: dark;
             ${DARK}
           }
         }
@@ -140,6 +143,8 @@ export function GlobalStyles() {
         input,
         select,
         textarea {
+          min-width: 0;
+          max-width: 100%;
           font-family: inherit;
           font-size: 1rem;
           color: var(--text);
@@ -177,10 +182,10 @@ export function GlobalStyles() {
           border-color: var(--accent);
         }
 
-        /* Base styling for text-like inputs and textareas. This is an element
-           selector (low specificity), so any component that styles its own
-           fields still wins — it only brings the un-styled or lightly-styled
-           fields up to a consistent, polished baseline across every tool. */
+        /* Base styling for text-like inputs and textareas. Components can
+           override this baseline, but attribute selectors are intentionally
+           specific enough that exceptional padding may need a scoped
+           higher-specificity rule (as in the catalog search). */
         input[type='text'],
         input[type='search'],
         input[type='email'],
@@ -220,6 +225,18 @@ export function GlobalStyles() {
           accent-color: var(--accent);
           cursor: pointer;
           height: 1.4rem;
+        }
+
+        /* Keep Chromium's useful number steppers, but make them follow the
+           active light/dark theme instead of rendering as a bright native box.
+           Firefox inherits the same theme through color-scheme. */
+        input[type='number']::-webkit-inner-spin-button {
+          opacity: 0.72;
+          cursor: ns-resize;
+        }
+        input[type='number']:hover::-webkit-inner-spin-button,
+        input[type='number']:focus::-webkit-inner-spin-button {
+          opacity: 1;
         }
 
         input[type='checkbox'],

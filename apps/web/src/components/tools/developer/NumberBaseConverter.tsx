@@ -18,7 +18,7 @@ const Input = styled('input')(({ theme }) => ({
 
 const Row = styled('div')(({ theme }) => ({
   display: 'grid',
-  gridTemplateColumns: '6rem 1fr',
+  gridTemplateColumns: '6rem minmax(0, 1fr)',
   gap: theme.space(2),
   alignItems: 'baseline',
   padding: `${theme.space(2)} 0`,

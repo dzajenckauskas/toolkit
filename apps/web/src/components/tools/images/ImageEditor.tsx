@@ -192,13 +192,19 @@ const Panel = styled('div')(({ theme }) => ({
 const Field = styled('label')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
+  minWidth: 0,
   gap: theme.space(1),
   fontSize: '0.85rem',
   fontWeight: 600,
   color: theme.color.text,
 }));
 
-const Row = styled('div')(({ theme }) => ({ display: 'flex', gap: theme.space(2) }));
+const Row = styled('div')(({ theme }) => ({
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+  gap: theme.space(2),
+  '& input': { width: '100%' },
+}));
 
 const PanelHeading = styled('h3')(({ theme }) => ({
   margin: 0,

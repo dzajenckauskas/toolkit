@@ -113,7 +113,7 @@ const Grid3 = styled('div')(({ theme }) => ({
   marginTop: theme.space(8),
   display: 'grid',
   gap: theme.space(4),
-  gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))',
 }));
 
 const StepCard = styled('div')(({ theme }) => ({
@@ -182,7 +182,7 @@ const RelatedGrid = styled('div')(({ theme }) => ({
   marginTop: theme.space(7),
   display: 'grid',
   gap: theme.space(4),
-  gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
+  gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 220px), 1fr))',
 }));
 
 const RelatedCard = styled(Link)(({ theme }) => ({

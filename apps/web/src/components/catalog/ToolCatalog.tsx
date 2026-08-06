@@ -71,7 +71,7 @@ const CategoryHeading = styled('h2')(({ theme }) => ({
 
 const Grid = styled('div')(({ theme }) => ({
   display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
+  gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 220px), 1fr))',
   gap: theme.space(3),
 }));
 

@@ -9,6 +9,39 @@ test('Text diff highlights added and removed lines', async ({ page }) => {
   await expect(page.getByTestId('diff-result')).toBeVisible();
 });
 
+test('Text diff switches to an aligned side-by-side view and swaps sides', async ({ page }) => {
+  await page.goto('/text-diff');
+  const before = page.getByTestId('diff-before');
+  const after = page.getByTestId('diff-after');
+  await before.fill('same\nold one\nold two\nend');
+  await after.fill('same\nnew one\nend');
+
+  await page.getByTestId('diff-view-side').click();
+  await expect(page.getByTestId('diff-side-result')).toBeVisible();
+  await expect(page.getByTestId('diff-side-row')).toHaveCount(4);
+  await expect(page.getByTestId('diff-side-result')).toContainText('old one');
+  await expect(page.getByTestId('diff-side-result')).toContainText('new one');
+
+  await page.getByTestId('diff-swap').click();
+  await expect(before).toHaveValue('same\nnew one\nend');
+  await expect(after).toHaveValue('same\nold one\nold two\nend');
+  await expect(page.getByTestId('diff-stats')).toContainText('2 added');
+  await expect(page.getByTestId('diff-stats')).toContainText('1 removed');
+});
+
+test('Text diff side-by-side view remains within a narrow viewport', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.goto('/text-diff');
+  await page.getByTestId('diff-before').fill('a very long original line that must wrap safely');
+  await page.getByTestId('diff-after').fill('a very long changed line that must wrap safely');
+  await page.getByTestId('diff-view-side').click();
+
+  const overflow = await page.evaluate(
+    () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+  );
+  expect(overflow).toBe(0);
+});
+
 test('Notepad calculator evaluates each line', async ({ page }) => {
   await page.goto('/calculator');
   await page.getByTestId('calc-input').fill('2 + 3\n10 * -2\nbad');

@@ -25,7 +25,7 @@ const HexInput = styled('input')(({ theme }) => ({
 
 const Previews = styled('div')(({ theme }) => ({
   display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))',
   gap: theme.space(3),
 }));
 

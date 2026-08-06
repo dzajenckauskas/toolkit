@@ -39,7 +39,7 @@ const Sample = styled('div')({
 
 const Badges = styled('div')(({ theme }) => ({
   display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 140px), 1fr))',
   gap: theme.space(2),
 }));
 
