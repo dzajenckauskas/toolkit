@@ -9,7 +9,11 @@ test('live tool pages keep native controls inside the narrow viewport', async ({
     await page.goto(tool.href);
 
     const overflow = await page.evaluate(() => {
-      const viewportWidth = document.documentElement.clientWidth;
+      // window.innerWidth is the real viewport size; document.documentElement
+      // .clientWidth is shrunk by `scrollbar-gutter: stable` even when no
+      // scrollbar is actually showing, which reads as false overflow on
+      // platforms with non-overlay scrollbars (e.g. CI's Linux runner).
+      const viewportWidth = window.innerWidth;
       const controls = [...document.querySelectorAll<HTMLElement>('input, select, textarea')];
       const outside = controls
         .filter((control) => {
