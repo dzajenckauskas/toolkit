@@ -1,5 +1,17 @@
 import { test, expect } from '@playwright/test';
 
+test('home catalog search text clears the search icon', async ({ page }) => {
+  await page.goto('/');
+
+  const search = page.getByTestId('tool-search');
+  const paddingLeft = await search.evaluate((input) =>
+    Number.parseFloat(window.getComputedStyle(input).paddingLeft),
+  );
+
+  // The 18px icon begins 16px from the input edge; leave space beyond it.
+  expect(paddingLeft).toBeGreaterThanOrEqual(40);
+});
+
 test('home catalog lists tools, searches, and links live ones', async ({ page }) => {
   await page.goto('/');
 

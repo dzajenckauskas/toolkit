@@ -67,6 +67,8 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 
 ### Fixed
 
+- **Home search text overlapped its search icon.** The catalog search now keeps
+  its intended left inset even when the global native-input styles are applied.
 - **Layout width jumped when the scrollbar appeared/disappeared.** Reserved the
   scrollbar gutter globally (`scrollbar-gutter: stable`), so centered layouts
   keep a constant width — the search results now match the unfiltered catalog

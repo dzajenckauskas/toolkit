@@ -31,7 +31,9 @@ const SearchIcon = styled('span')(({ theme }) => ({
 
 const SearchInput = styled('input')(({ theme }) => ({
   width: '100%',
-  padding: '0.8rem 4rem 0.8rem 2.9rem',
+  // Beat the higher-specificity global input[type='search'] padding so the
+  // placeholder and entered text always clear the absolutely positioned icon.
+  '&&': { padding: '0.8rem 4rem 0.8rem 2.9rem' },
   fontSize: '1.05rem',
   color: theme.color.text,
   background: theme.color.surface,
