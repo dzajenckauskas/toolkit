@@ -4,9 +4,9 @@ This roadmap describes direction, not fixed deadlines.
 
 ## Tool catalog (ADR-008)
 
-The product is a general-purpose, free, client-side **browser tool hub**: many
-small tools under one roof, every one running locally with no account, no
-upload, and no paywall. The catalog is registry-driven
+The product is a general-purpose, free **browser tool hub**: many small tools under one roof,
+nearly all running locally with no account, upload, or paywall. Server-assisted exceptions must be
+explicitly labelled and documented. The catalog is registry-driven
 (`apps/web/src/tools/registry.ts`) — the home page, search, and navigation all
 read from a single source of truth, and shipping a tool means adding a route +
 component and flipping its `status` from `planned` to `live`.
@@ -15,7 +15,7 @@ Tools are drawn from UX research of existing browser-tool suites. Build order fa
 small, pure, high-value utilities first; heavy tools (PDF/video editors, AI
 upscale) come later.
 
-**48 tools are live** (see `docs/PROJECT-STATE.md` for the full table and the
+**49 tools are live** (see `docs/PROJECT-STATE.md` for the full table and the
 recipe for adding one). The home-page search is a keyboard-driven **command
 palette** (icons, category tags, action keywords, ⌘K, ↑/↓ + Enter).
 
@@ -23,7 +23,7 @@ palette** (icons, category tags, action keywords, ⌘K, ↑/↓ + Enter).
 - [x] Command-palette search (keywords, keyboard nav, ⌘K)
 - [x] Images & Media (8) — Compress, Crop, Resize, Convert, Rotate/Flip, QR, Favicon, Screenshot beautifier
 - [x] Text & Documents (7) — Markdown, Text diff, Lorem Ipsum, Case converter, Line tools, Word counter, Slugify
-- [x] Developer (15) — UUID, Base64, Password, JSON, Hash, JWT, Regex, Checksum, URL encode, HTML entities, Number base, TOTP/2FA, HMAC, Timestamp, CSV↔JSON
+- [x] Developer (16) — UUID, Base64, Password, JSON, Hash, JWT, Regex, Checksum, URL encode, HTML entities, Number base, TOTP/2FA, HMAC, Timestamp, CSV↔JSON, Accessibility checker
 - [x] Design (10) — Colors, Contrast, Palette, Gradient, Color mixer, Blob, Theme maker, Palette-from-image, Color-blindness, Color name finder
 - [x] PDF (1) — Images to PDF
 - [x] Privacy (2) — Metadata cleaner, Text encrypt/decrypt (AES)

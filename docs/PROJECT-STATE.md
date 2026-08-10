@@ -1,13 +1,13 @@
 # Project state & handoff
 
 _Living document. Update it at the end of a work session so the next one can
-start cold. Last updated: 2026-07-24._
+start cold. Last updated: 2026-08-10._
 
 ## What this is
 
-A **general-purpose, free, client-side browser tool hub** — many small tools
-under one roof, every one running locally with **no account, no upload, no
-paywall**. The pivot from the original "ecommerce image toolkit" framing is
+A **general-purpose, free browser tool hub** — many small tools under one roof, nearly all running
+locally with **no account or paywall**. The accessibility checker is the first clearly labelled
+server-assisted exception (ADR-010). The pivot from the original "ecommerce image toolkit" framing is
 recorded in **ADR-008** (`docs/decisions/ADR-008-pivot-to-browser-tool-hub.md`).
 
 Monetization is deferred; this is currently a personal project ("build all the
@@ -16,13 +16,15 @@ tools first, decide on monetization later").
 ## Where the code lives
 
 - App: `apps/web` — Next.js 15 (App Router), React 19, TypeScript strict.
+- Accessibility runner: `apps/accessibility-runner` — localhost-only Playwright service with URL
+  safety checks, capacity limits, runtime expiry, and temporary artifacts.
 - Styling: Emotion CSS-in-JS with a typed theme (`src/theme/`), zero-JS
   light/dark via CSS variables. Shared primitives in `src/components/ui/`.
 - **Tool registry** (`src/tools/registry.ts`) is the single source of truth:
   every tool is one entry; the catalog, search and command palette read from it.
   `TOOL_KEYWORDS` in the same file adds action-synonyms for search.
-- Processing is client-only (Canvas, Web Crypto, fflate, qrcode, markdown-it).
-  No backend, nothing is uploaded.
+- Processing is client-only for the existing local tool catalog (Canvas, Web Crypto, fflate,
+  qrcode, markdown-it). The accessibility checker submits a public URL to the isolated runner.
 
 ## Workflow conventions (important)
 
@@ -36,7 +38,7 @@ tools first, decide on monetization later").
   npx vitest run
   npx playwright test        # builds first
   ```
-- Current baseline: **261 unit tests + 72 e2e tests, all green.**
+- Current baseline: **266 unit/safety tests + 95 e2e tests.**
 - Playwright uses the pre-installed Chromium; do not run `playwright install`.
 - Note: `npm audit` reports pre-existing advisories in the Next.js toolchain
   (PostCSS, sharp). `npm audit fix --force` would downgrade Next to v9 — do not
@@ -63,7 +65,7 @@ Reusable helpers worth knowing:
 - `src/lib/color.ts` — HEX/RGB/HSL math reused across all the color tools.
 - `src/lib/webcrypto.ts` — ArrayBuffer helpers for Web Crypto typings.
 
-## Live tools (48)
+## Live tools (49)
 
 - **Images & Media (8):** Compress `/optimize`, Crop `/crop`, Resize `/resize`,
   Convert `/convert`, Rotate & flip `/rotate`, QR code `/qr`, Favicon
@@ -71,11 +73,11 @@ Reusable helpers worth knowing:
 - **Text & Documents (7):** Markdown `/markdown`, Text diff `/text-diff`,
   Lorem Ipsum `/lorem-ipsum`, Case converter `/case-converter`, Line tools
   `/line-tools`, Word counter `/word-count`, Slugify `/slugify`
-- **Developer (15):** JSON `/json`, JWT `/jwt`, Regex `/regex`, Base64
+- **Developer (16):** JSON `/json`, JWT `/jwt`, Regex `/regex`, Base64
   `/base64`, Hash `/hash`, Checksum `/checksum`, UUID `/uuid`, Password
   `/password`, URL encode `/url-encode`, HTML entities `/html-entities`,
   Number base `/number-base`, TOTP/2FA `/totp`, HMAC `/hmac`, Timestamp
-  `/timestamp`, CSV↔JSON `/csv-json`
+  `/timestamp`, CSV↔JSON `/csv-json`, Accessibility checker `/accessibility-checker`
 - **Design (10):** Colors `/colors`, Contrast `/contrast`, Palette `/palette`,
   Gradient `/gradient`, Color mixer `/color-mixer`, Blob `/blob`, Theme maker
   `/theme-maker`, Palette from image `/image-palette`, Color blindness

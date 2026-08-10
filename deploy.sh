@@ -32,7 +32,7 @@ git reset --hard origin/main
 if [ -f "$REPO_DIR/package-lock.json" ]; then
   echo "→ Monorepo layout detected — installing from root..."
   npm ci
-  echo "→ Building (turbo)..."
+echo "→ Building (turbo)..."
   npm run build
 else
   echo "→ Legacy layout — installing in apps/web..."
@@ -42,11 +42,32 @@ else
   npm run build
 fi
 
+echo "→ Preparing accessibility runner..."
+# The token stays on the VPS and is shared only by the two local processes.
+TOKEN_FILE="$REPO_DIR/.accessibility-runner-token"
+if [ ! -f "$TOKEN_FILE" ]; then
+  umask 077
+  openssl rand -hex 32 > "$TOKEN_FILE"
+fi
+export ACCESSIBILITY_RUNNER_TOKEN
+ACCESSIBILITY_RUNNER_TOKEN="$(tr -d '\r\n' < "$TOKEN_FILE")"
+export ACCESSIBILITY_RUNNER_URL="http://127.0.0.1:4317"
+
+# Browser files are cached by Playwright, so this is a no-op when the pinned
+# Chromium revision is already present. OS packages must be installed once on
+# the VPS; see ADR-010.
+npx playwright install chromium
+
 echo "→ Restarting service..."
 if "$PM2_BIN" describe toolkit >/dev/null 2>&1; then
-  "$PM2_BIN" restart toolkit
+  "$PM2_BIN" restart toolkit --update-env
 else
   "$PM2_BIN" start npm --name "toolkit" --cwd "$APP_DIR" -- run start
+fi
+if "$PM2_BIN" describe toolkit-accessibility-runner >/dev/null 2>&1; then
+  "$PM2_BIN" restart toolkit-accessibility-runner --update-env
+else
+  "$PM2_BIN" start npm --name "toolkit-accessibility-runner" --cwd "$REPO_DIR/apps/accessibility-runner" -- run start
 fi
 "$PM2_BIN" save
 

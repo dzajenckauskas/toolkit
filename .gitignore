@@ -19,6 +19,7 @@ apps/web/next-env.d.ts
 
 # Env / OS / editor
 .env*.local
+.accessibility-runner-token
 .DS_Store
 
 # Local, machine-specific Claude Code settings (permissions etc.)

@@ -375,6 +375,14 @@ export const TOOLS: Tool[] = [
     category: 'Developer',
     status: 'live',
   },
+  {
+    id: 'accessibility-checker',
+    name: 'Accessibility checker',
+    description: 'Investigate keyboard behavior and accessibility risks on a public website.',
+    href: '/accessibility-checker',
+    category: 'Developer',
+    status: 'live',
+  },
 
   // Design
   {
@@ -575,6 +583,19 @@ export const TOOL_KEYWORDS: Record<string, string[]> = {
   hmac: ['signature', 'sign', 'sha', 'keyed hash', 'mac'],
   timestamp: ['unix', 'epoch', 'date', 'time', 'iso', 'utc'],
   'csv-json': ['csv', 'json', 'convert', 'spreadsheet', 'table', 'parse'],
+  'accessibility-checker': [
+    'accessibility',
+    'a11y',
+    'wcag',
+    'ada',
+    'eaa',
+    'section 508',
+    'aoda',
+    'keyboard',
+    'audit',
+    'focus',
+    'axe',
+  ],
   'unit-converter': ['length', 'weight', 'temperature', 'metric', 'imperial', 'convert', 'celsius'],
   percentage: ['percent', 'tip', 'discount', 'change', 'split', 'calculator'],
   'word-count': ['characters', 'words', 'count', 'reading time', 'letters'],

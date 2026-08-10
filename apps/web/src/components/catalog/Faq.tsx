@@ -15,7 +15,7 @@ const FAQS: FaqItem[] = [
   },
   {
     q: 'Do my files, images or text get uploaded anywhere?',
-    a: 'No. Every tool runs entirely in your browser on your own device. Your files and text are never sent to a server, and there is no backend to receive them.',
+    a: 'Files, images and text used by the local tools stay in your browser and are not uploaded. The accessibility checker is different and clearly labelled: it sends the public URL you enter to an isolated server-side browser so that website can be audited.',
   },
   {
     q: 'Do I need to create an account?',
@@ -23,7 +23,7 @@ const FAQS: FaqItem[] = [
   },
   {
     q: 'Is any of my data stored?',
-    a: 'Nothing leaves your device. A few tools remember small preferences locally in your browser (for example your light/dark choice, or the cards in the Kanban board) using your browser’s own storage. Clearing your browser data removes it, and it is never uploaded.',
+    a: 'Local tools may remember small preferences in browser storage. The accessibility checker creates temporary reports and screenshots on the audit runner; they expire automatically and are not kept as a permanent report library.',
   },
   {
     q: 'Does it work offline?',

@@ -73,7 +73,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${neris.variable} ${GeistSans.variable} ${GeistMono.variable}`}>
+    <html
+      lang="en"
+      className={`${neris.variable} ${GeistSans.variable} ${GeistMono.variable}`}
+      suppressHydrationWarning
+    >
       <body>
         {/* Set the theme before first paint so a stored dark mode doesn't flash. */}
         <script dangerouslySetInnerHTML={{ __html: NO_FLASH_SCRIPT }} />

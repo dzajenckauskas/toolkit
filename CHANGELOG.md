@@ -6,6 +6,13 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 
 ### Added
 
+- **Accessibility checker (`/accessibility-checker`).** Added a server-assisted accessibility
+  investigation tool that reproduces keyboard journeys, runs structural and interaction-risk
+  checks, captures screenshots, maps evidence to WCAG/ADA/EAA/Section 508/AODA, and exports portable
+  JSON reports for regression comparison. A separate localhost-only Playwright runner enforces URL
+  safety checks, concurrency/rate/runtime limits, and artifact expiry; ADR-010 records the explicit
+  exception to Toolkit's client-only architecture.
+
 - **Side-by-side text diff.** Text diff can now switch between unified and
   aligned two-pane review views with line numbers, and a swap action exchanges
   the original and changed sides. The paired view stacks cleanly on mobile.
@@ -63,6 +70,21 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 
 ### Changed
 
+- **Friendlier accessibility audit URLs.** The accessibility checker now accepts bare hostnames
+  such as `example.com` and automatically uses HTTPS, while retaining the runner's public-target
+  safety validation.
+- **Theme hydration.** The root layout now explicitly permits the stored theme attribute applied
+  by the pre-paint script, avoiding React hydration warnings without causing a light/dark flash.
+- **Accessibility audit polish.** Corrected the audit button's vertical text alignment and rebuilt
+  Regression review as a guided, responsive two-report comparison panel with clearer selected-file
+  and current-audit states.
+- **Evidence preview controls.** Gave the audit evidence modal dedicated high-contrast controls so
+  Close, Previous, and Next remain visible on its dark surface in either site theme.
+- **Images-to-PDF thumbnails.** Replaced text-button sizing in thumbnail action rows with compact,
+  vertically centred SVG controls that remain inside each preview card. Thumbnails can now be
+  dragged into page order, with the arrow controls retained for keyboard and touch use. Fixed 4:5
+  preview viewports keep every card and action row aligned regardless of source-image proportions,
+  and a compact expand control opens the uncropped image in a large preview dialog.
 - **Tool pages only show useful authored guidance.** Removed the repeated generic
   walkthrough, “Why use” cards and FAQs from tools without bespoke content, and
   pruned repeated upload/privacy questions from the remaining tool-specific

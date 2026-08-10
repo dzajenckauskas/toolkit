@@ -270,6 +270,52 @@ const BESPOKE: Record<string, Partial<ToolContent>> = {
       },
     ],
   },
+  'accessibility-checker': {
+    tagline:
+      'See how a public website behaves without a mouse, then download the evidence needed to investigate and fix it.',
+    steps: [
+      {
+        title: 'Enter a public URL',
+        body: 'Choose a safe or fuller ecommerce journey and the number of clean repetitions. Private and local network targets are blocked.',
+      },
+      {
+        title: 'Reproduce the experience',
+        body: 'An isolated browser follows keyboard focus, exercises search and common controls, and runs structural accessibility rules.',
+      },
+      {
+        title: 'Review and compare evidence',
+        body: 'Inspect findings, standards mappings, selectors and screenshots, then download portable JSON for regression comparison.',
+      },
+    ],
+    highlights: [
+      {
+        title: 'Behavior, not only markup',
+        body: 'The audit combines automated rules with real Tab, Shift+Tab, Escape, focus-order and interaction journeys.',
+      },
+      {
+        title: 'Evidence strength stays explicit',
+        body: 'Confirmed, Likely and Review separate direct observations from signals that still require human judgment.',
+      },
+      {
+        title: 'Mapped, not legally certified',
+        body: 'Findings connect to WCAG, ADA, EAA, Section 508 and AODA while clearly preserving the limits of automation.',
+      },
+    ],
+    faqs: [
+      {
+        q: 'Does this prove that a website is compliant?',
+        a: 'No. It gathers repeatable evidence and maps relevant requirements, but it is not legal advice or certification. Human testing with assistive technology remains necessary.',
+      },
+      {
+        q: 'Why is this tool server-assisted?',
+        a: 'A normal browser tab cannot inspect an unrelated website because of same-origin security rules. The submitted public URL is therefore opened in an isolated Playwright browser on the Toolkit runner.',
+      },
+      {
+        q: 'Are reports saved permanently?',
+        a: 'No permanent report library is maintained. Runtime artifacts expire automatically; download the portable JSON report if you need to retain or compare it.',
+      },
+    ],
+  },
 };
 
 export function getToolContent(tool: Tool): ToolContent {

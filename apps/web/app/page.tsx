@@ -8,8 +8,8 @@ export default function HomePage() {
         <header>
           <Heading>Free tools that run in your browser</Heading>
           <Text tone="muted">
-            No account, no upload, no paywall — every tool runs locally on your device. Search, or
-            browse by category below.
+            No account, no paywall — nearly every tool runs locally on your device, and the rare
+            server-assisted tool is clearly labelled. Search, or browse by category below.
           </Text>
         </header>
         <ToolCatalog />

@@ -6,11 +6,11 @@ import { pageMetadata } from '@/lib/seo';
 export const metadata = pageMetadata({
   title: 'Terms & Conditions',
   description:
-    'The terms that govern your use of Toolkit — a free collection of tools that run entirely in your browser.',
+    'The terms that govern your use of Toolkit — a free collection of local and clearly labelled server-assisted browser tools.',
   path: '/terms',
 });
 
-const LAST_UPDATED = '24 July 2026';
+const LAST_UPDATED = '10 August 2026';
 
 export default function TermsPage() {
   return (
@@ -26,16 +26,17 @@ export default function TermsPage() {
         <Prose>
           <p>
             These Terms &amp; Conditions (the “Terms”) govern your use of Toolkit (the “Service”), a
-            free collection of small utilities that run entirely in your web browser. By using the
-            Service you agree to these Terms. If you do not agree, please do not use the Service.
+            free collection of small browser utilities. Most run entirely in your browser; tools
+            that require server-side processing are clearly labelled. By using the Service you agree
+            to these Terms. If you do not agree, please do not use the Service.
           </p>
 
           <h2>1. The service</h2>
           <p>
-            Toolkit provides browser-based tools for working with images, text, data and other
-            files. <strong>All processing happens locally on your device.</strong> The Service has
-            no user accounts and no backend that receives your content: the files and text you work
-            with are not uploaded to, transmitted to, or stored on any server operated by us.
+            Toolkit provides browser-based tools for working with images, text, data and public
+            websites. Files and text used by local tools are processed on your device and are not
+            uploaded. A tool marked <strong>server-assisted</strong> sends the disclosed input to a
+            controlled service because its function cannot run under normal browser security rules.
           </p>
 
           <h2>2. No charge</h2>
@@ -71,7 +72,16 @@ export default function TermsPage() {
             be removed by clearing your browser’s site data.
           </p>
 
-          <h2>5. No warranty</h2>
+          <h2>5. Server-assisted accessibility audits</h2>
+          <p>
+            The accessibility checker opens the public URL you submit in an isolated server-side
+            browser and creates temporary report data and screenshots. Do not submit private, local,
+            authenticated or confidential targets. You must have permission to test the target and
+            remain responsible for complying with its terms and applicable law. Audit results are
+            evidence for investigation, not legal advice or accessibility certification.
+          </p>
+
+          <h2>6. No warranty</h2>
           <p>
             The Service is provided <strong>“as is” and “as available”</strong>, without warranties
             of any kind, whether express or implied, including but not limited to fitness for a
@@ -81,7 +91,7 @@ export default function TermsPage() {
             backups of important files.
           </p>
 
-          <h2>6. Limitation of liability</h2>
+          <h2>7. Limitation of liability</h2>
           <p>
             To the fullest extent permitted by law, the author of the Service shall not be liable
             for any indirect, incidental, special, consequential or punitive damages, or any loss of
@@ -89,14 +99,14 @@ export default function TermsPage() {
             inability to use, the Service — even if advised of the possibility of such damages.
           </p>
 
-          <h2>7. Third-party and downloadable software</h2>
+          <h2>8. Third-party and downloadable software</h2>
           <p>
             The Service may rely on open-source libraries provided by third parties under their own
             licences. Output you download (such as generated images, PDFs or files) is yours to use;
             you are responsible for how you use it.
           </p>
 
-          <h2>8. Changes to these terms</h2>
+          <h2>9. Changes to these terms</h2>
           <p>
             These Terms may be updated from time to time. Changes take effect when the updated
             version is published on this page, and the “last updated” date above will reflect the
@@ -104,7 +114,7 @@ export default function TermsPage() {
             constitutes acceptance of the revised Terms.
           </p>
 
-          <h2>9. Contact</h2>
+          <h2>10. Contact</h2>
           <p>
             Questions about these Terms can be sent to <a href={CONTACT_MAILTO}>{CONTACT_EMAIL}</a>.
           </p>

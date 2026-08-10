@@ -1,0 +1,21 @@
+{
+  "name": "@toolkit/accessibility-runner",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "npm run build && node dist/src/server.js",
+    "start": "node dist/src/server.js",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "tsc -p tsconfig.json && node --test dist/src/network-safety.test.js"
+  },
+  "dependencies": {
+    "@axe-core/playwright": "^4.10.2",
+    "playwright": "^1.54.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.7",
+    "typescript": "^5.7.3"
+  }
+}

@@ -11,7 +11,7 @@ export const SITE_URL = 'https://toolkit.zajenckauskas.lt';
 
 /** One-line site description reused across metadata. */
 export const SITE_DESCRIPTION =
-  'A hub of free, private tools that run entirely in your browser. No account, no upload, no paywall.';
+  'A hub of free, privacy-conscious browser tools. No account or paywall; server-assisted tools are clearly labelled.';
 
 /** Author credit shown in the footer. */
 export const AUTHOR_NAME = 'Danielius';

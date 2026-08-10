@@ -1,7 +1,8 @@
 # Toolkit
 
-**Free, private, browser-based tools for everyday development and creative work.**
-No account, no upload, no paywall — every tool runs entirely on your device.
+**Free, privacy-conscious tools for everyday development and creative work.**
+No account and no paywall. Nearly every tool runs entirely on your device; tools that require a
+controlled remote browser are clearly labelled as server-assisted.
 
 🔗 **Live:** [toolkit.zajenckauskas.lt](https://toolkit.zajenckauskas.lt)
 
@@ -14,13 +15,14 @@ No account, no upload, no paywall — every tool runs entirely on your device.
 
 ## What it is
 
-A hub of **48 small, focused tools** — image compression and cropping, JSON/JWT/regex
+A hub of **49 small, focused tools** — image compression and cropping, JSON/JWT/regex
 helpers, hashing and encoding, colour and design utilities, PDF and text tools, and
 more — grouped into a searchable, keyboard-driven catalog (⌘K from anywhere).
 
-Everything happens **client-side**: images are processed with the Canvas API, hashing
-and encryption with the Web Crypto API, zipping with `fflate`. Nothing you drop into a
-tool is ever uploaded — there is no backend that receives your files.
+Nearly everything happens **client-side**: images are processed with the Canvas API, hashing
+and encryption with the Web Crypto API, and zipping with `fflate`. Files added to those tools are
+not uploaded. The accessibility checker is the documented exception: it sends a public URL to an
+isolated Playwright runner so the site can be tested in a controlled browser (ADR-010).
 
 ## Why I built it
 
@@ -51,6 +53,7 @@ Module Federation micro-frontends were deliberately **not** used).
 ```
 apps/
   web/                       Next.js 15 (App Router) — the shell + every tool route
+  accessibility-runner/      Localhost-only Playwright audit service (ADR-010)
 packages/
   ui/                        Emotion theme + typed design-system primitives (ADR-006)
   lib/                       framework-agnostic, unit-tested tool logic
@@ -70,8 +73,8 @@ packages/
 
 ## Engineering practices
 
-- **Tested.** 261 unit tests (Vitest) covering the pure logic, plus 77 end-to-end
-  browser tests (Playwright, real Chromium) covering the tools in the browser.
+- **Tested.** 266 unit and safety tests covering pure logic and runner boundaries, plus 95
+  end-to-end browser tests (Playwright, real Chromium) covering the tools in the browser.
 - **Typed & linted.** Strict TypeScript, ESLint (zero warnings), one shared Prettier
   config across the whole workspace.
 - **CI/CD.** Every push runs install → lint → format → typecheck → unit → build → e2e

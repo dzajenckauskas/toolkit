@@ -50,6 +50,13 @@ test('the closed mobile drawer is hidden and causes no horizontal overflow', asy
 });
 
 test('the theme toggle switches and persists dark mode', async ({ page }) => {
+  const hydrationErrors: string[] = [];
+  page.on('console', (message) => {
+    if (message.type() === 'error' && message.text().includes('hydrated')) {
+      hydrationErrors.push(message.text());
+    }
+  });
+
   await page.goto('/');
   const root = page.locator('html');
 
@@ -60,6 +67,7 @@ test('the theme toggle switches and persists dark mode', async ({ page }) => {
   // The choice persists across a reload (localStorage + no-flash script).
   await page.reload();
   await expect(root).toHaveAttribute('data-theme', chosen ?? 'dark');
+  expect(hydrationErrors).toEqual([]);
 });
 
 test('the menu drawer opens and lists categories', async ({ page }) => {
