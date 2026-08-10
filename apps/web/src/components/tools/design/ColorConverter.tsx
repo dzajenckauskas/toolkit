@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
-import { Stack, Text } from '@toolkit/ui';
+import { CodeInput as HexInput, Stack, Text } from '@toolkit/ui';
 import { formatHsl, formatRgb, parseHex, rgbToHex, rgbToHsl } from '@toolkit/lib/color';
 
 const Controls = styled('div')(({ theme }) => ({
@@ -17,17 +17,6 @@ const Swatch = styled('div')(({ theme }) => ({
   height: '4rem',
   borderRadius: theme.radius.md,
   border: `1px solid ${theme.color.borderStrong}`,
-}));
-
-const HexInput = styled('input')(({ theme }) => ({
-  width: '8rem',
-  padding: '0.5rem 0.7rem',
-  fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-  fontSize: '1rem',
-  color: theme.color.text,
-  background: theme.color.surface,
-  border: `1px solid ${theme.color.borderStrong}`,
-  borderRadius: theme.radius.md,
 }));
 
 const Row = styled('div')(({ theme }) => ({

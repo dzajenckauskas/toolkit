@@ -3,6 +3,17 @@
 // folder lifts out to packages/ui with the same import surface (ADR-006).
 export { Button, ButtonLink, ButtonVisual, DownloadLink } from './Button';
 export type { ButtonStyleProps, ButtonVariant, ButtonSize } from './buttonStyles';
+export { IconButton } from './IconButton';
+export type { IconButtonProps, IconButtonSize, IconButtonVariant } from './IconButton';
+export {
+  CodeInput,
+  CodeTextArea,
+  HiddenFileInput,
+  InlineField,
+  NumberInput,
+  TextArea,
+  TextInput,
+} from './Form';
 export { Stack } from './Stack';
 export type { StackProps } from './Stack';
 export { Card } from './Card';

@@ -1,28 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import styled from '@emotion/styled';
+import { IconButton } from '@toolkit/ui';
 import { applyMode, resolveMode, type ThemeMode } from '@/lib/theme-mode';
-
-const Button = styled('button')(({ theme }) => ({
-  display: 'inline-flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  width: '2.4rem',
-  height: '2.4rem',
-  color: theme.color.text,
-  background: theme.color.surface,
-  border: `1px solid ${theme.color.border}`,
-  borderRadius: '50%',
-  cursor: 'pointer',
-  transition: 'border-color 0.12s ease, background 0.12s ease',
-  '&:hover': { borderColor: theme.color.accent },
-  '&:focus-visible': {
-    outline: 'none',
-    borderColor: theme.color.accent,
-    boxShadow: `0 0 0 3px color-mix(in srgb, ${theme.color.accent} 32%, transparent)`,
-  },
-}));
 
 const Sun = (
   <svg
@@ -73,7 +53,7 @@ export default function ThemeToggle({ testId = 'theme-toggle' }: { testId?: stri
   const showMoon = mounted && mode === 'light';
 
   return (
-    <Button
+    <IconButton
       type="button"
       onClick={toggle}
       aria-label={mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
@@ -81,6 +61,6 @@ export default function ThemeToggle({ testId = 'theme-toggle' }: { testId?: stri
       data-testid={testId}
     >
       {showMoon ? Moon : Sun}
-    </Button>
+    </IconButton>
   );
 }

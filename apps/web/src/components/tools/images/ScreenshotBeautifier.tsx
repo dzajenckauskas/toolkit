@@ -2,23 +2,11 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
-import { Button, Stack, Text } from '@toolkit/ui';
+import { Button, HiddenFileInput, InlineField as Field, Stack, Text } from '@toolkit/ui';
 import { ImageDropzone } from '@/components/tools/shared/ImageDropzone';
 import { clipboardImageFiles } from '@toolkit/lib/clipboard';
 import { validateImageFile } from '@toolkit/lib/image';
 import { BACKGROUNDS, framedSize, type Background } from '@toolkit/lib/screenshot';
-
-const HiddenFileInput = styled('input')({
-  position: 'absolute',
-  width: 1,
-  height: 1,
-  padding: 0,
-  margin: -1,
-  overflow: 'hidden',
-  clip: 'rect(0, 0, 0, 0)',
-  whiteSpace: 'nowrap',
-  border: 0,
-});
 
 const Stage = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -27,15 +15,6 @@ const Stage = styled('div')(({ theme }) => ({
   borderRadius: theme.radius.md,
   border: `1px solid ${theme.color.border}`,
   overflow: 'auto',
-}));
-
-const Field = styled('label')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  gap: theme.space(2),
-  fontSize: '0.9rem',
-  fontWeight: 600,
-  color: theme.color.muted,
 }));
 
 const Swatch = styled('button', {

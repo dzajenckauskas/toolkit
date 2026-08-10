@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
-import { Stack, Text } from '@toolkit/ui';
+import { CodeInput, InlineField as Field, Stack, Text } from '@toolkit/ui';
 import { hexContrast } from '@toolkit/lib/contrast';
 
 const Controls = styled('div')(({ theme }) => ({
@@ -11,25 +11,10 @@ const Controls = styled('div')(({ theme }) => ({
   flexWrap: 'wrap',
 }));
 
-const Field = styled('label')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  gap: theme.space(2),
-  fontSize: '0.9rem',
-  fontWeight: 600,
-  color: theme.color.muted,
-}));
-
-const HexInput = styled('input')(({ theme }) => ({
+const HexInput = styled(CodeInput)({
   width: '7rem',
   padding: '0.4rem 0.6rem',
-  fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-  fontSize: '1rem',
-  color: theme.color.text,
-  background: theme.color.surface,
-  border: `1px solid ${theme.color.borderStrong}`,
-  borderRadius: theme.radius.md,
-}));
+});
 
 const Sample = styled('div')(({ theme }) => ({
   padding: '2rem 1.5rem',

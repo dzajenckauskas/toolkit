@@ -70,6 +70,11 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 
 ### Changed
 
+- **Reusable icon and form controls.** Added shared `IconButton`, file-input, field, text-input,
+  text-area, number-input, and code-input primitives to `@toolkit/ui`, then replaced repeated
+  implementations across the header, menus, image and PDF workflows, colour tools, generators, and
+  text tools. Icon-only controls now share square geometry, SVG centring, focus states, and compact
+  size variants.
 - **Shared button alignment.** Moved the Neris optical-centering correction into the reusable
   `@toolkit/ui` button styles used by buttons, navigation links, download links, and non-interactive
   button visuals. Image upload calls to action and the accessibility audit action now use that same

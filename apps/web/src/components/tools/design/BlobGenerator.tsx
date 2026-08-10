@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
-import { Button, DownloadLink, Stack, Text } from '@toolkit/ui';
+import { Button, DownloadLink, InlineField as Field, Stack, Text } from '@toolkit/ui';
 import { blobPath, blobSvg } from '@toolkit/lib/blob';
 
 const SIZE = 240;
@@ -17,15 +17,6 @@ const Frame = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-}));
-
-const Field = styled('label')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  gap: theme.space(2),
-  fontSize: '0.9rem',
-  fontWeight: 600,
-  color: theme.color.muted,
 }));
 
 export default function BlobGenerator() {

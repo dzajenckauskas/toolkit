@@ -23,7 +23,7 @@ import {
   type Handle,
   type Rect,
 } from '@toolkit/lib/crop';
-import { Button, Stack, Text } from '@toolkit/ui';
+import { Button, HiddenFileInput, Stack, Text } from '@toolkit/ui';
 import { ImageDropzone } from '@/components/tools/shared/ImageDropzone';
 
 const MAX_DISPLAY = 560;
@@ -50,18 +50,6 @@ const cursorFor: Record<Handle, string> = {
   sw: 'nesw-resize',
   se: 'nwse-resize',
 };
-
-const HiddenFileInput = styled('input')({
-  position: 'absolute',
-  width: 1,
-  height: 1,
-  padding: 0,
-  margin: -1,
-  overflow: 'hidden',
-  clip: 'rect(0, 0, 0, 0)',
-  whiteSpace: 'nowrap',
-  border: 0,
-});
 
 const Viewport = styled('div')(({ theme }) => ({
   maxWidth: '100%',

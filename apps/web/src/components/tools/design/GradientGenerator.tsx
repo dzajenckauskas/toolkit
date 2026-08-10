@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
-import { Button, Stack, Text } from '@toolkit/ui';
+import { Button, InlineField as Field, Stack, Text } from '@toolkit/ui';
 import { gradientCss, type GradientStop, type GradientType } from '@toolkit/lib/gradient';
 
 const Preview = styled('div')(({ theme }) => ({
@@ -16,15 +16,6 @@ const Row = styled('div')(({ theme }) => ({
   gap: theme.space(3),
   alignItems: 'center',
   flexWrap: 'wrap',
-}));
-
-const Field = styled('label')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  gap: theme.space(2),
-  fontSize: '0.9rem',
-  fontWeight: 600,
-  color: theme.color.muted,
 }));
 
 const Code = styled('code')(({ theme }) => ({

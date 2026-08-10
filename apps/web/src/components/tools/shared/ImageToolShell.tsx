@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import styled from '@emotion/styled';
-import { Button, Stack, Text } from '@toolkit/ui';
+import { Button, HiddenFileInput, Stack, Text } from '@toolkit/ui';
 import { ImageDropzone } from '@/components/tools/shared/ImageDropzone';
 import { clipboardImageFiles } from '@toolkit/lib/clipboard';
 import {
@@ -10,18 +10,6 @@ import {
   ACCEPTED_IMAGE_MIME,
   validateImageFile,
 } from '@toolkit/lib/image';
-
-const HiddenFileInput = styled('input')({
-  position: 'absolute',
-  width: 1,
-  height: 1,
-  padding: 0,
-  margin: -1,
-  overflow: 'hidden',
-  clip: 'rect(0, 0, 0, 0)',
-  whiteSpace: 'nowrap',
-  border: 0,
-});
 
 const Preview = styled('img')(({ theme }) => ({
   display: 'block',

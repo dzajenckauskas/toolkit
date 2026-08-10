@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
-import { Button, Stack, Text } from '@toolkit/ui';
+import { Button, HiddenFileInput, IconButton, Stack, Text } from '@toolkit/ui';
 import { ImageDropzone } from '@/components/tools/shared/ImageDropzone';
 import { validateImageFile } from '@toolkit/lib/image';
 import { buildPdf, type PdfImage } from '@toolkit/lib/images-to-pdf';
@@ -12,18 +12,6 @@ interface Item extends PdfImage {
   url: string;
   name: string;
 }
-
-const HiddenFileInput = styled('input')({
-  position: 'absolute',
-  width: 1,
-  height: 1,
-  padding: 0,
-  margin: -1,
-  overflow: 'hidden',
-  clip: 'rect(0, 0, 0, 0)',
-  whiteSpace: 'nowrap',
-  border: 0,
-});
 
 const Thumbs = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -47,17 +35,11 @@ const Thumb = styled('div')(({ theme }) => ({
   },
 }));
 
-const PreviewButton = styled('button')(({ theme }) => ({
+const PreviewButton = styled(IconButton)(({ theme }) => ({
   position: 'absolute',
   top: theme.space(1),
   right: theme.space(1),
   zIndex: 1,
-  width: 26,
-  height: 26,
-  padding: 0,
-  display: 'inline-flex',
-  alignItems: 'center',
-  justifyContent: 'center',
   color: '#ffffff',
   background: 'rgba(25,26,28,.68)',
   border: '1px solid rgba(255,255,255,.28)',
@@ -86,13 +68,9 @@ const ThumbActions = styled('div')(({ theme }) => ({
   gap: theme.space(1),
 }));
 
-const ThumbButton = styled(Button)({
+const ThumbButton = styled(IconButton)({
   width: '100%',
   minWidth: 0,
-  height: 26,
-  minHeight: 26,
-  padding: 0,
-  lineHeight: 1,
 });
 
 const ThumbIcon = styled('svg')({
@@ -374,6 +352,8 @@ export default function ImagesToPdf() {
             >
               <PreviewButton
                 type="button"
+                size="xs"
+                variant="ghost"
                 aria-label={`Preview ${it.name}`}
                 onClick={() => setPreviewId(it.id)}
               >
@@ -386,7 +366,7 @@ export default function ImagesToPdf() {
                 <ThumbButton
                   type="button"
                   variant="ghost"
-                  size="sm"
+                  size="xs"
                   onClick={() => move(it.id, -1)}
                   disabled={i === 0}
                   aria-label="Move earlier"
@@ -398,7 +378,7 @@ export default function ImagesToPdf() {
                 <ThumbButton
                   type="button"
                   variant="ghost"
-                  size="sm"
+                  size="xs"
                   onClick={() => move(it.id, 1)}
                   disabled={i === items.length - 1}
                   aria-label="Move later"
@@ -410,7 +390,7 @@ export default function ImagesToPdf() {
                 <ThumbButton
                   type="button"
                   variant="ghost"
-                  size="sm"
+                  size="xs"
                   onClick={() => remove(it.id)}
                   aria-label="Remove"
                   data-testid="pdf-remove"

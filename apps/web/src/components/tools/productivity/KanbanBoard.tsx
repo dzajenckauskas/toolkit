@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { Button, Stack, Text } from '@toolkit/ui';
+import { Button, IconButton, Stack, Text } from '@toolkit/ui';
 import {
   addCard,
   columnIndex,
@@ -131,7 +131,7 @@ export default function KanbanBoard() {
                 <CardText>{card.text}</CardText>
                 <CardActions>
                   <span style={{ display: 'flex', gap: 4 }}>
-                    <Button
+                    <IconButton
                       type="button"
                       variant="ghost"
                       size="sm"
@@ -140,9 +140,18 @@ export default function KanbanBoard() {
                       aria-label="Move left"
                       data-testid="kanban-move-left"
                     >
-                      ←
-                    </Button>
-                    <Button
+                      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+                        <path
+                          d="M13 8H3M7 4 3 8l4 4"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.6"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </IconButton>
+                    <IconButton
                       type="button"
                       variant="ghost"
                       size="sm"
@@ -151,10 +160,19 @@ export default function KanbanBoard() {
                       aria-label="Move right"
                       data-testid="kanban-move-right"
                     >
-                      →
-                    </Button>
+                      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+                        <path
+                          d="M3 8h10M9 4l4 4-4 4"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.6"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </IconButton>
                   </span>
-                  <Button
+                  <IconButton
                     type="button"
                     variant="ghost"
                     size="sm"
@@ -162,8 +180,16 @@ export default function KanbanBoard() {
                     aria-label="Delete card"
                     data-testid="kanban-delete"
                   >
-                    ×
-                  </Button>
+                    <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+                      <path
+                        d="m4 4 8 8M12 4l-8 8"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.6"
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                  </IconButton>
                 </CardActions>
               </CardBox>
             ))}

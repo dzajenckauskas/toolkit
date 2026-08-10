@@ -2,21 +2,13 @@
 
 import { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
-import { Stack, Text } from '@toolkit/ui';
+import { Stack, Text, TextArea } from '@toolkit/ui';
 import { textStats } from '@toolkit/lib/text-stats';
 
-const Area = styled('textarea')(({ theme }) => ({
-  width: '100%',
+const Area = styled(TextArea)({
   minHeight: '12rem',
-  padding: theme.space(3),
-  fontSize: '0.95rem',
   lineHeight: 1.6,
-  color: theme.color.text,
-  background: theme.color.surface,
-  border: `1px solid ${theme.color.border}`,
-  borderRadius: theme.radius.md,
-  resize: 'vertical',
-}));
+});
 
 const Stats = styled('div')(({ theme }) => ({
   display: 'grid',

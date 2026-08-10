@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import styled from '@emotion/styled';
 import type { CSSObject } from '@emotion/react';
-import type { AppTheme } from '@toolkit/ui';
+import { IconButton, type AppTheme } from '@toolkit/ui';
 import { Logo } from '@/components/layout/Logo';
 import ThemeToggle from '@/components/layout/ThemeToggle';
 import MobileMenu from '@/components/layout/MobileMenu';
@@ -92,25 +92,6 @@ const NavLink = styled(Link, {
 // Anchor variant for external / mailto quick links (Next's Link is for
 // internal navigation only).
 const NavAnchor = styled('a')(({ theme }) => navLinkStyles(theme));
-
-const IconButton = styled('button')(({ theme }) => ({
-  display: 'inline-flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  width: '2.4rem',
-  height: '2.4rem',
-  color: theme.color.text,
-  background: theme.color.surface,
-  border: `1px solid ${theme.color.border}`,
-  borderRadius: '50%',
-  cursor: 'pointer',
-  '&:hover': { borderColor: theme.color.accent },
-  '&:focus-visible': {
-    outline: 'none',
-    borderColor: theme.color.accent,
-    boxShadow: `0 0 0 3px color-mix(in srgb, ${theme.color.accent} 32%, transparent)`,
-  },
-}));
 
 export function AppHeader() {
   const pathname = usePathname();

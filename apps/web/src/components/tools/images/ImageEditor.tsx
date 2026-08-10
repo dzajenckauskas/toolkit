@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
-import { Button, Text } from '@toolkit/ui';
+import { Button, HiddenFileInput, Text } from '@toolkit/ui';
 import {
   validateImageFile,
   renderResized,
@@ -72,17 +72,6 @@ const Root = styled('div')(({ theme }) => ({
   flexDirection: 'column',
   gap: theme.space(4),
 }));
-
-const HiddenFileInput = styled('input')({
-  position: 'absolute',
-  width: 1,
-  height: 1,
-  padding: 0,
-  margin: -1,
-  overflow: 'hidden',
-  clip: 'rect(0 0 0 0)',
-  border: 0,
-});
 
 const Dropzone = styled('button')(({ theme }) => ({
   display: 'flex',

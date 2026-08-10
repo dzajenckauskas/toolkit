@@ -2,40 +2,13 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { Button, Stack, Text } from '@toolkit/ui';
+import { Button, InlineField as Field, NumberInput, Stack, Text, TextArea } from '@toolkit/ui';
 import { MAX_PARAGRAPHS, generateParagraphs } from '@toolkit/lib/lorem';
 
-const Field = styled('label')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  gap: theme.space(2),
-  fontSize: '0.9rem',
-  fontWeight: 600,
-  color: theme.color.muted,
-}));
-
-const NumberInput = styled('input')(({ theme }) => ({
-  width: '5rem',
-  padding: '0.4rem 0.6rem',
-  fontSize: '1rem',
-  color: theme.color.text,
-  background: theme.color.surface,
-  border: `1px solid ${theme.color.borderStrong}`,
-  borderRadius: theme.radius.md,
-}));
-
-const Output = styled('textarea')(({ theme }) => ({
-  width: '100%',
+const Output = styled(TextArea)({
   minHeight: '12rem',
-  padding: theme.space(3),
-  fontSize: '0.95rem',
   lineHeight: 1.6,
-  color: theme.color.text,
-  background: theme.color.surface,
-  border: `1px solid ${theme.color.border}`,
-  borderRadius: theme.radius.md,
-  resize: 'vertical',
-}));
+});
 
 export default function LoremIpsum() {
   const [count, setCount] = useState(3);

@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
-import { Stack, Text } from '@toolkit/ui';
+import { CodeTextArea as Area, Stack, Text } from '@toolkit/ui';
 import { runRegex } from '@toolkit/lib/regex';
 
 const Input = styled('input')(({ theme }) => ({
@@ -17,19 +17,6 @@ const Input = styled('input')(({ theme }) => ({
 }));
 
 const FlagsInput = styled(Input)({ maxWidth: '8rem' });
-
-const Area = styled('textarea')(({ theme }) => ({
-  width: '100%',
-  minHeight: '8rem',
-  padding: theme.space(3),
-  fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-  fontSize: '0.9rem',
-  color: theme.color.text,
-  background: theme.color.surface,
-  border: `1px solid ${theme.color.border}`,
-  borderRadius: theme.radius.md,
-  resize: 'vertical',
-}));
 
 const Match = styled('li')(({ theme }) => ({
   fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',

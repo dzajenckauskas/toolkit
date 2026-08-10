@@ -1,22 +1,8 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import styled from '@emotion/styled';
-import { Button, Stack, Text } from '@toolkit/ui';
+import { Button, CodeTextArea as Area, Stack, Text } from '@toolkit/ui';
 import { encodeBase64, tryDecodeBase64 } from '@toolkit/lib/base64';
-
-const Area = styled('textarea')(({ theme }) => ({
-  width: '100%',
-  minHeight: '8rem',
-  padding: theme.space(3),
-  fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-  fontSize: '0.9rem',
-  color: theme.color.text,
-  background: theme.color.surface,
-  border: `1px solid ${theme.color.border}`,
-  borderRadius: theme.radius.md,
-  resize: 'vertical',
-}));
 
 type Mode = 'encode' | 'decode';
 

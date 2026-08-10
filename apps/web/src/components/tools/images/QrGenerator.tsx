@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { DownloadLink, Stack, Text } from '@toolkit/ui';
+import { DownloadLink, InlineField as Field, Stack, Text } from '@toolkit/ui';
 import { ERROR_LEVELS, type ErrorLevel, qrToDataUrl } from '@toolkit/lib/qr';
 
 const Area = styled('textarea')(({ theme }) => ({
@@ -15,15 +15,6 @@ const Area = styled('textarea')(({ theme }) => ({
   border: `1px solid ${theme.color.border}`,
   borderRadius: theme.radius.md,
   resize: 'vertical',
-}));
-
-const Field = styled('label')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  gap: theme.space(2),
-  fontSize: '0.9rem',
-  fontWeight: 600,
-  color: theme.color.muted,
 }));
 
 const Preview = styled('img')(({ theme }) => ({

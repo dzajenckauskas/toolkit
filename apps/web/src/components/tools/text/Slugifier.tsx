@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
-import { Button, Stack, Text } from '@toolkit/ui';
+import { Button, InlineField as Field, Stack, Text } from '@toolkit/ui';
 import { slugify } from '@toolkit/lib/slugify';
 
 const Input = styled('input')(({ theme }) => ({
@@ -24,15 +24,6 @@ const Output = styled('input')(({ theme }) => ({
   background: theme.color.surface,
   border: `1px solid ${theme.color.border}`,
   borderRadius: theme.radius.md,
-}));
-
-const Field = styled('label')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  gap: theme.space(2),
-  fontSize: '0.9rem',
-  fontWeight: 600,
-  color: theme.color.muted,
 }));
 
 export default function Slugifier() {

@@ -9,7 +9,7 @@ import { CategoryIcon } from '@/components/layout/CategoryIcon';
 import { Logo } from '@/components/layout/Logo';
 import ThemeToggle from '@/components/layout/ThemeToggle';
 import { CONTACT_MAILTO } from '@/lib/site';
-import type { AppTheme } from '@toolkit/ui';
+import { IconButton, type AppTheme } from '@toolkit/ui';
 
 /**
  * Slide-in navigation drawer (mobile / narrow screens).
@@ -71,20 +71,6 @@ const Head = styled('div')(({ theme }) => ({
   justifyContent: 'space-between',
   padding: `${theme.space(3)} ${theme.space(4)}`,
   borderBottom: `1px solid ${theme.color.border}`,
-}));
-
-const Close = styled('button')(({ theme }) => ({
-  display: 'inline-flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  width: '2.2rem',
-  height: '2.2rem',
-  color: theme.color.text,
-  background: 'transparent',
-  border: `1px solid ${theme.color.border}`,
-  borderRadius: '50%',
-  cursor: 'pointer',
-  '&:hover': { borderColor: theme.color.accent },
 }));
 
 const Body = styled('nav')({
@@ -200,7 +186,14 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
       >
         <Head>
           <Logo size={22} />
-          <Close type="button" onClick={onClose} aria-label="Close menu" data-testid="menu-close">
+          <IconButton
+            type="button"
+            size="sm"
+            variant="ghost"
+            onClick={onClose}
+            aria-label="Close menu"
+            data-testid="menu-close"
+          >
             <svg
               width="18"
               height="18"
@@ -212,7 +205,7 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
             >
               <path d="M6 6l12 12M18 6L6 18" />
             </svg>
-          </Close>
+          </IconButton>
         </Head>
 
         <Body aria-label="Tools">

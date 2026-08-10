@@ -56,6 +56,8 @@ Messages should explain:
 ## Accessibility
 
 - Keyboard-accessible upload and controls
+- Give every icon-only button an accessible name and use the shared icon-button primitive for
+  consistent geometry, centring, focus states, and disabled states.
 - Visible focus states
 - Proper labels for sliders and numeric fields
 - Status announcements for processing

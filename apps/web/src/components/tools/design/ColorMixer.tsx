@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
-import { Stack, Text } from '@toolkit/ui';
+import { InlineField as Field, Stack, Text } from '@toolkit/ui';
 import { blendSteps, mixHex } from '@toolkit/lib/color-harmony';
 
 const Row = styled('div')(({ theme }) => ({
@@ -10,15 +10,6 @@ const Row = styled('div')(({ theme }) => ({
   gap: theme.space(4),
   alignItems: 'center',
   flexWrap: 'wrap',
-}));
-
-const Field = styled('label')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  gap: theme.space(2),
-  fontSize: '0.9rem',
-  fontWeight: 600,
-  color: theme.color.muted,
 }));
 
 const Strip = styled('div')(({ theme }) => ({

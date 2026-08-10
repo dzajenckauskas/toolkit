@@ -2,32 +2,8 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { Button, Stack, Text } from '@toolkit/ui';
+import { Button, InlineField as Field, NumberInput, Stack, Text } from '@toolkit/ui';
 import { MAX_UUIDS, generateUuids } from '@toolkit/lib/uuid';
-
-const Field = styled('label')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  gap: theme.space(2),
-  fontSize: '0.9rem',
-  fontWeight: 600,
-  color: theme.color.muted,
-}));
-
-const NumberInput = styled('input')(({ theme }) => ({
-  width: '5rem',
-  padding: '0.4rem 0.6rem',
-  fontSize: '1rem',
-  color: theme.color.text,
-  background: theme.color.surface,
-  border: `1px solid ${theme.color.borderStrong}`,
-  borderRadius: theme.radius.md,
-  '&:focus-visible': {
-    outline: 'none',
-    borderColor: theme.color.accent,
-    boxShadow: `0 0 0 3px color-mix(in srgb, ${theme.color.accent} 35%, transparent)`,
-  },
-}));
 
 const Output = styled('textarea')(({ theme }) => ({
   width: '100%',

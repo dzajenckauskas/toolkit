@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
-import { Button, Stack, Text } from '@toolkit/ui';
+import { Button, CodeInput as HexInput, Stack, Text } from '@toolkit/ui';
 import { buildTheme, themeToCss, type Theme } from '@toolkit/lib/theme-maker';
 
 const Controls = styled('div')(({ theme }) => ({
@@ -10,17 +10,6 @@ const Controls = styled('div')(({ theme }) => ({
   gap: theme.space(3),
   alignItems: 'center',
   flexWrap: 'wrap',
-}));
-
-const HexInput = styled('input')(({ theme }) => ({
-  width: '8rem',
-  padding: '0.5rem 0.7rem',
-  fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-  fontSize: '1rem',
-  color: theme.color.text,
-  background: theme.color.surface,
-  border: `1px solid ${theme.color.borderStrong}`,
-  borderRadius: theme.radius.md,
 }));
 
 const Previews = styled('div')(({ theme }) => ({

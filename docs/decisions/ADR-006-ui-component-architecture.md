@@ -47,14 +47,14 @@ distinct from text-entry controls. Square icon buttons declare `50%` explicitly
 to remain circular. This keeps inputs and surfaces visually precise without
 flattening interactive controls.
 
-### Component structure: organize in-app now, extract later
+### Component structure: shared package after demonstrated reuse
 
-Build reusable primitives under `apps/web/src/components/ui/` (`Button`, `Card`,
-`Stack`, `Text`, `Page`, `Heading`, `VisuallyHidden`) that feature components
-compose. **Do not** create `packages/ui` yet — that waits for the concrete
-second use case (the Cropper), per ADR-001. The folder is structured so
-extraction is a *move*, not a rewrite: pure re-export barrel, no side-effectful
-modules, theme importable on its own.
+Reusable primitives live in `packages/ui` and feature components compose them.
+Extraction happened after the Cropper and subsequent tools provided concrete
+second use cases, satisfying ADR-001. Add a primitive only after repeated use
+establishes a stable contract; feature-specific surfaces stay with the feature.
+The package keeps a pure re-export barrel, no side-effectful modules, and a
+theme that is importable on its own.
 
 ## Consequences
 
@@ -88,7 +88,6 @@ modules, theme importable on its own.
 
 ## Follow-up
 
-When the Cropper needs these primitives, extract `src/components/ui/` and
-`src/theme/` into `packages/ui` with a proper `exports` map, per-component entry
-points, and `sideEffects` configured for tree-shaking. Record that as its own
-ADR at the time.
+Continue moving only demonstrated repeated contracts into `packages/ui`.
+Keep semantic feature controls, such as colour swatches and image previews,
+local even when they happen to use the same HTML element.

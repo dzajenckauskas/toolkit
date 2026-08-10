@@ -25,20 +25,8 @@ import { loadQualityLevel, saveQualityLevel } from '@toolkit/lib/settings';
 import { buildZip, type ZipEntry } from '@toolkit/lib/zip';
 import { clipboardImageFiles } from '@toolkit/lib/clipboard';
 import styled from '@emotion/styled';
-import { Button, DownloadLink, Stack, Text } from '@toolkit/ui';
+import { Button, DownloadLink, HiddenFileInput, Stack, Text } from '@toolkit/ui';
 import { ImageDropzone } from '@/components/tools/shared/ImageDropzone';
-
-const HiddenFileInput = styled('input')({
-  position: 'absolute',
-  width: 1,
-  height: 1,
-  padding: 0,
-  margin: -1,
-  overflow: 'hidden',
-  clip: 'rect(0, 0, 0, 0)',
-  whiteSpace: 'nowrap',
-  border: 0,
-});
 
 const QualityFieldset = styled('fieldset')(({ theme }) => ({
   margin: 0,
