@@ -113,6 +113,7 @@ async function loadFresh(page: Page, url: string): Promise<void> {
       if (attempt < 2) await page.waitForTimeout(1_000);
     }
   }
+
   if (lastError)
     throw new Error(
       `Could not load ${url}: ${lastError instanceof Error ? lastError.message : String(lastError)}`,
