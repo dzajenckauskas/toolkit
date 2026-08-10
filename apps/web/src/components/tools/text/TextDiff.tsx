@@ -55,7 +55,7 @@ const SwapButton = styled('button')(({ theme }) => ({
   color: theme.color.muted,
   background: theme.color.surface,
   border: `1px solid ${theme.color.border}`,
-  borderRadius: '50%',
+  borderRadius: theme.radius.pill,
   transition: 'color 0.15s ease, border-color 0.15s ease, background 0.15s ease',
   '&:hover': {
     color: theme.color.text,
