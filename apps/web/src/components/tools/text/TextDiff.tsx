@@ -44,10 +44,14 @@ const SwapButton = styled('button')(({ theme }) => ({
   display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'center',
-  width: '2.25rem',
+  width: 'auto',
+  minWidth: '3.5rem',
   height: '2.25rem',
   marginTop: '1.45rem',
-  padding: 0,
+  padding: '0.1rem 0.75rem 0',
+  fontSize: '0.78rem',
+  fontWeight: 700,
+  lineHeight: 1,
   color: theme.color.muted,
   background: theme.color.surface,
   border: `1px solid ${theme.color.border}`,
@@ -250,22 +254,7 @@ export default function TextDiff() {
           title="Swap sides"
           data-testid="diff-swap"
         >
-          <svg
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden
-          >
-            <path d="M4 8h13" />
-            <path d="m14 5 3 3-3 3" />
-            <path d="M20 16H7" />
-            <path d="m10 13-3 3 3 3" />
-          </svg>
+          Swap
         </SwapButton>
         <InputField>
           Changed

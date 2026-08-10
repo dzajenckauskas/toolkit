@@ -89,15 +89,15 @@ test('Text diff uses the compact radius scale for inputs and swap control', asyn
       ),
       input: window.getComputedStyle(before).borderRadius,
       swap: window.getComputedStyle(swap).borderRadius,
-      swapSize: [swap.getBoundingClientRect().width, swap.getBoundingClientRect().height],
+      swapIsWiderThanTall: swap.getBoundingClientRect().width > swap.getBoundingClientRect().height,
     };
   });
 
   expect(radii).toEqual({
     tokens: ['0.375rem', '0.5rem', '0.75rem', '1rem', '999px'],
     input: '8px',
-    swap: '50%',
-    swapSize: [36, 36],
+    swap: '999px',
+    swapIsWiderThanTall: true,
   });
 });
 

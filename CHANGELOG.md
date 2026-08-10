@@ -70,8 +70,8 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 - **More restrained corner-radius system.** Replaced oversized rounded inputs
   and cards with a compact 6/8/12/16px surface scale, while retaining fully
   rounded buttons, chips and circular icon controls. Native fields and remaining
-  UI exceptions now follow the same tokens. The Text Diff swap action also has
-  a cleaner exchange icon.
+  UI exceptions now follow the same tokens. Text Diff now uses a clear labelled
+  “Swap” button instead of an ambiguous exchange icon.
 - **One shared search component.** The inline catalog search and the header
   search dialog now share a single `useToolSearch` hook (query + keyboard) and
   `ToolResults` list, instead of each carrying its own copy of the result-row
