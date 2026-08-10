@@ -70,6 +70,11 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
 
 ### Changed
 
+- **Shared button alignment.** Moved the Neris optical-centering correction into the reusable
+  `@toolkit/ui` button styles used by buttons, navigation links, download links, and non-interactive
+  button visuals. Image upload calls to action and the accessibility audit action now use that same
+  component family instead of local padding or duplicated pill styles. Upload calls to action use a
+  clean text label rather than repeating the dropzone's existing upload affordance with a plus icon.
 - **Friendlier accessibility audit URLs.** The accessibility checker now accepts bare hostnames
   such as `example.com` and automatically uses HTTPS, while retaining the runner's public-target
   safety validation.

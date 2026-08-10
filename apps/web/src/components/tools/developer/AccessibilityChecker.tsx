@@ -68,10 +68,6 @@ type AuditJob = {
 };
 
 const Form = styled('form')(({ theme }) => ({ display: 'grid', gap: theme.space(4) }));
-const AuditButton = styled(Button)({
-  paddingTop: '0.6rem',
-  paddingBottom: '0.8rem',
-});
 const UrlRow = styled('div')(({ theme }) => ({
   display: 'grid',
   gridTemplateColumns: 'minmax(0, 1fr) auto',
@@ -719,12 +715,9 @@ export default function AccessibilityChecker() {
               placeholder="example.com"
               required
             />
-            <AuditButton
-              type="submit"
-              disabled={job?.status === 'queued' || job?.status === 'running'}
-            >
+            <Button type="submit" disabled={job?.status === 'queued' || job?.status === 'running'}>
               Run accessibility audit
-            </AuditButton>
+            </Button>
           </UrlRow>
         </Label>
         <Options>

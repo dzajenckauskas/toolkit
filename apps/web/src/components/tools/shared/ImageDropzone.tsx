@@ -1,6 +1,7 @@
 'use client';
 
 import styled from '@emotion/styled';
+import { ButtonVisual } from '@toolkit/ui';
 
 /**
  * The shared upload area for every image tool. A large dashed zone with an
@@ -68,18 +69,17 @@ const Title = styled('span')(({ theme }) => ({
 
 // Looks like a primary button but is not interactive — the whole zone handles
 // the click, so a nested button would be a redundant tab stop.
-const Cta = styled('span')(({ theme }) => ({
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: theme.space(2),
+const Cta = styled(ButtonVisual)(({ theme }) => ({
   marginTop: theme.space(1),
-  padding: '0.5rem 1.1rem',
-  fontSize: '0.9rem',
   fontWeight: 700,
-  color: theme.color.accentContrast,
-  background: theme.color.accent,
-  borderRadius: theme.radius.pill,
+  cursor: 'inherit',
   pointerEvents: 'none',
+  '&:hover': {
+    color: theme.color.accentContrast,
+    background: theme.color.accent,
+    transform: 'none',
+    boxShadow: 'none',
+  },
 }));
 
 const Hint = styled('span')(({ theme }) => ({
@@ -133,18 +133,7 @@ export function ImageDropzone({
         </svg>
       </IconCircle>
       <Title>{title}</Title>
-      <Cta aria-hidden>
-        <svg
-          width="15"
-          height="15"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-        >
-          <path d="M12 5v14M5 12h14" />
-        </svg>
+      <Cta variant="primary" aria-hidden data-testid={testId ? `${testId}-cta` : undefined}>
         {cta}
       </Cta>
       {hint ? <Hint>{hint}</Hint> : null}

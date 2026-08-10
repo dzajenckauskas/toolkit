@@ -7,7 +7,8 @@ import { buttonStyles, isButtonStyleProp, type ButtonStyleProps } from './button
 /**
  * Button primitives. `Button` is a real <button>; `ButtonLink` is a Next.js
  * <Link> styled identically (for navigation); `DownloadLink` is a plain <a>
- * styled identically (for object-URL downloads, where Link is inappropriate).
+ * styled identically (for object-URL downloads, where Link is inappropriate);
+ * `ButtonVisual` gives a non-interactive element the same appearance.
  */
 
 const notStyleProp = (prop: string) => !isButtonStyleProp(prop);
@@ -21,5 +22,9 @@ export const ButtonLink = styled(Link, {
 })<ButtonStyleProps>(({ theme, variant, size }) => buttonStyles(theme, { variant, size }));
 
 export const DownloadLink = styled('a', {
+  shouldForwardProp: notStyleProp,
+})<ButtonStyleProps>(({ theme, variant, size }) => buttonStyles(theme, { variant, size }));
+
+export const ButtonVisual = styled('span', {
   shouldForwardProp: notStyleProp,
 })<ButtonStyleProps>(({ theme, variant, size }) => buttonStyles(theme, { variant, size }));

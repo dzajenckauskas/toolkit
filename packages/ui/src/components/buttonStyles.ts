@@ -19,6 +19,7 @@ export function buttonStyles(
 ): CSSObject {
   const isPrimary = variant === 'primary';
   return {
+    appearance: 'none',
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -31,11 +32,15 @@ export function buttonStyles(
     cursor: 'pointer',
     border: '1px solid transparent',
     textAlign: 'center',
-    padding: size === 'sm' ? '0.45rem 1rem' : '0.7rem 1.5rem',
+    // Neris has more visual space above its glyphs than below. Keep the total
+    // block padding unchanged, but bias it toward the bottom so labels are
+    // optically centred in buttons, links, and non-interactive button visuals.
+    padding: size === 'sm' ? '0.35rem 1rem 0.55rem' : '0.6rem 1.5rem 0.8rem',
     fontSize: size === 'sm' ? '0.8rem' : '0.9rem',
     background: isPrimary ? theme.color.accent : 'transparent',
     color: isPrimary ? theme.color.accentContrast : theme.color.text,
     borderColor: isPrimary ? 'transparent' : theme.color.border,
+    verticalAlign: 'middle',
     transition:
       'color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease',
     '&:hover': isPrimary

@@ -45,6 +45,40 @@ test('Images to PDF reorders images and builds a PDF', async ({ page }) => {
   );
   const thumbs = page.getByTestId('pdf-thumb');
   await expect(thumbs).toHaveCount(3);
+
+  const uploadCta = page.getByTestId('pdf-dropzone-cta');
+  const downloadButton = page.getByTestId('pdf-download');
+  await expect(uploadCta.locator('svg')).toHaveCount(0);
+  const sharedStyles = await Promise.all(
+    [uploadCta, downloadButton].map((control) =>
+      control.evaluate((element) => {
+        const style = getComputedStyle(element);
+        return {
+          paddingTop: style.paddingTop,
+          paddingBottom: style.paddingBottom,
+          fontSize: style.fontSize,
+          lineHeight: style.lineHeight,
+        };
+      }),
+    ),
+  );
+  expect(sharedStyles[0]).toEqual(sharedStyles[1]);
+
+  for (const control of [uploadCta, downloadButton]) {
+    const textOffset = await control.evaluate((element) => {
+      const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+      let textNode = walker.nextNode();
+      while (textNode && !textNode.textContent?.trim()) textNode = walker.nextNode();
+      if (!textNode) return Number.POSITIVE_INFINITY;
+      const range = document.createRange();
+      range.selectNodeContents(textNode);
+      const textBox = range.getBoundingClientRect();
+      const controlBox = element.getBoundingClientRect();
+      return textBox.top + textBox.height / 2 - (controlBox.top + controlBox.height / 2);
+    });
+    expect(Math.abs(textOffset)).toBeLessThanOrEqual(2);
+  }
+
   await expect(thumbs.first().locator('img')).toHaveCSS('aspect-ratio', '4 / 5');
   await expect(thumbs.first().locator('img')).toHaveCSS('object-fit', 'cover');
 
