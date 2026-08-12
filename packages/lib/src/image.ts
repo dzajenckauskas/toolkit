@@ -81,6 +81,18 @@ export function isLossy(format: ImageFormat): boolean {
   return format === 'jpeg' || format === 'webp';
 }
 
+/**
+ * True when the format supports an alpha channel. JPEG has none, so drawing a
+ * transparent source onto a JPEG-bound canvas would let the encoder fill the
+ * transparent pixels with black. Callers use this to paint a background first.
+ */
+export function formatHasAlpha(format: ImageFormat): boolean {
+  return format !== 'jpeg';
+}
+
+/** Background painted behind transparent pixels when the target has no alpha. */
+export const DEFAULT_IMAGE_BACKGROUND = '#ffffff';
+
 export interface Size {
   width: number;
   height: number;
@@ -140,6 +152,22 @@ export function rotateCCW(t: Transform): Transform {
 
 // --- Browser-only canvas rendering below ---
 
+/**
+ * Fill the canvas with a solid background before drawing, when the target
+ * format has no alpha channel. Without this a transparent source exported to
+ * JPEG comes out with a black background (the encoder's default fill).
+ */
+function fillBackgroundIfOpaque(
+  ctx: CanvasRenderingContext2D,
+  canvas: HTMLCanvasElement,
+  format: ImageFormat,
+  background: string,
+): void {
+  if (formatHasAlpha(format)) return;
+  ctx.fillStyle = background;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+
 function encodeCanvas(
   canvas: HTMLCanvasElement,
   format: ImageFormat,
@@ -160,6 +188,7 @@ export async function renderResized(
   target: Size,
   format: ImageFormat,
   quality = 0.9,
+  background = DEFAULT_IMAGE_BACKGROUND,
 ): Promise<{ blob: Blob; size: Size }> {
   const { image } = await decodeImage(input);
   const size = clampSize(target);
@@ -169,6 +198,7 @@ export async function renderResized(
   const ctx = canvas.getContext('2d');
   if (!ctx) throw new ImageEncodeError();
   ctx.imageSmoothingQuality = 'high';
+  fillBackgroundIfOpaque(ctx, canvas, format, background);
   ctx.drawImage(image, 0, 0, size.width, size.height);
   return { blob: await encodeCanvas(canvas, format, quality), size };
 }
@@ -179,6 +209,7 @@ export async function renderCropped(
   rect: { x: number; y: number; width: number; height: number },
   format: ImageFormat,
   quality = 0.9,
+  background = DEFAULT_IMAGE_BACKGROUND,
 ): Promise<{ blob: Blob; size: Size }> {
   const { image } = await decodeImage(input);
   const size = clampSize({ width: rect.width, height: rect.height });
@@ -188,6 +219,7 @@ export async function renderCropped(
   const ctx = canvas.getContext('2d');
   if (!ctx) throw new ImageEncodeError();
   ctx.imageSmoothingQuality = 'high';
+  fillBackgroundIfOpaque(ctx, canvas, format, background);
   ctx.drawImage(image, rect.x, rect.y, rect.width, rect.height, 0, 0, size.width, size.height);
   return { blob: await encodeCanvas(canvas, format, quality), size };
 }
@@ -198,6 +230,7 @@ export async function renderTransformed(
   transform: Transform,
   format: ImageFormat,
   quality = 0.9,
+  background = DEFAULT_IMAGE_BACKGROUND,
 ): Promise<{ blob: Blob; size: Size }> {
   const { image, width, height } = await decodeImage(input);
   const out = rotateSize({ width, height }, transform.quarterTurns);
@@ -207,6 +240,8 @@ export async function renderTransformed(
   const ctx = canvas.getContext('2d');
   if (!ctx) throw new ImageEncodeError();
 
+  // Fill in untransformed pixel space, before translate/rotate/scale.
+  fillBackgroundIfOpaque(ctx, canvas, format, background);
   ctx.translate(out.width / 2, out.height / 2);
   ctx.rotate((transform.quarterTurns * Math.PI) / 2);
   ctx.scale(transform.flipH ? -1 : 1, transform.flipV ? -1 : 1);

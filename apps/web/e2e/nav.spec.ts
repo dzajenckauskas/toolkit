@@ -15,6 +15,19 @@ test('the header brand links home and quick links navigate', async ({ page }) =>
   await expect(page).toHaveURL(/\/$/);
 });
 
+test('the tool page back link returns to the catalog', async ({ page }) => {
+  await page.goto('/optimize');
+
+  // A real link above the fold, keyboard-reachable, pointing at the catalog.
+  const back = page.getByTestId('back-to-tools');
+  await expect(back).toBeVisible();
+  await expect(back).toHaveAttribute('href', '/');
+
+  await back.click();
+  await expect(page).toHaveURL(/\/$/);
+  await expect(page.getByTestId('category-chips')).toBeVisible();
+});
+
 test('the FAQ, Contact and Terms are reachable and wired correctly', async ({ page }) => {
   await page.goto('/faq');
   // Expanding a question opens its <details> and reveals the answer.

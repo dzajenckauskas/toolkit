@@ -53,6 +53,23 @@ const HeroInner = styled('div')({
   textAlign: 'center',
 });
 
+// "Back to all tools" breadcrumb — a real link so it works with keyboard and
+// screen readers, left-aligned above the centred hero content.
+const BackLink = styled(Link)(({ theme }) => ({
+  position: 'relative',
+  zIndex: 1,
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: theme.space(1),
+  marginBottom: theme.space(4),
+  fontSize: '0.9rem',
+  fontWeight: 600,
+  color: theme.color.muted,
+  textDecoration: 'none',
+  '&:hover': { color: theme.color.text },
+  '& svg': { color: 'currentColor' },
+}));
+
 const Eyebrow = styled(Link)(({ theme }) => ({
   display: 'inline-flex',
   alignItems: 'center',
@@ -244,6 +261,23 @@ export function ToolPage({ toolId, children }: { toolId: string; children: React
     <Main>
       <Hero>
         <Shell>
+          <BackLink href="/" data-testid="back-to-tools">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M19 12H5" />
+              <path d="M12 19l-7-7 7-7" />
+            </svg>
+            Back to all tools
+          </BackLink>
           <HeroInner>
             <Eyebrow href={`/#cat-${tool.category}`}>
               <CategoryIcon category={tool.category} />
