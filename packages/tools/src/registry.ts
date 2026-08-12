@@ -312,7 +312,7 @@ export const TOOLS: Tool[] = [
   {
     id: 'jwt',
     name: 'JWT',
-    description: 'Decode and inspect JSON Web Tokens.',
+    description: 'Decode, inspect and sign JSON Web Tokens.',
     href: '/jwt',
     category: 'Developer',
     status: 'live',
@@ -612,7 +612,7 @@ export const TOOL_KEYWORDS: Record<string, string[]> = {
   password: ['passphrase', 'random', 'secret', 'credentials'],
   json: ['format', 'minify', 'beautify', 'pretty', 'validate'],
   hash: ['sha', 'sha1', 'sha256', 'sha512', 'digest', 'md5'],
-  jwt: ['token', 'decode', 'bearer', 'claims'],
+  jwt: ['token', 'decode', 'encode', 'generate', 'sign', 'bearer', 'claims'],
   regex: ['regexp', 'pattern', 'match', 'test'],
   checksum: ['verify', 'sha', 'integrity', 'digest'],
   'lorem-ipsum': ['placeholder', 'dummy text', 'filler', 'lipsum'],
