@@ -2,8 +2,9 @@
 
 import Link from 'next/link';
 import styled from '@emotion/styled';
-import { type Tool } from '@toolkit/tools/registry';
+import { toolBadge, type Tool } from '@toolkit/tools/registry';
 import { CategoryIcon } from '@/components/layout/CategoryIcon';
+import { ToolBadge } from '@/components/catalog/ToolBadge';
 import type { AppTheme } from '@toolkit/ui';
 
 /**
@@ -89,18 +90,6 @@ const RowTag = styled('span')(({ theme }) => ({
   color: theme.color.muted,
 }));
 
-const Soon = styled('span')(({ theme }) => ({
-  flex: '0 0 auto',
-  fontSize: '0.7rem',
-  fontWeight: 700,
-  letterSpacing: '0.03em',
-  textTransform: 'uppercase',
-  color: theme.color.muted,
-  border: `1px solid ${theme.color.border}`,
-  borderRadius: theme.radius.pill,
-  padding: '0.1rem 0.5rem',
-}));
-
 function Row({
   tool,
   selected,
@@ -123,7 +112,7 @@ function Row({
         <RowName>{tool.name}</RowName>
         <RowDesc>{tool.description}</RowDesc>
       </RowText>
-      {tool.status === 'planned' ? <Soon>Soon</Soon> : <RowTag>{tool.category}</RowTag>}
+      {toolBadge(tool) ? <ToolBadge tool={tool} /> : <RowTag>{tool.category}</RowTag>}
     </>
   );
 

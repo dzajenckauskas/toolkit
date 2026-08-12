@@ -1,4 +1,25 @@
 import { test, expect } from '@playwright/test';
+import { TOOLS, toolBadge } from '@toolkit/tools/registry';
+
+test('catalog cards show Soon / New / Top badges', async ({ page }) => {
+  await page.goto('/');
+
+  // Top: a curated flagship (no launch date, so it is always "Top").
+  const topCard = page.getByTestId('tool-image-editor');
+  await expect(topCard.getByTestId('badge-top')).toBeVisible();
+
+  // Soon: the first planned tool in the registry.
+  const planned = TOOLS.find((t) => t.status === 'planned');
+  expect(planned).toBeTruthy();
+  await expect(page.getByTestId(`tool-${planned!.id}`).getByTestId('badge-soon')).toBeVisible();
+
+  // New: computed from the registry with the same clock as the app, so this
+  // stays honest as launch windows expire (asserted only while one is new).
+  const fresh = TOOLS.find((t) => toolBadge(t) === 'new');
+  if (fresh) {
+    await expect(page.getByTestId(`tool-${fresh.id}`).getByTestId('badge-new')).toBeVisible();
+  }
+});
 
 test('home catalog search text clears the search icon', async ({ page }) => {
   await page.goto('/');

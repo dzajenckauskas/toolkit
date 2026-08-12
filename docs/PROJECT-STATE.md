@@ -57,6 +57,17 @@ tools first, decide on monetization later").
 5. **e2e** in `apps/web/e2e/…spec.ts`.
 6. Update `CHANGELOG.md`; run the full suite; commit + push to `main`.
 
+**Card badges** (`toolBadge` in the registry, rendered by
+`components/catalog/ToolBadge.tsx` on catalog cards and search rows). A tool
+shows at most one, in this precedence:
+
+- **Soon** — `status: 'planned'` (not yet live).
+- **New** — set `addedAt: 'YYYY-MM-DD'` when launching. The badge shows for
+  `NEW_TOOL_WINDOW_DAYS` (30) after that date, then disappears on its own — no
+  cleanup needed. Leave `addedAt` in place; it just goes quiet.
+- **Top** — set `featured: true` for a curated flagship. Never expires, so keep
+  the set small. A featured tool still shows **New** first inside its window.
+
 Reusable helpers worth knowing:
 
 - `ImageToolShell` + `src/lib/image.ts` — drop/paste/preview/download for image

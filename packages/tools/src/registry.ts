@@ -25,6 +25,47 @@ export interface Tool {
   href: string;
   category: ToolCategory;
   status: ToolStatus;
+  /**
+   * Date the tool was added to the catalog, as `YYYY-MM-DD`. Drives the "New"
+   * badge, which shows for `NEW_TOOL_WINDOW_DAYS` after this date and then
+   * disappears on its own — set it once when launching a tool; no cleanup
+   * needed. Omit for tools that have been live long enough not to matter.
+   */
+  addedAt?: string;
+  /**
+   * Curated flagship tool — earns a "Top" badge. Unlike `addedAt` this never
+   * expires; it's a hand-picked marker for our best/most-loved tools, so keep
+   * the set small. Ignored for `planned` tools (they show "Soon" instead).
+   */
+  featured?: boolean;
+}
+
+/** The three mutually-exclusive card badges, in precedence order. */
+export type ToolBadgeKind = 'soon' | 'new' | 'top';
+
+/** How long after `addedAt` a live tool keeps its "New" badge. */
+export const NEW_TOOL_WINDOW_DAYS = 30;
+
+/** True when a live tool was added within the last `NEW_TOOL_WINDOW_DAYS`. */
+export function isNewTool(tool: Tool, now: Date = new Date()): boolean {
+  if (tool.status !== 'live' || !tool.addedAt) return false;
+  const added = new Date(`${tool.addedAt}T00:00:00Z`);
+  if (Number.isNaN(added.getTime())) return false;
+  const days = (now.getTime() - added.getTime()) / 86_400_000;
+  return days >= 0 && days < NEW_TOOL_WINDOW_DAYS;
+}
+
+/**
+ * The single badge a tool card should show, or `null` for none. A tool gets at
+ * most one: "Soon" for anything not yet live, otherwise "New" while inside its
+ * launch window, otherwise "Top" for a curated flagship. "New" beats "Top" so a
+ * freshly shipped flagship reads as new first, then settles into "Top".
+ */
+export function toolBadge(tool: Tool, now: Date = new Date()): ToolBadgeKind | null {
+  if (tool.status === 'planned') return 'soon';
+  if (isNewTool(tool, now)) return 'new';
+  if (tool.featured) return 'top';
+  return null;
 }
 
 /** Display order for categories on the catalog. */
@@ -48,6 +89,7 @@ export const TOOLS: Tool[] = [
     href: '/optimize',
     category: 'Images & Media',
     status: 'live',
+    featured: true,
   },
   {
     id: 'crop',
@@ -88,6 +130,7 @@ export const TOOLS: Tool[] = [
     href: '/image-editor',
     category: 'Images & Media',
     status: 'live',
+    featured: true,
   },
   {
     id: 'screenshot',
@@ -96,6 +139,7 @@ export const TOOLS: Tool[] = [
     href: '/screenshot',
     category: 'Images & Media',
     status: 'live',
+    addedAt: '2026-07-28',
   },
   {
     id: 'qr',
@@ -104,6 +148,7 @@ export const TOOLS: Tool[] = [
     href: '/qr',
     category: 'Images & Media',
     status: 'live',
+    featured: true,
   },
   {
     id: 'code-image',
@@ -262,6 +307,7 @@ export const TOOLS: Tool[] = [
     href: '/json',
     category: 'Developer',
     status: 'live',
+    featured: true,
   },
   {
     id: 'jwt',
@@ -382,6 +428,7 @@ export const TOOLS: Tool[] = [
     href: '/accessibility-checker',
     category: 'Developer',
     status: 'live',
+    addedAt: '2026-08-10',
   },
 
   // Design
@@ -392,6 +439,7 @@ export const TOOLS: Tool[] = [
     href: '/colors',
     category: 'Design',
     status: 'live',
+    featured: true,
   },
   {
     id: 'contrast',
