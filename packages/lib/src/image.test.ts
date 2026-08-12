@@ -6,6 +6,7 @@ import {
   fitWithin,
   formatHasAlpha,
   IDENTITY_TRANSFORM,
+  imageFormatForInput,
   isLossy,
   lockAspect,
   mimeFor,
@@ -33,6 +34,19 @@ describe('image helpers', () => {
     expect(extensionFor('png')).toBe('png');
     expect(isLossy('png')).toBe(false);
     expect(isLossy('webp')).toBe(true);
+  });
+
+  it('preserves the input format where the canvas can re-encode it', () => {
+    expect(imageFormatForInput('image/jpeg', 'a.jpg')).toBe('jpeg');
+    expect(imageFormatForInput('image/png', 'a.png')).toBe('png');
+    expect(imageFormatForInput('image/webp', 'a.webp')).toBe('webp');
+    // GIF/BMP decode but can't be canvas-encoded → lossless PNG fallback.
+    expect(imageFormatForInput('image/gif', 'a.gif')).toBe('png');
+    expect(imageFormatForInput('image/bmp', 'a.bmp')).toBe('png');
+    // Empty MIME (drag-and-drop) falls back to the extension.
+    expect(imageFormatForInput('', 'photo.JPEG')).toBe('jpeg');
+    expect(imageFormatForInput('', 'photo.webp')).toBe('webp');
+    expect(imageFormatForInput('', 'photo.png')).toBe('png');
   });
 
   it('reports alpha support per format so transparent sources fill instead of blacking out', () => {

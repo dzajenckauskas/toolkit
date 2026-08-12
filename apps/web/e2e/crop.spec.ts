@@ -123,3 +123,17 @@ test('downloads the cropped image as a JPEG', async ({ page }) => {
   const download = await downloadPromise;
   expect(download.suggestedFilename()).toBe('sample-cropped.jpg');
 });
+
+test('accepts a PNG and preserves the format on download', async ({ page }) => {
+  await page
+    .getByTestId('crop-file-input')
+    .setInputFiles(resolve(__dirname, 'fixtures/sample.png'));
+  await expect(page.getByTestId('crop-box')).toBeVisible();
+  await expect(page.getByTestId('crop-source')).toContainText('200 × 150');
+
+  const downloadPromise = page.waitForEvent('download');
+  await page.getByTestId('crop-download').click();
+  const download = await downloadPromise;
+  // Format preserved: PNG in, PNG out (no forced JPEG).
+  expect(download.suggestedFilename()).toBe('sample-cropped.png');
+});

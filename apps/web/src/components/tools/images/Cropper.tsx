@@ -2,10 +2,21 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
-import { validateFile } from '@toolkit/lib/validation';
-import { generateOutputFilename } from '@toolkit/lib/filename';
 import { clipboardImageFiles } from '@toolkit/lib/clipboard';
-import { BALANCED_JPEG_QUALITY, ACCEPTED_EXTENSIONS } from '@toolkit/lib/constants';
+import { BALANCED_JPEG_QUALITY } from '@toolkit/lib/constants';
+import {
+  ACCEPTED_IMAGE_EXTENSIONS,
+  ACCEPTED_IMAGE_MIME,
+  DEFAULT_IMAGE_BACKGROUND,
+  extensionFor,
+  formatHasAlpha,
+  imageFormatForInput,
+  isLossy,
+  mimeFor,
+  outputImageName,
+  validateImageFile,
+  type ImageFormat,
+} from '@toolkit/lib/image';
 import {
   ASPECT_KEYS,
   ASPECT_RATIOS,
@@ -36,6 +47,7 @@ const ZOOM_LEVELS = [1, 1.5, 2, 3] as const;
 interface Source {
   url: string;
   fileName: string;
+  format: ImageFormat;
   naturalWidth: number;
   naturalHeight: number;
 }
@@ -175,7 +187,7 @@ export default function Cropper() {
 
   const loadFile = useCallback(
     (file: File) => {
-      const validation = validateFile(file);
+      const validation = validateImageFile(file);
       if (!validation.ok) {
         setError(validation.message ?? 'This file cannot be used.');
         return;
@@ -186,7 +198,13 @@ export default function Cropper() {
       setError(null);
       setCrop(null);
       // Dimensions are filled in once the <img> loads.
-      setSource({ url, fileName: file.name, naturalWidth: 0, naturalHeight: 0 });
+      setSource({
+        url,
+        fileName: file.name,
+        format: imageFormatForInput(file.type, file.name),
+        naturalWidth: 0,
+        naturalHeight: 0,
+      });
     },
     [revokeUrl],
   );
@@ -208,7 +226,7 @@ export default function Cropper() {
     revokeUrl();
     setSource(null);
     setCrop(null);
-    setError('This image could not be read. It may be corrupt or not a real JPEG.');
+    setError('This image could not be read. It may be corrupt or an unsupported format.');
   }, [revokeUrl]);
 
   // Paste an image anywhere to load it.
@@ -316,6 +334,12 @@ export default function Cropper() {
     canvas.height = out.height;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
+    const { format } = source;
+    // JPEG has no alpha: fill first so a transparent source doesn't go black.
+    if (!formatHasAlpha(format)) {
+      ctx.fillStyle = DEFAULT_IMAGE_BACKGROUND;
+      ctx.fillRect(0, 0, out.width, out.height);
+    }
     ctx.drawImage(
       imgRef.current,
       crop.x,
@@ -333,14 +357,14 @@ export default function Cropper() {
         const url = URL.createObjectURL(blob);
         const anchor = document.createElement('a');
         anchor.href = url;
-        anchor.download = generateOutputFilename(source.fileName, 'cropped');
+        anchor.download = outputImageName(source.fileName, 'cropped', extensionFor(format));
         document.body.appendChild(anchor);
         anchor.click();
         anchor.remove();
         window.setTimeout(() => URL.revokeObjectURL(url), 1000);
       },
-      'image/jpeg',
-      BALANCED_JPEG_QUALITY,
+      mimeFor(format),
+      isLossy(format) ? BALANCED_JPEG_QUALITY : undefined,
     );
   }, [crop, source, exportKey, presetKey]);
 
@@ -370,7 +394,7 @@ export default function Cropper() {
       <HiddenFileInput
         ref={inputRef}
         type="file"
-        accept={`image/jpeg,${ACCEPTED_EXTENSIONS.join(',')}`}
+        accept={[...ACCEPTED_IMAGE_MIME, ...ACCEPTED_IMAGE_EXTENSIONS].join(',')}
         onChange={onInputChange}
         data-testid="crop-file-input"
       />
@@ -379,7 +403,7 @@ export default function Cropper() {
         {!source ? (
           <ImageDropzone
             active={isDragging}
-            ariaLabel="Add a JPEG image by choosing a file, dropping it, or pasting"
+            ariaLabel="Add an image by choosing a file, dropping it, or pasting"
             onClick={openPicker}
             onDragOver={(event) => {
               event.preventDefault();
@@ -392,9 +416,9 @@ export default function Cropper() {
               const file = event.dataTransfer.files?.[0];
               if (file) loadFile(file);
             }}
-            title="Drop a product photo here"
-            cta="Select a JPEG"
-            hint="Crop it in your browser, then download · paste with Cmd/Ctrl+V"
+            title="Drop an image here"
+            cta="Select an image"
+            hint="JPG, PNG or WebP · crop it in your browser, then download · paste with Cmd/Ctrl+V"
             testId="crop-dropzone"
           />
         ) : null}
@@ -554,7 +578,7 @@ export default function Cropper() {
                 disabled={!ready}
                 data-testid="crop-download"
               >
-                Download cropped JPEG
+                Download cropped image
               </Button>
               <Button type="button" variant="ghost" onClick={reset} data-testid="crop-reset">
                 Choose another

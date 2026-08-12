@@ -82,6 +82,20 @@ export function isLossy(format: ImageFormat): boolean {
 }
 
 /**
+ * The output format to use for an input, preserving it where the canvas can
+ * re-encode it. JPEG/PNG/WebP round-trip as themselves; anything else the
+ * browser can decode but not encode (GIF, BMP, unknown) falls back to PNG,
+ * which is lossless and keeps any transparency. Uses the MIME type, falling
+ * back to the file extension when the browser reports an empty type.
+ */
+export function imageFormatForInput(type: string, name = ''): ImageFormat {
+  const lower = name.toLowerCase();
+  if (type === 'image/jpeg' || lower.endsWith('.jpg') || lower.endsWith('.jpeg')) return 'jpeg';
+  if (type === 'image/webp' || lower.endsWith('.webp')) return 'webp';
+  return 'png';
+}
+
+/**
  * True when the format supports an alpha channel. JPEG has none, so drawing a
  * transparent source onto a JPEG-bound canvas would let the encoder fill the
  * transparent pixels with black. Callers use this to paint a background first.
@@ -248,4 +262,26 @@ export async function renderTransformed(
   ctx.drawImage(image, -width / 2, -height / 2, width, height);
 
   return { blob: await encodeCanvas(canvas, format, quality), size: out };
+}
+
+/**
+ * Decode `input` and re-encode it at its native size to `format` (compression).
+ * `quality` is applied only for lossy formats; lossless formats ignore it. Used
+ * by the optimizer to compress in-place while preserving the source format.
+ */
+export async function optimizeImage(
+  input: Blob,
+  format: ImageFormat,
+  quality: number,
+  background = DEFAULT_IMAGE_BACKGROUND,
+): Promise<{ blob: Blob; dimensions: Size }> {
+  const { image, width, height } = await decodeImage(input);
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) throw new ImageEncodeError();
+  fillBackgroundIfOpaque(ctx, canvas, format, background);
+  ctx.drawImage(image, 0, 0, width, height);
+  return { blob: await encodeCanvas(canvas, format, quality), dimensions: { width, height } };
 }
