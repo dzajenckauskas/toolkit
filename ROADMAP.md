@@ -78,7 +78,7 @@ for that slice only; full multi-format, batch, and controls remain open. See
 
 - [x] Free crop (foundation — `/crop`, move + resize, export)
 - [x] Common aspect ratios (Free, 1:1, 4:5, 4:3, 16:9)
-- [ ] Ecommerce presets (marketplace pixel sizes)
+- [x] Ecommerce presets (marketplace pixel sizes)
 - [x] Reposition and zoom
 - [x] Export settings (output longest-edge size)
 - [ ] Batch workflow exploration

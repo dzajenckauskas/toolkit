@@ -12,15 +12,18 @@ import {
   EXPORT_SIZES,
   EXPORT_SIZE_KEYS,
   HANDLES,
+  MARKETPLACE_KEYS,
+  MARKETPLACE_PRESETS,
   applyAspectRatio,
   defaultCrop,
   moveRect,
-  outputSize,
+  presetRatio,
   resizeRect,
-  scaleToLongEdge,
+  resolveOutputSize,
   type AspectKey,
   type ExportSizeKey,
   type Handle,
+  type MarketplaceKey,
   type Rect,
 } from '@toolkit/lib/crop';
 import { Button, HiddenFileInput, Stack, Text } from '@toolkit/ui';
@@ -106,6 +109,7 @@ const RatioFieldset = styled('fieldset')(({ theme }) => ({
   border: `1px solid ${theme.color.border}`,
   borderRadius: theme.radius.md,
   background: theme.color.surface,
+  '&:disabled': { opacity: 0.5 },
   '& legend': {
     padding: `0 ${theme.space(1)}`,
     fontSize: '0.85rem',
@@ -148,7 +152,12 @@ export default function Cropper() {
   const [isDragging, setIsDragging] = useState(false);
   const [ratioKey, setRatioKey] = useState<AspectKey>('free');
   const [exportKey, setExportKey] = useState<ExportSizeKey>('original');
+  const [presetKey, setPresetKey] = useState<MarketplaceKey | null>(null);
   const [zoom, setZoom] = useState(1);
+
+  // A marketplace preset overrides the free aspect ratio and export size: it
+  // locks the crop to the preset's ratio and forces its exact output size.
+  const activeRatio = presetKey ? presetRatio(presetKey) : ASPECT_RATIOS[ratioKey];
 
   const inputRef = useRef<HTMLInputElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
@@ -190,10 +199,9 @@ export default function Cropper() {
       setSource((current) => (current ? { ...current, naturalWidth, naturalHeight } : current));
       const bounds = { width: naturalWidth, height: naturalHeight };
       const base = defaultCrop(bounds);
-      const ratio = ASPECT_RATIOS[ratioKey];
-      setCrop(ratio ? applyAspectRatio(base, ratio, bounds) : base);
+      setCrop(activeRatio ? applyAspectRatio(base, activeRatio, bounds) : base);
     },
-    [ratioKey],
+    [activeRatio],
   );
 
   const onImageError = useCallback(() => {
@@ -242,10 +250,10 @@ export default function Cropper() {
       setCrop(
         drag.mode === 'move'
           ? moveRect(drag.startRect, dx, dy, bounds)
-          : resizeRect(drag.startRect, drag.mode, dx, dy, bounds, ASPECT_RATIOS[ratioKey]),
+          : resizeRect(drag.startRect, drag.mode, dx, dy, bounds, activeRatio),
       );
     },
-    [source, scale, ratioKey],
+    [source, scale, activeRatio],
   );
 
   const handleRatioChange = useCallback(
@@ -255,6 +263,19 @@ export default function Cropper() {
       if (ratio && source && crop) {
         const bounds = { width: source.naturalWidth, height: source.naturalHeight };
         setCrop(applyAspectRatio(crop, ratio, bounds));
+      }
+    },
+    [source, crop],
+  );
+
+  const handlePresetChange = useCallback(
+    (key: MarketplaceKey | null) => {
+      setPresetKey(key);
+      // Selecting a preset locks the crop box to its ratio; clearing it leaves
+      // the crop as-is and hands control back to the free ratio/export options.
+      if (key && source && crop) {
+        const bounds = { width: source.naturalWidth, height: source.naturalHeight };
+        setCrop(applyAspectRatio(crop, presetRatio(key), bounds));
       }
     },
     [source, crop],
@@ -289,7 +310,7 @@ export default function Cropper() {
 
   const download = useCallback(() => {
     if (!crop || !source || !imgRef.current) return;
-    const out = scaleToLongEdge(outputSize(crop), EXPORT_SIZES[exportKey]);
+    const out = resolveOutputSize(crop, presetKey, EXPORT_SIZES[exportKey]);
     const canvas = document.createElement('canvas');
     canvas.width = out.width;
     canvas.height = out.height;
@@ -321,7 +342,7 @@ export default function Cropper() {
       'image/jpeg',
       BALANCED_JPEG_QUALITY,
     );
-  }, [crop, source, exportKey]);
+  }, [crop, source, exportKey, presetKey]);
 
   const reset = useCallback(() => {
     revokeUrl();
@@ -341,7 +362,7 @@ export default function Cropper() {
     [loadFile],
   );
 
-  const out = crop ? scaleToLongEdge(outputSize(crop), EXPORT_SIZES[exportKey]) : null;
+  const out = crop ? resolveOutputSize(crop, presetKey, EXPORT_SIZES[exportKey]) : null;
   const ready = source !== null && source.naturalWidth > 0 && crop !== null;
 
   return (
@@ -386,7 +407,37 @@ export default function Cropper() {
 
         {source ? (
           <Stack gap={3} align="flex-start">
-            <RatioFieldset data-testid="crop-ratio">
+            <RatioFieldset data-testid="crop-preset">
+              <legend>Marketplace preset</legend>
+              <RatioOptions>
+                <RatioOption>
+                  <input
+                    type="radio"
+                    name="marketplace-preset"
+                    value="none"
+                    checked={presetKey === null}
+                    onChange={() => handlePresetChange(null)}
+                    data-testid="crop-preset-none"
+                  />
+                  None
+                </RatioOption>
+                {MARKETPLACE_KEYS.map((key) => (
+                  <RatioOption key={key}>
+                    <input
+                      type="radio"
+                      name="marketplace-preset"
+                      value={key}
+                      checked={presetKey === key}
+                      onChange={() => handlePresetChange(key)}
+                      data-testid={`crop-preset-${key}`}
+                    />
+                    {MARKETPLACE_PRESETS[key].label}
+                  </RatioOption>
+                ))}
+              </RatioOptions>
+            </RatioFieldset>
+
+            <RatioFieldset data-testid="crop-ratio" disabled={presetKey !== null}>
               <legend>Aspect ratio</legend>
               <RatioOptions>
                 {ASPECT_KEYS.map((key) => (
@@ -405,7 +456,7 @@ export default function Cropper() {
               </RatioOptions>
             </RatioFieldset>
 
-            <RatioFieldset data-testid="crop-export">
+            <RatioFieldset data-testid="crop-export" disabled={presetKey !== null}>
               <legend>Export size (longest edge)</legend>
               <RatioOptions>
                 {EXPORT_SIZE_KEYS.map((key) => (

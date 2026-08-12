@@ -1,12 +1,16 @@
 import { describe, expect, it } from 'vitest';
 import {
   ASPECT_RATIOS,
+  MARKETPLACE_KEYS,
+  MARKETPLACE_PRESETS,
   applyAspectRatio,
   clampRect,
   defaultCrop,
   moveRect,
   outputSize,
+  presetRatio,
   resizeRect,
+  resolveOutputSize,
   scaleToLongEdge,
   type Size,
 } from './crop';
@@ -172,5 +176,36 @@ describe('resizeRect with a ratio', () => {
     // bottom-right corner stays at (400, 400)
     expect(r.x + r.width).toBeCloseTo(400);
     expect(r.y + r.height).toBeCloseTo(400);
+  });
+});
+
+describe('marketplace presets', () => {
+  it('covers the required marketplaces', () => {
+    const labels = MARKETPLACE_KEYS.map((k) => MARKETPLACE_PRESETS[k].label.toLowerCase());
+    for (const name of ['amazon', 'etsy', 'ebay', 'shopify', 'instagram']) {
+      expect(labels.some((l) => l.includes(name))).toBe(true);
+    }
+  });
+
+  it('derives the locked aspect ratio from the exact pixel size', () => {
+    expect(presetRatio('amazon-2000')).toBe(1); // 2000×2000 square
+    expect(presetRatio('etsy-2700x2025')).toBeCloseTo(2700 / 2025); // 4:3
+    expect(presetRatio('instagram-1080x1350')).toBeCloseTo(0.8); // 4:5 portrait
+  });
+
+  it('forces the exact preset size regardless of the crop rect', () => {
+    const crop = { x: 0, y: 0, width: 640, height: 480 };
+    // A preset ignores the crop size and the longest-edge setting entirely.
+    expect(resolveOutputSize(crop, 'shopify-2048', 512)).toEqual({ width: 2048, height: 2048 });
+    expect(resolveOutputSize(crop, 'instagram-1080x1350', null)).toEqual({
+      width: 1080,
+      height: 1350,
+    });
+  });
+
+  it('falls back to longest-edge scaling when no preset is selected', () => {
+    const crop = { x: 0, y: 0, width: 640, height: 480 };
+    expect(resolveOutputSize(crop, null, 1024)).toEqual({ width: 1024, height: 768 });
+    expect(resolveOutputSize(crop, null, null)).toEqual({ width: 640, height: 480 });
   });
 });
