@@ -1,11 +1,18 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { validateFile } from '@toolkit/lib/validation';
-import { generateOutputFilename } from '@toolkit/lib/filename';
 import { formatBytes } from '@toolkit/lib/format';
-import { ImageDecodeError, ImageEncodeError, optimizeJpeg } from '@toolkit/lib/optimize';
-import { ACCEPTED_EXTENSIONS } from '@toolkit/lib/constants';
+import { ImageDecodeError, ImageEncodeError } from '@toolkit/lib/optimize';
+import {
+  ACCEPTED_IMAGE_EXTENSIONS,
+  ACCEPTED_IMAGE_MIME,
+  extensionFor,
+  imageFormatForInput,
+  isLossy,
+  optimizeImage,
+  outputImageName,
+  validateImageFile,
+} from '@toolkit/lib/image';
 import {
   DEFAULT_QUALITY_LEVEL,
   QUALITY_LEVELS,
@@ -191,7 +198,9 @@ export default function Optimizer() {
       setItems((prev) => updateItem(prev, id, { status: 'optimizing', error: undefined }));
 
       try {
-        const result = await optimizeJpeg(file, qualityValue(level));
+        // Preserve the source format; quality only bites on lossy formats.
+        const format = imageFormatForInput(file.type, file.name);
+        const result = await optimizeImage(file, format, qualityValue(level));
 
         // If the user removed this item mid-flight, drop the result and don't leak URLs.
         if (!itemsRef.current.some((i) => i.id === id)) return;
@@ -207,7 +216,7 @@ export default function Optimizer() {
             previewUrl,
             optimizedUrl,
             optimizedSize: result.blob.size,
-            downloadName: generateOutputFilename(file.name),
+            downloadName: outputImageName(file.name, 'optimized', extensionFor(format)),
             error: undefined,
           }),
         );
@@ -241,7 +250,7 @@ export default function Optimizer() {
 
       const newItems: QueueItem[] = files.map((file) => {
         const id = nextId();
-        const validation = validateFile(file);
+        const validation = validateImageFile(file);
         if (!validation.ok) {
           // Keep the file so the user can retry, but surface the error now.
           filesRef.current.set(id, file);
@@ -377,6 +386,13 @@ export default function Optimizer() {
 
   const summary = batchSummary(items);
   const hasItems = items.length > 0;
+  // Quality only affects lossy output. If every loaded image is lossless
+  // (e.g. a PNG-only batch), the compression control doesn't apply.
+  const anyLossy = items.some((item) => {
+    const file = filesRef.current.get(item.id);
+    return file ? isLossy(imageFormatForInput(file.type, file.name)) : false;
+  });
+  const qualityApplies = !hasItems || anyLossy;
 
   return (
     <section aria-labelledby="tool-heading">
@@ -384,7 +400,7 @@ export default function Optimizer() {
         ref={inputRef}
         type="file"
         multiple
-        accept={`image/jpeg,${ACCEPTED_EXTENSIONS.join(',')}`}
+        accept={[...ACCEPTED_IMAGE_MIME, ...ACCEPTED_IMAGE_EXTENSIONS].join(',')}
         onChange={handleInputChange}
         data-testid="file-input"
       />
@@ -392,7 +408,7 @@ export default function Optimizer() {
       <Stack gap={4}>
         <ImageDropzone
           active={isDragging}
-          ariaLabel="Add JPEG images by choosing files, dropping them, or pasting"
+          ariaLabel="Add images by choosing files, dropping them, or pasting"
           onClick={openPicker}
           onDragOver={(event) => {
             event.preventDefault();
@@ -400,13 +416,13 @@ export default function Optimizer() {
           }}
           onDragLeave={() => setIsDragging(false)}
           onDrop={handleDrop}
-          title="Drop product photos here"
-          cta="Select JPEGs"
-          hint="Add one or many, or paste with Cmd/Ctrl+V · optimized in your browser"
+          title="Drop images here"
+          cta="Select images"
+          hint="JPG, PNG or WebP · add one or many, or paste with Cmd/Ctrl+V · optimized in your browser"
           testId="dropzone"
         />
 
-        <QualityFieldset data-testid="quality" disabled={!summary.settled}>
+        <QualityFieldset data-testid="quality" disabled={!summary.settled || !qualityApplies}>
           <legend>Compression level</legend>
           <QualityOptions>
             {QUALITY_LEVELS.map((level) => (
@@ -431,6 +447,12 @@ export default function Optimizer() {
             ))}
           </QualityOptions>
         </QualityFieldset>
+
+        {hasItems && !anyLossy ? (
+          <Text tone="muted" size="sm" data-testid="quality-note">
+            These images are lossless (PNG) — compression level doesn’t apply.
+          </Text>
+        ) : null}
 
         <StatusLine aria-live="polite" role="status" data-testid="status">
           {hasItems

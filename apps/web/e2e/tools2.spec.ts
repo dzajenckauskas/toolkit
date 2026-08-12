@@ -25,6 +25,39 @@ test('JWT decoder shows header and payload', async ({ page }) => {
   await expect(page.getByTestId('jwt-error')).toBeVisible();
 });
 
+test('JWT generator signs a token, downloads it, and round-trips with the decoder', async ({
+  page,
+}) => {
+  await page.goto('/jwt');
+  await page.getByTestId('jwt-mode-generate').click();
+
+  // The generator defaults match the canonical jwt.io HS256 example, so the
+  // signed output is a known value — proves the whole sign path end to end.
+  const token =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9' +
+    '.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ' +
+    '.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
+  await expect(page.getByTestId('jwt-gen-token')).toHaveValue(token);
+
+  // Download the token.
+  const [download] = await Promise.all([
+    page.waitForEvent('download'),
+    page.getByTestId('jwt-gen-download').click(),
+  ]);
+  expect(download.suggestedFilename()).toBe('token.jwt');
+
+  // Invalid header JSON surfaces an error and clears the token.
+  await page.getByTestId('jwt-gen-header').fill('{ not json');
+  await expect(page.getByTestId('jwt-gen-error')).toBeVisible();
+  await expect(page.getByTestId('jwt-gen-token')).toHaveValue('');
+
+  // Round-trip: the generated token decodes back to the same header/payload.
+  await page.getByTestId('jwt-mode-decode').click();
+  await page.getByTestId('jwt-input').fill(token);
+  await expect(page.getByTestId('jwt-header')).toContainText('HS256');
+  await expect(page.getByTestId('jwt-payload')).toContainText('John Doe');
+});
+
 test('Regex tester finds matches and flags errors', async ({ page }) => {
   await page.goto('/regex');
   await page.getByTestId('regex-pattern').fill('\\d+');

@@ -15,6 +15,42 @@ test('the header brand links home and quick links navigate', async ({ page }) =>
   await expect(page).toHaveURL(/\/$/);
 });
 
+test('an unknown route shows a styled 404 inside the app shell', async ({ page }) => {
+  const res = await page.goto('/no-such-tool-xyz');
+  expect(res?.status()).toBe(404);
+
+  // Styled not-found, not the bare Next.js default, and rendered in the shell.
+  await expect(page.getByTestId('not-found')).toBeVisible();
+  await expect(page.getByTestId('brand-home')).toBeVisible();
+
+  // The catalog link recovers.
+  await page.getByTestId('not-found-home').click();
+  await expect(page).toHaveURL(/\/$/);
+  await expect(page.getByTestId('category-chips')).toBeVisible();
+});
+
+test('the tool page breadcrumb links back to the catalog and category', async ({ page }) => {
+  await page.goto('/optimize');
+
+  const crumb = page.getByTestId('breadcrumb');
+  await expect(crumb).toBeVisible();
+  // Current page is marked and not a link.
+  await expect(crumb.locator('[aria-current="page"]')).toHaveText('Compress image');
+
+  // The category crumb jumps to that section on the home catalog.
+  await expect(page.getByTestId('breadcrumb-category')).toHaveAttribute(
+    'href',
+    '/#cat-Images & Media',
+  );
+
+  // "All tools" returns to the catalog.
+  const home = page.getByTestId('breadcrumb-home');
+  await expect(home).toHaveAttribute('href', '/');
+  await home.click();
+  await expect(page).toHaveURL(/\/$/);
+  await expect(page.getByTestId('category-chips')).toBeVisible();
+});
+
 test('the FAQ, Contact and Terms are reachable and wired correctly', async ({ page }) => {
   await page.goto('/faq');
   // Expanding a question opens its <details> and reveals the answer.
