@@ -15,15 +15,24 @@ test('the header brand links home and quick links navigate', async ({ page }) =>
   await expect(page).toHaveURL(/\/$/);
 });
 
-test('the tool page back link returns to the catalog', async ({ page }) => {
+test('the tool page breadcrumb links back to the catalog and category', async ({ page }) => {
   await page.goto('/optimize');
 
-  // A real link above the fold, keyboard-reachable, pointing at the catalog.
-  const back = page.getByTestId('back-to-tools');
-  await expect(back).toBeVisible();
-  await expect(back).toHaveAttribute('href', '/');
+  const crumb = page.getByTestId('breadcrumb');
+  await expect(crumb).toBeVisible();
+  // Current page is marked and not a link.
+  await expect(crumb.locator('[aria-current="page"]')).toHaveText('Compress image');
 
-  await back.click();
+  // The category crumb jumps to that section on the home catalog.
+  await expect(page.getByTestId('breadcrumb-category')).toHaveAttribute(
+    'href',
+    '/#cat-Images & Media',
+  );
+
+  // "All tools" returns to the catalog.
+  const home = page.getByTestId('breadcrumb-home');
+  await expect(home).toHaveAttribute('href', '/');
+  await home.click();
   await expect(page).toHaveURL(/\/$/);
   await expect(page.getByTestId('category-chips')).toBeVisible();
 });
