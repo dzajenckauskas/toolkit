@@ -7,7 +7,8 @@ import type { AppTheme } from '@toolkit/ui';
 
 /**
  * Site footer: an author credit (built by Danielius, linking to the personal
- * site) and a small set of links — FAQ, Contact (mailto) and the Terms page.
+ * site) and a small set of links — Blog, FAQ, Contact (mailto) and the Terms
+ * page.
  */
 
 const Bar = styled('footer')(({ theme }) => ({
@@ -88,6 +89,9 @@ export function Footer() {
           · © {year} {SITE_NAME}
         </Credit>
         <Nav aria-label="Footer">
+          <FooterLink href="/blog" data-testid="footer-blog">
+            Blog
+          </FooterLink>
           <FooterLink href="/faq" data-testid="footer-faq">
             FAQ
           </FooterLink>

@@ -48,8 +48,10 @@ const Lead = styled('p')(({ theme }) => ({
 
 // Long-form article prose. Broader element coverage than the legal Prose since
 // posts use sub-headings, ordered lists, inline code and the odd blockquote.
+// Spans the full page width (matching the blog index) rather than a narrow
+// reading column.
 const Article = styled('div')(({ theme }) => ({
-  maxWidth: '46rem',
+  width: '100%',
   color: theme.color.text,
   lineHeight: 1.7,
   '& p': { margin: `0 0 ${theme.space(4)}`, color: theme.color.muted },
@@ -149,7 +151,7 @@ export function BlogArticle({
         trail={[{ label: 'Blog', href: '/blog', testId: 'blog-breadcrumb-blog' }, { label: title }]}
       />
 
-      <Stack as="article" gap={4} align="flex-start" style={{ width: '100%', maxWidth: '46rem' }}>
+      <Stack as="article" gap={4} style={{ width: '100%' }}>
         <Meta>
           <CategoryTag>{category}</CategoryTag>
           <span aria-hidden="true">·</span>
@@ -171,13 +173,23 @@ export function BlogArticle({
           data-testid="blog-cover"
         />
 
-        <ButtonLink href={tool.href} variant="primary" data-testid="blog-cta-top">
+        <ButtonLink
+          href={tool.href}
+          variant="primary"
+          data-testid="blog-cta-top"
+          style={{ alignSelf: 'flex-start' }}
+        >
           {ctaLabel} →
         </ButtonLink>
 
         <Article data-testid="blog-body" dangerouslySetInnerHTML={{ __html: bodyHtml }} />
 
-        <ButtonLink href={tool.href} variant="primary" data-testid="blog-cta-bottom">
+        <ButtonLink
+          href={tool.href}
+          variant="primary"
+          data-testid="blog-cta-bottom"
+          style={{ alignSelf: 'flex-start' }}
+        >
           {ctaLabel} →
         </ButtonLink>
 
