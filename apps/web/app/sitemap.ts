@@ -29,6 +29,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(`${post.updated ?? post.date}T00:00:00Z`),
     changeFrequency: 'monthly' as const,
     priority: 0.7,
+    images: [`${SITE_URL}${post.cover.src}`],
   }));
 
   return [...staticRoutes, ...toolRoutes, ...postRoutes];

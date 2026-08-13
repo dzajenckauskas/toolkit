@@ -10,13 +10,16 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
   built from Markdown files in `apps/web/content/blog/` (frontmatter + FAQ
   parsing in `@toolkit/lib/blog`, rendered with markdown-it — no CMS). Each post
   is server-rendered at build time with its own canonical URL, OpenGraph/Twitter
-  metadata, `max-image-preview:large`/`max-snippet:-1` robots directives,
-  `BlogPosting` + `FAQPage` JSON-LD, a "Try the tool" CTA near the top and
-  bottom linking the specific tool, and a same-category related-posts block.
-  Slugs are date-free; unknown slugs 404. The index, header nav link, and
-  sitemap update automatically as posts are added. Launch set (plan in
-  `docs/content/blog-launch-plan.md`): metadata cleaner, password generator, and
-  JWT posts. (#44)
+  metadata (including a per-post cover image), `max-image-preview:large`/
+  `max-snippet:-1` robots directives, `BlogPosting` + `FAQPage` +
+  `BreadcrumbList` JSON-LD (with author, image, word count and keywords), a "Try
+  the tool" CTA near the top and bottom linking the specific tool, and a
+  same-category related-posts block. Each post has a branded **1200×630 cover
+  image** (rendered by `scripts/generate-blog-covers.mjs`) shown as a hero and on
+  the index cards. Slugs are date-free; unknown slugs 404. The index, header nav
+  link, and sitemap (with image entries) update automatically as posts are
+  added. Nine launch posts across Privacy & Security, Developer Tools and Design
+  & Accessibility (plan in `docs/content/blog-launch-plan.md`). (#44)
 
 - **Accessibility checker (`/accessibility-checker`).** Added a server-assisted accessibility
   investigation tool that reproduces keyboard journeys, runs structural and interaction-risk

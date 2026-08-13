@@ -12,6 +12,14 @@ import { TOOLS } from '@toolkit/tools/registry';
  * beyond the rendered HTML.
  */
 
+export interface BlogCover {
+  /** Site-relative path, e.g. `/blog/covers/<slug>.png`. */
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+}
+
 export interface BlogPost {
   slug: string;
   title: string;
@@ -23,14 +31,21 @@ export interface BlogPost {
   bodyHtml: string;
   faqs: Faq[];
   readingMinutes: number;
+  wordCount: number;
+  keywords: string[];
+  cover: BlogCover;
 }
+
+/** Dimensions the cover images are generated at (see scripts/generate-blog-covers.mjs). */
+const COVER_WIDTH = 1200;
+const COVER_HEIGHT = 630;
 
 const BLOG_DIR = join(process.cwd(), 'content', 'blog');
 
 function loadPost(fileName: string): BlogPost {
   const slug = fileName.replace(/\.md$/, '');
   const raw = readFileSync(join(BLOG_DIR, fileName), 'utf8');
-  const { frontmatter, body, faqs, readingMinutes } = parsePost(raw);
+  const { frontmatter, body, faqs, readingMinutes, wordCount, keywords } = parsePost(raw);
 
   const tool = TOOLS.find((t) => t.id === frontmatter.tool);
   if (!tool) {
@@ -49,6 +64,14 @@ function loadPost(fileName: string): BlogPost {
     bodyHtml: renderArticleHtml(body),
     faqs,
     readingMinutes,
+    wordCount,
+    keywords,
+    cover: {
+      src: `/blog/covers/${slug}.png`,
+      alt: frontmatter.coverAlt ?? frontmatter.title,
+      width: COVER_WIDTH,
+      height: COVER_HEIGHT,
+    },
   };
 }
 

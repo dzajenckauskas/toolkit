@@ -17,6 +17,7 @@ export default function BlogIndexPage() {
     category: p.category,
     date: p.date,
     readingMinutes: p.readingMinutes,
+    cover: p.cover,
   }));
 
   return <BlogIndex posts={posts} />;

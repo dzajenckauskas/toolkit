@@ -4,6 +4,7 @@ description: JWT payloads often contain more than you expect. Here's what's insi
 category: Developer Tools
 tool: jwt
 date: 2026-07-29
+keywords: jwt, json web token, decode jwt, jwt payload, base64url, token debugging
 ---
 
 Every developer who works with authentication ends up staring at a JSON Web Token sooner or later — a long, opaque string of dots and gibberish — and needing to know what is inside it. The reflex is to search "JWT decoder", paste the token into the first result, and read off the claims. That reflex is worth reconsidering.

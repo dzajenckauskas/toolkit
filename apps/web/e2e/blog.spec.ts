@@ -8,6 +8,8 @@ test('the blog is reachable from the header and lists posts', async ({ page }) =
   await expect(page.getByTestId('blog-list')).toBeVisible();
   await expect(page.getByTestId('blog-card-remove-gps-data-from-photos')).toBeVisible();
   await expect(page.getByTestId('blog-card-decode-jwt-safely')).toBeVisible();
+  // All nine posts are listed.
+  await expect(page.getByTestId('blog-list').locator('a')).toHaveCount(9);
 });
 
 test('a post renders with tool CTAs, FAQ, related posts and JSON-LD', async ({ page }) => {
@@ -23,10 +25,20 @@ test('a post renders with tool CTAs, FAQ, related posts and JSON-LD', async ({ p
   // FAQ content renders in the body (also fed to JSON-LD).
   await expect(page.getByTestId('blog-body')).toContainText('affect photo quality');
 
-  // Both structured-data blocks are present.
+  // Cover image renders, and the OG/Twitter image points at it.
+  const cover = page.getByTestId('blog-cover');
+  await expect(cover).toBeVisible();
+  await expect(cover).toHaveAttribute('src', '/blog/covers/remove-gps-data-from-photos.png');
+  await expect(page.locator('meta[property="og:image"]').first()).toHaveAttribute(
+    'content',
+    /\/blog\/covers\/remove-gps-data-from-photos\.png$/,
+  );
+
+  // Structured-data blocks are present (Article, FAQ, breadcrumb).
   const ld = (await page.locator('script[type="application/ld+json"]').allTextContents()).join(' ');
   expect(ld).toContain('BlogPosting');
   expect(ld).toContain('FAQPage');
+  expect(ld).toContain('BreadcrumbList');
 
   // Related posts from the same category, and the CTA navigates to the tool.
   await expect(page.getByTestId('blog-related')).toBeVisible();

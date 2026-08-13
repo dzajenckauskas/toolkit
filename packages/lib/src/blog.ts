@@ -18,6 +18,10 @@ export interface PostFrontmatter {
   date: string;
   /** Optional last-updated date, `YYYY-MM-DD`. */
   updated?: string;
+  /** Optional comma-separated keywords for metadata + structured data. */
+  keywords?: string;
+  /** Optional alt text for the cover image (defaults to the title). */
+  coverAlt?: string;
 }
 
 export interface Faq {
@@ -31,6 +35,9 @@ export interface ParsedPost {
   body: string;
   faqs: Faq[];
   readingMinutes: number;
+  wordCount: number;
+  /** Keywords split from the frontmatter `keywords` field (may be empty). */
+  keywords: string[];
 }
 
 const REQUIRED_FIELDS: (keyof PostFrontmatter)[] = [
@@ -114,10 +121,23 @@ export function extractFaqs(body: string): Faq[] {
   return faqs;
 }
 
+/** Word count of the body (used for reading time and Article structured data). */
+export function countWords(body: string): number {
+  return body.trim().split(/\s+/).filter(Boolean).length;
+}
+
 /** Rough reading time in whole minutes at ~200 words/min (min 1). */
 export function estimateReadingMinutes(body: string): number {
-  const words = body.trim().split(/\s+/).filter(Boolean).length;
-  return Math.max(1, Math.round(words / 200));
+  return Math.max(1, Math.round(countWords(body) / 200));
+}
+
+/** Split a comma-separated keywords string into a trimmed, non-empty list. */
+export function parseKeywords(raw: string | undefined): string[] {
+  if (!raw) return [];
+  return raw
+    .split(',')
+    .map((k) => k.trim())
+    .filter(Boolean);
 }
 
 /** Parse a full post file into validated frontmatter, body, and FAQs. */
@@ -133,11 +153,15 @@ export function parsePost(raw: string): ParsedPost {
     tool: data.tool!,
     date: data.date!,
     ...(data.updated ? { updated: data.updated } : {}),
+    ...(data.keywords ? { keywords: data.keywords } : {}),
+    ...(data.coverAlt ? { coverAlt: data.coverAlt } : {}),
   };
   return {
     frontmatter,
     body,
     faqs: extractFaqs(body),
     readingMinutes: estimateReadingMinutes(body),
+    wordCount: countWords(body),
+    keywords: parseKeywords(data.keywords),
   };
 }

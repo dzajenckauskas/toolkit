@@ -4,6 +4,7 @@ description: Photos can carry your exact GPS coordinates in hidden EXIF data. He
 category: Privacy & Security
 tool: metadata-cleaner
 date: 2026-08-12
+keywords: exif, gps, remove metadata, photo privacy, strip location, image metadata
 ---
 
 A photo taken on a phone is rarely just an image. Tucked inside the file is a block of metadata called EXIF, and for most modern cameras that includes the exact latitude and longitude where the shot was taken. Post a picture from your living room and, unless something stripped that data first, you may have published your home address to anyone who cares to look.

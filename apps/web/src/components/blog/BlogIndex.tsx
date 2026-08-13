@@ -16,6 +16,7 @@ export interface BlogIndexItem {
   category: string;
   date: string;
   readingMinutes: number;
+  cover: { src: string; alt: string; width: number; height: number };
 }
 
 const Grid = styled('div')(({ theme }) => ({
@@ -28,13 +29,12 @@ const Grid = styled('div')(({ theme }) => ({
 const Card = styled(Link)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  gap: theme.space(2),
-  padding: theme.space(5),
   color: 'inherit',
   textDecoration: 'none',
   background: theme.color.surface,
   border: `1px solid ${theme.color.border}`,
   borderRadius: theme.radius.lg,
+  overflow: 'hidden',
   transition: 'border-color 0.12s ease',
   '&:hover': { borderColor: theme.color.accent },
   '&:focus-visible': {
@@ -42,6 +42,21 @@ const Card = styled(Link)(({ theme }) => ({
     borderColor: theme.color.accent,
     boxShadow: `0 0 0 3px color-mix(in srgb, ${theme.color.accent} 35%, transparent)`,
   },
+}));
+
+const CardCover = styled('img')(({ theme }) => ({
+  width: '100%',
+  height: 'auto',
+  aspectRatio: '1200 / 630',
+  objectFit: 'cover',
+  borderBottom: `1px solid ${theme.color.border}`,
+}));
+
+const CardBody = styled('div')(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: theme.space(2),
+  padding: theme.space(5),
 }));
 
 const CardMeta = styled('div')(({ theme }) => ({
@@ -82,20 +97,30 @@ export function BlogIndex({ posts }: { posts: BlogIndexItem[] }) {
       <Grid data-testid="blog-list">
         {posts.map((post) => (
           <Card key={post.slug} href={`/blog/${post.slug}`} data-testid={`blog-card-${post.slug}`}>
-            <CardMeta>
-              <CategoryTag>{post.category}</CategoryTag>
-              <span aria-hidden="true">·</span>
-              <span>{post.readingMinutes} min read</span>
-            </CardMeta>
-            <Text as="span" weight={700} size="lg">
-              {post.title}
-            </Text>
-            <Text tone="muted" size="sm">
-              {post.description}
-            </Text>
-            <Text tone="subtle" size="sm">
-              {formatDate(post.date)}
-            </Text>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <CardCover
+              src={post.cover.src}
+              alt={post.cover.alt}
+              width={post.cover.width}
+              height={post.cover.height}
+              loading="lazy"
+            />
+            <CardBody>
+              <CardMeta>
+                <CategoryTag>{post.category}</CategoryTag>
+                <span aria-hidden="true">·</span>
+                <span>{post.readingMinutes} min read</span>
+              </CardMeta>
+              <Text as="span" weight={700} size="lg">
+                {post.title}
+              </Text>
+              <Text tone="muted" size="sm">
+                {post.description}
+              </Text>
+              <Text tone="subtle" size="sm">
+                {formatDate(post.date)}
+              </Text>
+            </CardBody>
           </Card>
         ))}
       </Grid>

@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { estimateReadingMinutes, extractFaqs, parseFrontmatter, parsePost } from './blog';
+import {
+  countWords,
+  estimateReadingMinutes,
+  extractFaqs,
+  parseFrontmatter,
+  parseKeywords,
+  parsePost,
+} from './blog';
 
 const POST = `---
 title: "Remove GPS Location From Photos"
@@ -7,6 +14,7 @@ description: A photo can leak your address.
 category: Privacy & Security
 tool: metadata-cleaner
 date: 2026-08-12
+keywords: exif, gps, photo privacy
 ---
 
 Intro paragraph.
@@ -45,6 +53,28 @@ describe('blog frontmatter', () => {
 
   it('requires the mandatory fields', () => {
     expect(() => parsePost('---\ntitle: x\n---\nbody')).toThrow(/description/);
+  });
+
+  it('parses keywords and word count into the ParsedPost', () => {
+    const parsed = parsePost(POST);
+    expect(parsed.keywords).toEqual(['exif', 'gps', 'photo privacy']);
+    expect(parsed.wordCount).toBeGreaterThan(0);
+    expect(parsed.frontmatter.keywords).toBe('exif, gps, photo privacy');
+  });
+});
+
+describe('parseKeywords', () => {
+  it('splits, trims, and drops empties', () => {
+    expect(parseKeywords('a, b ,, c')).toEqual(['a', 'b', 'c']);
+    expect(parseKeywords(undefined)).toEqual([]);
+    expect(parseKeywords('')).toEqual([]);
+  });
+});
+
+describe('countWords', () => {
+  it('counts whitespace-separated words', () => {
+    expect(countWords('  one   two three ')).toBe(3);
+    expect(countWords('')).toBe(0);
   });
 });
 

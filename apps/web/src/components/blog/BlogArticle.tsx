@@ -19,6 +19,7 @@ export interface BlogArticleProps {
   updated?: string;
   readingMinutes: number;
   bodyHtml: string;
+  cover: { src: string; alt: string; width: number; height: number };
   tool: { name: string; href: string };
   related: { slug: string; title: string; description: string }[];
 }
@@ -137,6 +138,14 @@ const Article = styled('div')(({ theme }) => ({
   },
 }));
 
+const Cover = styled('img')(({ theme }) => ({
+  width: '100%',
+  height: 'auto',
+  aspectRatio: '1200 / 630',
+  borderRadius: theme.radius.lg,
+  border: `1px solid ${theme.color.border}`,
+}));
+
 const RelatedGrid = styled('div')(({ theme }) => ({
   marginTop: theme.space(4),
   display: 'grid',
@@ -176,6 +185,7 @@ export function BlogArticle({
   updated,
   readingMinutes,
   bodyHtml,
+  cover,
   tool,
   related,
 }: BlogArticleProps) {
@@ -196,7 +206,7 @@ export function BlogArticle({
         </Crumbs>
       </Breadcrumb>
 
-      <Stack gap={4} align="flex-start">
+      <Stack as="article" gap={4} align="flex-start">
         <Meta>
           <CategoryTag>{category}</CategoryTag>
           <span aria-hidden="true">·</span>
@@ -208,6 +218,15 @@ export function BlogArticle({
 
         <Heading>{title}</Heading>
         <Lead>{description}</Lead>
+
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <Cover
+          src={cover.src}
+          alt={cover.alt}
+          width={cover.width}
+          height={cover.height}
+          data-testid="blog-cover"
+        />
 
         <Cta href={tool.href} data-testid="blog-cta-top">
           {ctaLabel} →

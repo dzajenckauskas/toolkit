@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getPostBySlug, getPostSlugs, getRelatedPosts } from '@/lib/blog';
 import { BlogArticle } from '@/components/blog/BlogArticle';
-import { SITE_NAME, SITE_URL } from '@/lib/site';
+import { AUTHOR_NAME, AUTHOR_URL, SITE_NAME, SITE_URL } from '@/lib/site';
 
 // Only the known slugs are built; anything else 404s (no on-demand rendering).
 export const dynamicParams = false;
@@ -22,10 +22,18 @@ export async function generateMetadata({
 
   const path = `/blog/${post.slug}`;
   const title = `${post.title} · ${SITE_NAME}`;
+  const image = {
+    url: post.cover.src,
+    width: post.cover.width,
+    height: post.cover.height,
+    alt: post.cover.alt,
+  };
 
   return {
     title: { absolute: title },
     description: post.description,
+    ...(post.keywords.length ? { keywords: post.keywords } : {}),
+    authors: [{ name: AUTHOR_NAME, url: AUTHOR_URL }],
     alternates: { canonical: path },
     // Give search engines full snippet/preview latitude for long-form content.
     robots: {
@@ -43,11 +51,15 @@ export async function generateMetadata({
       publishedTime: post.date,
       modifiedTime: post.updated ?? post.date,
       section: post.category,
+      tags: post.keywords,
+      authors: [AUTHOR_URL],
+      images: [image],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description: post.description,
+      images: [post.cover.src],
     },
   };
 }
@@ -73,12 +85,27 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     '@type': 'BlogPosting',
     headline: post.title,
     description: post.description,
+    image: [`${SITE_URL}${post.cover.src}`],
     datePublished: post.date,
     dateModified: post.updated ?? post.date,
     url,
     mainEntityOfPage: url,
     articleSection: post.category,
+    wordCount: post.wordCount,
+    inLanguage: 'en',
+    ...(post.keywords.length ? { keywords: post.keywords.join(', ') } : {}),
+    author: { '@type': 'Person', name: AUTHOR_NAME, url: AUTHOR_URL },
     publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
+  };
+
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE_URL}/blog` },
+      { '@type': 'ListItem', position: 3, name: post.title, item: url },
+    ],
   };
 
   const faqLd =
@@ -106,6 +133,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      />
       {faqLd ? (
         <script
           type="application/ld+json"
@@ -120,6 +151,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         updated={post.updated}
         readingMinutes={post.readingMinutes}
         bodyHtml={post.bodyHtml}
+        cover={post.cover}
         tool={{ name: post.tool.name, href: post.tool.href }}
         related={related}
       />

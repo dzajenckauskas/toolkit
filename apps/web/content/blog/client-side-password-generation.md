@@ -4,6 +4,7 @@ description: A password generator that sends your request to a server could log 
 category: Privacy & Security
 tool: password
 date: 2026-08-05
+keywords: password generator, client-side, crypto.getRandomValues, secure passwords, randomness
 ---
 
 Here is an uncomfortable question about the free "strong password generator" you found through a search: where was that password actually created? If the answer is "on someone else's server", then for a brief moment your brand-new password existed on a computer you do not control — and nothing stops that computer from writing it to a log.
