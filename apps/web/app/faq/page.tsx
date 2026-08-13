@@ -1,5 +1,6 @@
 import { Faq } from '@/components/catalog/Faq';
 import { Heading, Page, Stack, Text } from '@toolkit/ui';
+import { Breadcrumb } from '@/components/catalog/Breadcrumb';
 import { pageMetadata } from '@/lib/seo';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { faqPageLd } from '@/lib/structured-data';
@@ -14,7 +15,8 @@ export const metadata = pageMetadata({
 
 export default function FaqPage() {
   return (
-    <Page>
+    <Page wide style={{ paddingTop: '1rem' }}>
+      <Breadcrumb trail={[{ label: 'FAQ' }]} />
       <JsonLd data={faqPageLd(SITE_FAQS)} />
       <Stack gap={5}>
         <header>

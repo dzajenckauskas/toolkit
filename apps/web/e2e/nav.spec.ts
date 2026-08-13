@@ -43,8 +43,9 @@ test('the tool page breadcrumb links back to the catalog and category', async ({
     '/#cat-Images & Media',
   );
 
-  // "All tools" returns to the catalog.
+  // The first crumb is "Home" and returns to the catalog.
   const home = page.getByTestId('breadcrumb-home');
+  await expect(home).toHaveText('Home');
   await expect(home).toHaveAttribute('href', '/');
   await home.click();
   await expect(page).toHaveURL(/\/$/);
@@ -53,6 +54,9 @@ test('the tool page breadcrumb links back to the catalog and category', async ({
 
 test('the FAQ, Contact and Terms are reachable and wired correctly', async ({ page }) => {
   await page.goto('/faq');
+  // FAQ has a Home breadcrumb.
+  await expect(page.getByTestId('breadcrumb-home')).toHaveAttribute('href', '/');
+  await expect(page.getByTestId('breadcrumb').locator('[aria-current="page"]')).toHaveText('FAQ');
   // Expanding a question opens its <details> and reveals the answer.
   const item = page.getByTestId('faq-item-1');
   await item.locator('summary').click();
@@ -68,10 +72,14 @@ test('the FAQ, Contact and Terms are reachable and wired correctly', async ({ pa
     /^mailto:danielius@zajenckauskas\.lt/,
   );
 
-  // Terms page renders.
+  // Terms page renders, with its own Home breadcrumb.
   await page.getByTestId('footer-terms').click();
   await expect(page).toHaveURL(/\/terms$/);
   await expect(page.getByRole('heading', { name: 'Terms & Conditions' })).toBeVisible();
+  await expect(page.getByTestId('breadcrumb-home')).toHaveAttribute('href', '/');
+  await expect(page.getByTestId('breadcrumb').locator('[aria-current="page"]')).toHaveText(
+    'Terms & Conditions',
+  );
 });
 
 test('the closed mobile drawer is hidden and causes no horizontal overflow', async ({ page }) => {

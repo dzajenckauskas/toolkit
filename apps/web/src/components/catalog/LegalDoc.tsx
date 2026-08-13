@@ -7,7 +7,6 @@ import styled from '@emotion/styled';
  * Kept intentionally simple: readable measure, spaced headings and lists.
  */
 export const Prose = styled('div')(({ theme }) => ({
-  maxWidth: '46rem',
   color: theme.color.muted,
   lineHeight: 1.7,
   '& h2': {

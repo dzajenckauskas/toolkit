@@ -4,6 +4,7 @@ import Link from 'next/link';
 import styled from '@emotion/styled';
 import { Heading } from '@toolkit/ui';
 import { CategoryIcon } from '@/components/layout/CategoryIcon';
+import { Breadcrumb } from '@/components/catalog/Breadcrumb';
 import { FaqAccordion } from '@/components/catalog/FaqAccordion';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { TOOLS, type Tool } from '@toolkit/tools/registry';
@@ -32,7 +33,8 @@ const Shell = styled('div')({
 const Hero = styled('section')(({ theme }) => ({
   position: 'relative',
   overflow: 'hidden',
-  paddingTop: theme.space(10),
+  // Keep the breadcrumb close to the header; the hero content still has room.
+  paddingTop: theme.space(4),
   paddingBottom: theme.space(10),
   // Soft accent glow behind the hero, echoing the reference's lit dropzone.
   '&::before': {
@@ -54,50 +56,6 @@ const HeroInner = styled('div')({
   zIndex: 1,
   textAlign: 'center',
 });
-
-// Breadcrumb trail (All tools / Category / Tool), left-aligned above the
-// centred hero. Real <a> links so it works with keyboard and screen readers;
-// the current page is marked with aria-current and is not a link.
-const Breadcrumb = styled('nav')({
-  position: 'relative',
-  zIndex: 1,
-  marginBottom: '1rem',
-  fontSize: '0.9rem',
-});
-
-const Crumbs = styled('ol')(({ theme }) => ({
-  listStyle: 'none',
-  margin: 0,
-  padding: 0,
-  display: 'flex',
-  flexWrap: 'wrap',
-  alignItems: 'center',
-  gap: theme.space(2),
-  color: theme.color.muted,
-}));
-
-const Crumb = styled('li')(({ theme }) => ({
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: theme.space(2),
-  '&:not(:first-of-type)::before': {
-    content: '"/"',
-    color: theme.color.muted,
-    opacity: 0.55,
-  },
-}));
-
-const CrumbLink = styled(Link)(({ theme }) => ({
-  color: theme.color.muted,
-  fontWeight: 600,
-  textDecoration: 'none',
-  '&:hover': { color: theme.color.text, textDecoration: 'underline' },
-}));
-
-const CrumbCurrent = styled('span')(({ theme }) => ({
-  color: theme.color.text,
-  fontWeight: 600,
-}));
 
 const Eyebrow = styled(Link)(({ theme }) => ({
   display: 'inline-flex',
@@ -297,23 +255,16 @@ export function ToolPage({ toolId, children }: { toolId: string; children: React
       <JsonLd data={structuredData} />
       <Hero>
         <Shell>
-          <Breadcrumb aria-label="Breadcrumb" data-testid="breadcrumb">
-            <Crumbs>
-              <Crumb>
-                <CrumbLink href="/" data-testid="breadcrumb-home">
-                  All tools
-                </CrumbLink>
-              </Crumb>
-              <Crumb>
-                <CrumbLink href={`/#cat-${tool.category}`} data-testid="breadcrumb-category">
-                  {tool.category}
-                </CrumbLink>
-              </Crumb>
-              <Crumb>
-                <CrumbCurrent aria-current="page">{tool.name}</CrumbCurrent>
-              </Crumb>
-            </Crumbs>
-          </Breadcrumb>
+          <Breadcrumb
+            trail={[
+              {
+                label: tool.category,
+                href: `/#cat-${tool.category}`,
+                testId: 'breadcrumb-category',
+              },
+              { label: tool.name },
+            ]}
+          />
           <HeroInner>
             <Eyebrow href={`/#cat-${tool.category}`}>
               <CategoryIcon category={tool.category} />

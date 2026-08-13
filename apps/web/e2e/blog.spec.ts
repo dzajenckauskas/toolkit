@@ -10,12 +10,23 @@ test('the blog is reachable from the header and lists posts', async ({ page }) =
   await expect(page.getByTestId('blog-card-decode-jwt-safely')).toBeVisible();
   // All nine posts are listed.
   await expect(page.getByTestId('blog-list').locator('a')).toHaveCount(9);
+
+  // The index has a Home breadcrumb (Blog is the current page).
+  const crumb = page.getByTestId('blog-breadcrumb');
+  await expect(crumb.getByTestId('blog-breadcrumb-home')).toHaveAttribute('href', '/');
+  await expect(crumb.locator('[aria-current="page"]')).toHaveText('Blog');
 });
 
 test('a post renders with tool CTAs, FAQ, related posts and JSON-LD', async ({ page }) => {
   await page.goto('/blog/remove-gps-data-from-photos');
 
   await expect(page.getByRole('heading', { name: /GPS Location/i })).toBeVisible();
+
+  // Breadcrumb: Home → Blog (link) → current post.
+  const crumb = page.getByTestId('blog-breadcrumb');
+  await expect(crumb.getByTestId('blog-breadcrumb-home')).toHaveAttribute('href', '/');
+  await expect(crumb.getByTestId('blog-breadcrumb-blog')).toHaveAttribute('href', '/blog');
+  await expect(crumb.locator('[aria-current="page"]')).toContainText('GPS Location');
 
   // "Try the tool" CTA points at the linked tool, top and bottom.
   const cta = page.getByTestId('blog-cta-top');

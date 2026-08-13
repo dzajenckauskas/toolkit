@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import styled from '@emotion/styled';
-import { Heading, Page, Stack, Text } from '@toolkit/ui';
+import { ButtonLink, Heading, Page, Stack, Text } from '@toolkit/ui';
+import { Breadcrumb } from '@/components/catalog/Breadcrumb';
 
 /**
  * Client-rendered blog post layout. The server route reads and renders the
@@ -24,37 +25,6 @@ export interface BlogArticleProps {
   related: { slug: string; title: string; description: string }[];
 }
 
-const Breadcrumb = styled('nav')({ marginBottom: '1rem', fontSize: '0.9rem' });
-
-const Crumbs = styled('ol')(({ theme }) => ({
-  listStyle: 'none',
-  margin: 0,
-  padding: 0,
-  display: 'flex',
-  flexWrap: 'wrap',
-  alignItems: 'center',
-  gap: theme.space(2),
-  color: theme.color.muted,
-}));
-
-const Crumb = styled('li')(({ theme }) => ({
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: theme.space(2),
-  '&:not(:first-of-type)::before': {
-    content: '"/"',
-    color: theme.color.muted,
-    opacity: 0.55,
-  },
-}));
-
-const CrumbLink = styled(Link)(({ theme }) => ({
-  color: theme.color.muted,
-  fontWeight: 600,
-  textDecoration: 'none',
-  '&:hover': { color: theme.color.text, textDecoration: 'underline' },
-}));
-
 const Meta = styled('div')(({ theme }) => ({
   display: 'flex',
   flexWrap: 'wrap',
@@ -74,25 +44,6 @@ const Lead = styled('p')(({ theme }) => ({
   fontSize: '1.15rem',
   lineHeight: 1.5,
   color: theme.color.muted,
-}));
-
-const Cta = styled(Link)(({ theme }) => ({
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: theme.space(2),
-  alignSelf: 'flex-start',
-  padding: '0.7rem 1.1rem',
-  fontWeight: 700,
-  color: theme.color.accentContrast,
-  background: theme.color.accent,
-  border: `1px solid ${theme.color.accent}`,
-  borderRadius: theme.radius.pill,
-  textDecoration: 'none',
-  '&:hover': { background: theme.color.accentStrong, borderColor: theme.color.accentStrong },
-  '&:focus-visible': {
-    outline: 'none',
-    boxShadow: `0 0 0 3px color-mix(in srgb, ${theme.color.accent} 35%, transparent)`,
-  },
 }));
 
 // Long-form article prose. Broader element coverage than the legal Prose since
@@ -192,21 +143,13 @@ export function BlogArticle({
   const ctaLabel = `Try the ${tool.name}`;
 
   return (
-    <Page>
-      <Breadcrumb aria-label="Breadcrumb" data-testid="blog-breadcrumb">
-        <Crumbs>
-          <Crumb>
-            <CrumbLink href="/">All tools</CrumbLink>
-          </Crumb>
-          <Crumb>
-            <CrumbLink href="/blog" data-testid="blog-breadcrumb-blog">
-              Blog
-            </CrumbLink>
-          </Crumb>
-        </Crumbs>
-      </Breadcrumb>
+    <Page wide style={{ paddingTop: '1rem' }}>
+      <Breadcrumb
+        testId="blog-breadcrumb"
+        trail={[{ label: 'Blog', href: '/blog', testId: 'blog-breadcrumb-blog' }, { label: title }]}
+      />
 
-      <Stack as="article" gap={4} align="flex-start">
+      <Stack as="article" gap={4} align="flex-start" style={{ width: '100%', maxWidth: '46rem' }}>
         <Meta>
           <CategoryTag>{category}</CategoryTag>
           <span aria-hidden="true">·</span>
@@ -228,15 +171,15 @@ export function BlogArticle({
           data-testid="blog-cover"
         />
 
-        <Cta href={tool.href} data-testid="blog-cta-top">
+        <ButtonLink href={tool.href} variant="primary" data-testid="blog-cta-top">
           {ctaLabel} →
-        </Cta>
+        </ButtonLink>
 
         <Article data-testid="blog-body" dangerouslySetInnerHTML={{ __html: bodyHtml }} />
 
-        <Cta href={tool.href} data-testid="blog-cta-bottom">
+        <ButtonLink href={tool.href} variant="primary" data-testid="blog-cta-bottom">
           {ctaLabel} →
-        </Cta>
+        </ButtonLink>
 
         {related.length > 0 ? (
           <div style={{ width: '100%' }}>
