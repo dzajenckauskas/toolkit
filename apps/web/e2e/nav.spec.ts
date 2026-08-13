@@ -142,6 +142,12 @@ test('the mobile drawer fills the viewport and lists individual tools', async ({
 
   // It now lists individual tools (not just category jump-links).
   await expect(page.getByTestId('menu-tool-uuid')).toBeVisible();
+
+  // The "More" section links to the blog.
+  const blog = page.getByTestId('menu-blog');
+  await expect(blog).toBeVisible();
+  await expect(blog).toHaveAttribute('href', '/blog');
+
   await page.getByTestId('menu-tool-uuid').click();
   await expect(page).toHaveURL(/\/uuid$/);
 });
