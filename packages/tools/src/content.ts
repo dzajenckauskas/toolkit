@@ -1468,7 +1468,7 @@ const SEO_META: Record<string, { title: string; description: string }> = {
   resize: {
     title: 'Resize Image Online – Free Image Resizer',
     description:
-      'Resize images online for free to exact pixel dimensions. Lock the aspect ratio to avoid stretching and download instantly — all in your browser, nothing uploaded.',
+      'Resize images online for free to exact pixel dimensions. Lock the aspect ratio to avoid stretching and download instantly — all in your browser.',
   },
   convert: {
     title: 'Convert Image Online – JPG, PNG & WebP',
@@ -1510,7 +1510,7 @@ const SEO_META: Record<string, { title: string; description: string }> = {
   markdown: {
     title: 'Markdown Editor Online – Live Preview, Free',
     description:
-      'Write Markdown online for free with a live side-by-side preview. Headings, tables, code and links render as you type — in your browser, nothing saved to a server.',
+      'Write Markdown online for free with a live side-by-side preview. Headings, tables, code and links render as you type, all in your browser.',
   },
   'text-diff': {
     title: 'Text Diff Checker – Compare Text Online Free',
@@ -1525,7 +1525,7 @@ const SEO_META: Record<string, { title: string; description: string }> = {
   'case-converter': {
     title: 'Case Converter – camelCase, snake_case & More',
     description:
-      'Convert text case online for free — camelCase, snake_case, kebab-case, Title Case, UPPER and lower. Transform names or whole paragraphs instantly in your browser.',
+      'Convert text case online for free — camelCase, snake_case, kebab-case, Title Case, UPPER and lower. Transform names or paragraphs instantly in your browser.',
   },
   'line-tools': {
     title: 'Sort & Dedupe Lines – Free Text Line Tools',
@@ -1582,7 +1582,7 @@ const SEO_META: Record<string, { title: string; description: string }> = {
   password: {
     title: 'Password Generator – Strong & Free Online',
     description:
-      'Generate strong, random passwords online for free. Set the length and character sets to any requirement — created securely in your browser and never transmitted.',
+      'Generate strong, random passwords online for free. Set length and character sets to any requirement — created securely in your browser and never sent.',
   },
   'url-encode': {
     title: 'URL Encode & Decode – Free Online Tool',
@@ -1649,12 +1649,12 @@ const SEO_META: Record<string, { title: string; description: string }> = {
   'color-mixer': {
     title: 'Color Mixer – Blend Colors Online, Free',
     description:
-      'Blend two colors online for free and get the even steps between them. Great for gradients, chart scales and shade variants — all in your browser, nothing uploaded.',
+      'Blend two colors online for free and get the even steps between them. Great for gradients, chart scales and shade variants — all in your browser.',
   },
   blob: {
     title: 'SVG Blob Generator – Free Organic Shapes',
     description:
-      'Generate organic SVG blob shapes online for free. Tune the complexity and color, then copy clean SVG or download it — made in your browser for backgrounds and masks.',
+      'Generate organic SVG blob shapes online for free. Tune the complexity and colour, then copy clean SVG or download it — all in your browser.',
   },
   'theme-maker': {
     title: 'Color Theme Maker – Light & Dark CSS Vars',
@@ -1664,12 +1664,12 @@ const SEO_META: Record<string, { title: string; description: string }> = {
   'image-palette': {
     title: 'Color Palette from Image – Free Extractor',
     description:
-      'Extract the dominant colors from any image online for free. Get a palette of prominent swatches to copy — the image is processed in your browser, never uploaded.',
+      'Extract the dominant colors from any image online for free. Get a palette of prominent swatches to copy — the image never leaves your browser.',
   },
   'color-blindness': {
     title: 'Color Blindness Simulator – Free Online',
     description:
-      'Simulate color blindness online for free and preview colors as protanopia, deuteranopia and tritanopia see them. Check your palette stays clear — in your browser.',
+      'Simulate color blindness online for free and preview colors as protanopia, deuteranopia and tritanopia see them — check your palette stays clear.',
   },
   'color-name': {
     title: 'Color Name Finder – Nearest CSS Name, Free',
@@ -1686,7 +1686,7 @@ const SEO_META: Record<string, { title: string; description: string }> = {
   encrypt: {
     title: 'Text Encrypt & Decrypt – AES-256, Free',
     description:
-      'Encrypt and decrypt text with a password online for free using AES-256. Share secure ciphertext anyone with the password can read — all in your browser, no upload.',
+      'Encrypt and decrypt text with a password online for free using AES-256. Share secure ciphertext anyone with the password can read — all in your browser.',
   },
 
   // Productivity

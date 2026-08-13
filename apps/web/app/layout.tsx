@@ -6,7 +6,7 @@ import { EmotionRegistry } from '@toolkit/ui';
 import { AppHeader } from '@/components/layout/AppHeader';
 import { Footer } from '@/components/layout/Footer';
 import { NO_FLASH_SCRIPT } from '@/lib/theme-mode';
-import { SITE_NAME, SITE_URL, SITE_DESCRIPTION, SITE_OG_IMAGE } from '@/lib/site';
+import { SITE_NAME, SITE_URL, SITE_OG_IMAGE } from '@/lib/site';
 
 // Neris — the display/body sans, self-hosted via next/font so the @font-face
 // rules are inlined into the document head (no render-blocking CSS request) and
@@ -23,7 +23,13 @@ const neris = localFont({
   display: 'swap',
 });
 
-const DEFAULT_TITLE = `${SITE_NAME} — free tools that run in your browser`;
+// Homepage / brand-default search copy. Keyword-first title (matching the
+// tool-page pattern) and a category-rich, benefit-led description. Kept
+// separate from SITE_DESCRIPTION, which stays a neutral one-liner for the
+// manifest and as a fallback.
+const DEFAULT_TITLE = `Free Online Tools That Run in Your Browser · ${SITE_NAME}`;
+const HOME_DESCRIPTION =
+  'Free online tools that run in your browser — image, PDF, text, developer and colour utilities. Private by design: no account, no upload, no paywall.';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -32,7 +38,7 @@ export const metadata: Metadata = {
     // Tool pages set their own title; this frames anything that doesn't.
     template: `%s · ${SITE_NAME}`,
   },
-  description: SITE_DESCRIPTION,
+  description: HOME_DESCRIPTION,
   applicationName: SITE_NAME,
   keywords: [
     'free online tools',
@@ -56,13 +62,13 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     url: '/',
     title: DEFAULT_TITLE,
-    description: SITE_DESCRIPTION,
+    description: HOME_DESCRIPTION,
     images: [SITE_OG_IMAGE],
   },
   twitter: {
     card: 'summary_large_image',
     title: DEFAULT_TITLE,
-    description: SITE_DESCRIPTION,
+    description: HOME_DESCRIPTION,
     images: [SITE_OG_IMAGE.url],
   },
   robots: { index: true, follow: true },

@@ -1,6 +1,6 @@
 ---
 title: How to Encrypt a Note in Your Browser With AES-256-GCM
-description: You can encrypt a message locally with a passphrase and share only the result — no app, no account, no server. Here's how AES-256-GCM works and where its real weak point is.
+description: Encrypt a message locally with a passphrase and share only the result — no app, no account, no server. How AES-256-GCM works, and where its real weak point is.
 category: Privacy & Security
 tool: encrypt
 date: 2026-06-24

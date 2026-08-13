@@ -1,6 +1,6 @@
 ---
 title: How to Verify a Download With a Checksum (SHA-256)
-description: That SHA-256 string next to a download link lets you confirm a file arrived intact and untampered. Here's what a checksum proves, how to check one, and why it can run in your browser.
+description: That SHA-256 string next to a download lets you confirm a file arrived intact and untampered. Here's what a checksum proves and how to verify one yourself.
 category: Developer Tools
 tool: checksum
 date: 2026-07-01

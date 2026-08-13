@@ -1,6 +1,6 @@
 ---
 title: What Is a TOTP Code, and How Do Authenticator Apps Actually Work?
-description: The six-digit codes in your authenticator app aren't sent to you — your phone computes them from a shared secret and the current time. Here's how TOTP works and why it beats SMS.
+description: Authenticator codes aren't sent to you — your phone computes them from a shared secret and the current time. How TOTP works, and why it beats SMS.
 category: Privacy & Security
 tool: totp
 date: 2026-07-22
