@@ -1,6 +1,6 @@
 ---
 title: Remove GPS Location From Photos Before You Post Them Online
-description: Photos can carry your exact GPS coordinates in hidden EXIF data. Here's what that metadata contains, how to check it, and how to strip it without uploading anything.
+description: Photos can carry your exact GPS coordinates in hidden EXIF data. What that metadata contains, how to check it, and how to strip it without uploading anything.
 category: Privacy & Security
 tool: metadata-cleaner
 date: 2026-08-12

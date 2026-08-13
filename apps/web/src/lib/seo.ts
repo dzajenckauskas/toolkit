@@ -7,7 +7,7 @@
 import type { Metadata } from 'next';
 import { TOOLS } from '@toolkit/tools/registry';
 import { getToolContent } from '@toolkit/tools/content';
-import { SITE_NAME, SITE_URL, SITE_DESCRIPTION } from '@/lib/site';
+import { SITE_NAME, SITE_URL, SITE_DESCRIPTION, SITE_OG_IMAGE } from '@/lib/site';
 
 /** Metadata for a tool page, derived from its registry entry + landing content. */
 export function toolMetadata(toolId: string): Metadata {
@@ -17,8 +17,11 @@ export function toolMetadata(toolId: string): Metadata {
     throw new Error(`toolMetadata: no tool with id "${toolId}"`);
   }
 
-  const description = getToolContent(tool).tagline || tool.description;
-  const title = `${tool.name} · ${SITE_NAME}`;
+  const content = getToolContent(tool);
+  // Search text is decoupled from the visible name/tagline: the title tag and
+  // meta description target real queries, while the card and hero stay concise.
+  const description = content.seoDescription || content.tagline || tool.description;
+  const title = `${content.seoTitle ?? tool.name} · ${SITE_NAME}`;
 
   return {
     // `absolute` opts out of the root layout's title template (no double brand).
@@ -30,11 +33,13 @@ export function toolMetadata(toolId: string): Metadata {
       url: tool.href,
       title,
       description,
+      images: [SITE_OG_IMAGE],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
+      images: [SITE_OG_IMAGE.url],
     },
   };
 }
@@ -51,8 +56,19 @@ export function pageMetadata(opts: {
     title: { absolute: title },
     description,
     alternates: { canonical: opts.path },
-    openGraph: { type: 'website', url: opts.path, title, description },
-    twitter: { card: 'summary_large_image', title, description },
+    openGraph: {
+      type: 'website',
+      url: opts.path,
+      title,
+      description,
+      images: [SITE_OG_IMAGE],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [SITE_OG_IMAGE.url],
+    },
   };
 }
 

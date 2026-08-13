@@ -1,6 +1,6 @@
 ---
 title: What Is a UUID (and When Should You Use Version 4)?
-description: UUIDs let independent systems mint unique identifiers with no coordination. Here's what the 128 bits mean, why v4 collisions are effectively impossible, and how v4, v1 and v7 differ.
+description: UUIDs let independent systems mint unique IDs with no coordination. Here's what the 128 bits mean and why v4 collisions are effectively impossible.
 category: Developer Tools
 tool: uuid
 date: 2026-06-17

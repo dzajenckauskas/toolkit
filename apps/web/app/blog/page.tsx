@@ -3,9 +3,9 @@ import { getAllPosts } from '@/lib/blog';
 import { BlogIndex } from '@/components/blog/BlogIndex';
 
 export const metadata = pageMetadata({
-  title: 'Blog',
+  title: 'Blog – Privacy, Developer & Design Guides',
   description:
-    'Practical guides on privacy, developer tooling and design from Toolkit — a hub of free tools that run entirely in your browser.',
+    'Practical guides on privacy, developer tooling and design — from Toolkit, a hub of free online tools that run entirely in your browser. No account or upload.',
   path: '/blog',
 });
 
