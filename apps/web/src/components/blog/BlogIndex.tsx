@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import styled from '@emotion/styled';
 import { Heading, Page, Stack, Text } from '@toolkit/ui';
+import { Breadcrumb } from '@/components/catalog/Breadcrumb';
 
 /**
  * Blog index: a newest-first list of post cards. Kept flat (no category pages)
@@ -85,7 +86,8 @@ function formatDate(iso: string): string {
 
 export function BlogIndex({ posts }: { posts: BlogIndexItem[] }) {
   return (
-    <Page wide>
+    <Page wide style={{ paddingTop: '1rem' }}>
+      <Breadcrumb testId="blog-breadcrumb" trail={[{ label: 'Blog' }]} />
       <Stack gap={2}>
         <Heading>Blog</Heading>
         <Text tone="muted">

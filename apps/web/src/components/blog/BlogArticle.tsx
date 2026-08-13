@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import styled from '@emotion/styled';
 import { ButtonLink, Heading, Page, Stack, Text } from '@toolkit/ui';
+import { Breadcrumb } from '@/components/catalog/Breadcrumb';
 
 /**
  * Client-rendered blog post layout. The server route reads and renders the
@@ -23,37 +24,6 @@ export interface BlogArticleProps {
   tool: { name: string; href: string };
   related: { slug: string; title: string; description: string }[];
 }
-
-const Breadcrumb = styled('nav')({ marginBottom: '1rem', fontSize: '0.9rem' });
-
-const Crumbs = styled('ol')(({ theme }) => ({
-  listStyle: 'none',
-  margin: 0,
-  padding: 0,
-  display: 'flex',
-  flexWrap: 'wrap',
-  alignItems: 'center',
-  gap: theme.space(2),
-  color: theme.color.muted,
-}));
-
-const Crumb = styled('li')(({ theme }) => ({
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: theme.space(2),
-  '&:not(:first-of-type)::before': {
-    content: '"/"',
-    color: theme.color.muted,
-    opacity: 0.55,
-  },
-}));
-
-const CrumbLink = styled(Link)(({ theme }) => ({
-  color: theme.color.muted,
-  fontWeight: 600,
-  textDecoration: 'none',
-  '&:hover': { color: theme.color.text, textDecoration: 'underline' },
-}));
 
 const Meta = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -173,21 +143,13 @@ export function BlogArticle({
   const ctaLabel = `Try the ${tool.name}`;
 
   return (
-    <Page style={{ paddingTop: '1rem' }}>
-      <Breadcrumb aria-label="Breadcrumb" data-testid="blog-breadcrumb">
-        <Crumbs>
-          <Crumb>
-            <CrumbLink href="/">All tools</CrumbLink>
-          </Crumb>
-          <Crumb>
-            <CrumbLink href="/blog" data-testid="blog-breadcrumb-blog">
-              Blog
-            </CrumbLink>
-          </Crumb>
-        </Crumbs>
-      </Breadcrumb>
+    <Page wide style={{ paddingTop: '1rem' }}>
+      <Breadcrumb
+        testId="blog-breadcrumb"
+        trail={[{ label: 'Blog', href: '/blog', testId: 'blog-breadcrumb-blog' }, { label: title }]}
+      />
 
-      <Stack as="article" gap={4} align="flex-start">
+      <Stack as="article" gap={4} align="flex-start" style={{ width: '100%', maxWidth: '46rem' }}>
         <Meta>
           <CategoryTag>{category}</CategoryTag>
           <span aria-hidden="true">·</span>
