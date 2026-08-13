@@ -64,7 +64,12 @@ export function toolBreadcrumbLd(tool: Tool) {
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'All tools', item: SITE_URL },
-      { '@type': 'ListItem', position: 2, name: tool.category, item: abs(`/#cat-${tool.category}`) },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: tool.category,
+        item: abs(`/#cat-${tool.category}`),
+      },
       { '@type': 'ListItem', position: 3, name: tool.name, item: abs(tool.href) },
     ],
   };

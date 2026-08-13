@@ -8,11 +8,7 @@ import { FaqAccordion } from '@/components/catalog/FaqAccordion';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { TOOLS, type Tool } from '@toolkit/tools/registry';
 import { getToolContent } from '@toolkit/tools/content';
-import {
-  softwareApplicationLd,
-  toolBreadcrumbLd,
-  faqPageLd,
-} from '@/lib/structured-data';
+import { softwareApplicationLd, toolBreadcrumbLd, faqPageLd } from '@/lib/structured-data';
 
 /**
  * Shared landing-page shell for every tool. Bespoke walkthrough, highlight and
@@ -293,9 +289,7 @@ export function ToolPage({ toolId, children }: { toolId: string; children: React
   const structuredData = [
     softwareApplicationLd(tool),
     toolBreadcrumbLd(tool),
-    ...(content.faqs.length > 0
-      ? [faqPageLd(content.faqs.map((f) => ({ q: f.q, a: f.a })))]
-      : []),
+    ...(content.faqs.length > 0 ? [faqPageLd(content.faqs.map((f) => ({ q: f.q, a: f.a })))] : []),
   ];
 
   return (
