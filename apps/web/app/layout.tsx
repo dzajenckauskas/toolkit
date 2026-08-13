@@ -6,7 +6,7 @@ import { EmotionRegistry } from '@toolkit/ui';
 import { AppHeader } from '@/components/layout/AppHeader';
 import { Footer } from '@/components/layout/Footer';
 import { NO_FLASH_SCRIPT } from '@/lib/theme-mode';
-import { SITE_NAME, SITE_URL, SITE_DESCRIPTION } from '@/lib/site';
+import { SITE_NAME, SITE_URL, SITE_DESCRIPTION, SITE_OG_IMAGE } from '@/lib/site';
 
 // Neris — the display/body sans, self-hosted via next/font so the @font-face
 // rules are inlined into the document head (no render-blocking CSS request) and
@@ -57,11 +57,13 @@ export const metadata: Metadata = {
     url: '/',
     title: DEFAULT_TITLE,
     description: SITE_DESCRIPTION,
+    images: [SITE_OG_IMAGE],
   },
   twitter: {
     card: 'summary_large_image',
     title: DEFAULT_TITLE,
     description: SITE_DESCRIPTION,
+    images: [SITE_OG_IMAGE.url],
   },
   robots: { index: true, follow: true },
 };

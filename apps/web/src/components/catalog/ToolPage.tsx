@@ -5,8 +5,14 @@ import styled from '@emotion/styled';
 import { Heading } from '@toolkit/ui';
 import { CategoryIcon } from '@/components/layout/CategoryIcon';
 import { FaqAccordion } from '@/components/catalog/FaqAccordion';
+import { JsonLd } from '@/components/seo/JsonLd';
 import { TOOLS, type Tool } from '@toolkit/tools/registry';
 import { getToolContent } from '@toolkit/tools/content';
+import {
+  softwareApplicationLd,
+  toolBreadcrumbLd,
+  faqPageLd,
+} from '@/lib/structured-data';
 
 /**
  * Shared landing-page shell for every tool. Bespoke walkthrough, highlight and
@@ -284,8 +290,17 @@ export function ToolPage({ toolId, children }: { toolId: string; children: React
   const content = getToolContent(tool);
   const related = relatedTools(tool);
 
+  const structuredData = [
+    softwareApplicationLd(tool),
+    toolBreadcrumbLd(tool),
+    ...(content.faqs.length > 0
+      ? [faqPageLd(content.faqs.map((f) => ({ q: f.q, a: f.a })))]
+      : []),
+  ];
+
   return (
     <Main>
+      <JsonLd data={structuredData} />
       <Hero>
         <Shell>
           <Breadcrumb aria-label="Breadcrumb" data-testid="breadcrumb">

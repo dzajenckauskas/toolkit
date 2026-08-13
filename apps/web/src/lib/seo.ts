@@ -7,7 +7,7 @@
 import type { Metadata } from 'next';
 import { TOOLS } from '@toolkit/tools/registry';
 import { getToolContent } from '@toolkit/tools/content';
-import { SITE_NAME, SITE_URL, SITE_DESCRIPTION } from '@/lib/site';
+import { SITE_NAME, SITE_URL, SITE_DESCRIPTION, SITE_OG_IMAGE } from '@/lib/site';
 
 /** Metadata for a tool page, derived from its registry entry + landing content. */
 export function toolMetadata(toolId: string): Metadata {
@@ -30,11 +30,13 @@ export function toolMetadata(toolId: string): Metadata {
       url: tool.href,
       title,
       description,
+      images: [SITE_OG_IMAGE],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
+      images: [SITE_OG_IMAGE.url],
     },
   };
 }
@@ -51,8 +53,19 @@ export function pageMetadata(opts: {
     title: { absolute: title },
     description,
     alternates: { canonical: opts.path },
-    openGraph: { type: 'website', url: opts.path, title, description },
-    twitter: { card: 'summary_large_image', title, description },
+    openGraph: {
+      type: 'website',
+      url: opts.path,
+      title,
+      description,
+      images: [SITE_OG_IMAGE],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [SITE_OG_IMAGE.url],
+    },
   };
 }
 
