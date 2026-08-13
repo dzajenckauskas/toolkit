@@ -249,7 +249,7 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
             FAQ
           </Item>
           <Item href="/terms" onClick={onClose} data-testid="menu-terms">
-            <CategoryIcon category="Developer" />
+            <CategoryIcon category="Text & Documents" />
             Terms &amp; Conditions
           </Item>
         </Body>
