@@ -18,6 +18,7 @@ import { CONTACT_MAILTO } from '@/lib/site';
  */
 
 const QUICK_LINKS = [
+  { href: '/blog', label: 'Blog', external: false },
   { href: '/faq', label: 'FAQ', external: false },
   { href: CONTACT_MAILTO, label: 'Contact', external: true },
 ] as const;
