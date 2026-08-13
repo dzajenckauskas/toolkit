@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import styled from '@emotion/styled';
-import { Heading, Page, Stack, Text } from '@toolkit/ui';
+import { ButtonLink, Heading, Page, Stack, Text } from '@toolkit/ui';
 
 /**
  * Client-rendered blog post layout. The server route reads and renders the
@@ -74,25 +74,6 @@ const Lead = styled('p')(({ theme }) => ({
   fontSize: '1.15rem',
   lineHeight: 1.5,
   color: theme.color.muted,
-}));
-
-const Cta = styled(Link)(({ theme }) => ({
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: theme.space(2),
-  alignSelf: 'flex-start',
-  padding: '0.7rem 1.1rem',
-  fontWeight: 700,
-  color: theme.color.accentContrast,
-  background: theme.color.accent,
-  border: `1px solid ${theme.color.accent}`,
-  borderRadius: theme.radius.pill,
-  textDecoration: 'none',
-  '&:hover': { background: theme.color.accentStrong, borderColor: theme.color.accentStrong },
-  '&:focus-visible': {
-    outline: 'none',
-    boxShadow: `0 0 0 3px color-mix(in srgb, ${theme.color.accent} 35%, transparent)`,
-  },
 }));
 
 // Long-form article prose. Broader element coverage than the legal Prose since
@@ -192,7 +173,7 @@ export function BlogArticle({
   const ctaLabel = `Try the ${tool.name}`;
 
   return (
-    <Page>
+    <Page style={{ paddingTop: '1rem' }}>
       <Breadcrumb aria-label="Breadcrumb" data-testid="blog-breadcrumb">
         <Crumbs>
           <Crumb>
@@ -228,15 +209,15 @@ export function BlogArticle({
           data-testid="blog-cover"
         />
 
-        <Cta href={tool.href} data-testid="blog-cta-top">
+        <ButtonLink href={tool.href} variant="primary" data-testid="blog-cta-top">
           {ctaLabel} →
-        </Cta>
+        </ButtonLink>
 
         <Article data-testid="blog-body" dangerouslySetInnerHTML={{ __html: bodyHtml }} />
 
-        <Cta href={tool.href} data-testid="blog-cta-bottom">
+        <ButtonLink href={tool.href} variant="primary" data-testid="blog-cta-bottom">
           {ctaLabel} →
-        </Cta>
+        </ButtonLink>
 
         {related.length > 0 ? (
           <div style={{ width: '100%' }}>

@@ -30,7 +30,8 @@ const Shell = styled('div')({
 const Hero = styled('section')(({ theme }) => ({
   position: 'relative',
   overflow: 'hidden',
-  paddingTop: theme.space(10),
+  // Keep the breadcrumb close to the header; the hero content still has room.
+  paddingTop: theme.space(4),
   paddingBottom: theme.space(10),
   // Soft accent glow behind the hero, echoing the reference's lit dropzone.
   '&::before': {
