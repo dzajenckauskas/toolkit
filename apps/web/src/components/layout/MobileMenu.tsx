@@ -6,6 +6,7 @@ import Link from 'next/link';
 import styled from '@emotion/styled';
 import { toolsByCategory } from '@toolkit/tools/registry';
 import { CategoryIcon } from '@/components/layout/CategoryIcon';
+import { ToolBadge } from '@/components/catalog/ToolBadge';
 import { Logo } from '@/components/layout/Logo';
 import ThemeToggle from '@/components/layout/ThemeToggle';
 import { CONTACT_MAILTO } from '@/lib/site';
@@ -120,15 +121,30 @@ const itemStyles = (theme: AppTheme) => ({
 
 const Item = styled(Link)(({ theme }) => itemStyles(theme));
 
-// Individual tool link, indented under its category.
-const ToolLink = styled(Link)(({ theme }) => ({
-  display: 'block',
+// Individual tool row, indented under its category. Live tools link; planned
+// tools render as a dimmed, non-clickable row (mirroring the search palette).
+const toolRowStyles = (theme: AppTheme) => ({
+  display: 'flex',
+  alignItems: 'center',
+  gap: theme.space(2),
   padding: `${theme.space(2)} ${theme.space(4)} ${theme.space(2)} ${theme.space(9)}`,
   color: theme.color.text,
   textDecoration: 'none',
   fontSize: '0.92rem',
+});
+
+const ToolLink = styled(Link)(({ theme }) => ({
+  ...toolRowStyles(theme),
   '&:hover': { background: theme.color.surface2 },
 }));
+
+const ToolStatic = styled('div')(({ theme }) => ({
+  ...toolRowStyles(theme),
+  opacity: 0.55,
+  cursor: 'default',
+}));
+
+const ToolName = styled('span')({ flex: '1 1 auto', minWidth: 0 });
 
 const Foot = styled('div')(({ theme }) => ({
   flex: '0 0 auto',
@@ -224,18 +240,28 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
                 <CategoryIcon category={group.category} />
                 {group.category}
               </CatHeader>
-              {group.tools
-                .filter((tool) => tool.status === 'live')
-                .map((tool) => (
+              {group.tools.map((tool) =>
+                tool.status === 'live' ? (
                   <ToolLink
                     key={tool.id}
                     href={tool.href}
                     onClick={onClose}
                     data-testid={`menu-tool-${tool.id}`}
                   >
-                    {tool.name}
+                    <ToolName>{tool.name}</ToolName>
+                    <ToolBadge tool={tool} />
                   </ToolLink>
-                ))}
+                ) : (
+                  <ToolStatic
+                    key={tool.id}
+                    aria-disabled="true"
+                    data-testid={`menu-tool-${tool.id}`}
+                  >
+                    <ToolName>{tool.name}</ToolName>
+                    <ToolBadge tool={tool} />
+                  </ToolStatic>
+                ),
+              )}
             </div>
           ))}
 
