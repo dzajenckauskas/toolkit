@@ -71,6 +71,8 @@ test('the FAQ, Contact and Terms are reachable and wired correctly', async ({ pa
     'href',
     /^mailto:danielius@zajenckauskas\.lt/,
   );
+  // The Blog link is present in the footer.
+  await expect(page.getByTestId('footer-blog')).toHaveAttribute('href', '/blog');
 
   // Terms page renders, with its own Home breadcrumb.
   await page.getByTestId('footer-terms').click();
