@@ -22,11 +22,19 @@ export interface ToolFaq {
 }
 
 export interface ToolContent {
-  /** Hero sub-headline. Defaults to the registry description. */
+  /** Hero sub-headline (visible on the page). Defaults to the registry description. */
   tagline: string;
   steps: ToolStep[];
   highlights: ToolHighlight[];
   faqs: ToolFaq[];
+  /**
+   * Search-optimized `<title>` lead — the keyword-rich phrase before the brand
+   * suffix, decoupled from the short catalog `name` so the title tag can target
+   * real queries while the card and H1 stay concise. The page appends the brand.
+   */
+  seoTitle?: string;
+  /** Search-optimized meta description (~150 chars, keyword + benefit + CTR). */
+  seoDescription?: string;
 }
 
 // --- Bespoke content for tools that benefit from extra guidance ----------
@@ -1439,12 +1447,287 @@ const BESPOKE: Record<string, Partial<ToolContent>> = {
   },
 };
 
+/**
+ * Search-facing title and meta description per tool, kept separate from the
+ * visible `tagline` so the copy can be keyword-rich and CTR-focused without
+ * changing what a visitor reads on the page. `title` is the lead phrase; the
+ * page appends " · Toolkit". Descriptions target ~150 characters.
+ */
+const SEO_META: Record<string, { title: string; description: string }> = {
+  // Images & Media
+  optimize: {
+    title: 'Compress Image Online – Free JPEG Compressor',
+    description:
+      'Compress JPEG images online for free and shrink file size with no visible quality loss. Batch-process and download as a ZIP — all in your browser, no upload.',
+  },
+  crop: {
+    title: 'Crop Image Online – Free Photo Cropper',
+    description:
+      'Crop images online for free to any aspect ratio — 1:1, 4:5, 16:9 and more. Pixel-precise framing with no quality loss, right in your browser. Nothing uploaded.',
+  },
+  resize: {
+    title: 'Resize Image Online – Free Image Resizer',
+    description:
+      'Resize images online for free to exact pixel dimensions. Lock the aspect ratio to avoid stretching and download instantly — all in your browser, nothing uploaded.',
+  },
+  convert: {
+    title: 'Convert Image Online – JPG, PNG & WebP',
+    description:
+      'Convert images between JPG, PNG and WebP online for free. Shrink files with WebP or keep transparency with PNG — fast, in your browser, with no upload.',
+  },
+  rotate: {
+    title: 'Rotate & Flip Image Online – Free Tool',
+    description:
+      'Rotate images 90° or flip them horizontally and vertically online for free. Fix orientation in seconds, right in your browser — no upload and no sign-up.',
+  },
+  'image-editor': {
+    title: 'Free Online Image Editor – All-in-One',
+    description:
+      'Compress, resize, crop, rotate and convert images in one free online editor. Do it all in your browser with no upload, no account and no watermark.',
+  },
+  screenshot: {
+    title: 'Screenshot Beautifier – Add Background & Shadow',
+    description:
+      'Make screenshots look great online for free — add padding, a background and a soft shadow. Perfect for slides, READMEs and social, all in your browser.',
+  },
+  qr: {
+    title: 'QR Code Generator – Free & No Expiry',
+    description:
+      'Generate QR codes online for free from any link or text. Codes never expire and need no tracking service — download a crisp image, made in your browser.',
+  },
+  favicon: {
+    title: 'Favicon Generator – Image to Favicon, Free',
+    description:
+      'Turn any image into a favicon set for your website — free and online. Generates every size browsers need, right in your browser with nothing uploaded.',
+  },
+  'images-to-pdf': {
+    title: 'Images to PDF – Free JPG & PNG to PDF',
+    description:
+      'Combine JPG and PNG images into a single PDF online for free. Reorder pages and export in seconds — assembled in your browser, with nothing uploaded.',
+  },
+
+  // Text & Documents
+  markdown: {
+    title: 'Markdown Editor Online – Live Preview, Free',
+    description:
+      'Write Markdown online for free with a live side-by-side preview. Headings, tables, code and links render as you type — in your browser, nothing saved to a server.',
+  },
+  'text-diff': {
+    title: 'Text Diff Checker – Compare Text Online Free',
+    description:
+      'Compare two texts online for free and see added and removed lines. Unified or side-by-side view with change counts — right in your browser, nothing uploaded.',
+  },
+  'lorem-ipsum': {
+    title: 'Lorem Ipsum Generator – Free Placeholder Text',
+    description:
+      'Generate Lorem Ipsum placeholder text online for free by paragraphs, sentences or words. Copy filler for any layout or mockup in a click — all in your browser.',
+  },
+  'case-converter': {
+    title: 'Case Converter – camelCase, snake_case & More',
+    description:
+      'Convert text case online for free — camelCase, snake_case, kebab-case, Title Case, UPPER and lower. Transform names or whole paragraphs instantly in your browser.',
+  },
+  'line-tools': {
+    title: 'Sort & Dedupe Lines – Free Text Line Tools',
+    description:
+      'Sort, de-duplicate, reverse, shuffle and clean lines of text online for free. Tidy any list in seconds, right in your browser — nothing is uploaded.',
+  },
+  'word-count': {
+    title: 'Word Counter – Free Character & Word Count',
+    description:
+      'Count words, characters, sentences and reading time online for free as you type. Perfect for essays, posts and limits — all in your browser, no sign-up.',
+  },
+  slugify: {
+    title: 'Slugify – Free URL Slug Generator',
+    description:
+      'Turn any title into a clean, URL-safe slug online for free. Spaces become hyphens and accents are simplified — copy the slug in a click, right in your browser.',
+  },
+
+  // Developer
+  json: {
+    title: 'JSON Formatter & Validator – Free Online',
+    description:
+      'Format, validate and minify JSON online for free. Pretty-print or minify with clear error messages — paste sensitive data safely, it stays in your browser.',
+  },
+  jwt: {
+    title: 'JWT Decoder – Decode, Verify & Sign, Free',
+    description:
+      'Decode, inspect, verify and sign JSON Web Tokens online for free. See claims and expiry at a glance — tokens never leave your browser, so it stays private.',
+  },
+  regex: {
+    title: 'Regex Tester – Test Regular Expressions Free',
+    description:
+      'Test regular expressions online for free with live match highlighting and capture groups. JavaScript flavour with every flag — runs entirely in your browser.',
+  },
+  base64: {
+    title: 'Base64 Encode & Decode – Free Online Tool',
+    description:
+      'Encode and decode Base64 online for free, in both directions. Unicode-safe and instant — paste sensitive strings safely, everything stays in your browser.',
+  },
+  hash: {
+    title: 'Hash Generator – SHA-256, SHA-512 & More',
+    description:
+      'Generate SHA-1, SHA-256, SHA-384 and SHA-512 hashes from text online for free. See every digest at once — computed in your browser, nothing is uploaded.',
+  },
+  checksum: {
+    title: 'Checksum Verifier – Verify File Hash, Free',
+    description:
+      'Verify a file against its SHA checksum online for free. Confirm a download is intact and untampered — the file is hashed in your browser, never uploaded.',
+  },
+  uuid: {
+    title: 'UUID Generator – Free Random UUID v4',
+    description:
+      'Generate random version 4 UUIDs online for free, one or many at a time. Cryptographically random and ready to copy — created in your browser, even offline.',
+  },
+  password: {
+    title: 'Password Generator – Strong & Free Online',
+    description:
+      'Generate strong, random passwords online for free. Set the length and character sets to any requirement — created securely in your browser and never transmitted.',
+  },
+  'url-encode': {
+    title: 'URL Encode & Decode – Free Online Tool',
+    description:
+      'Percent-encode and decode URLs and query values online for free. Encode unsafe characters or decode escapes instantly — all in your browser, nothing uploaded.',
+  },
+  'html-entities': {
+    title: 'HTML Entities – Encode & Decode, Free',
+    description:
+      'Escape and unescape HTML entities online for free. Turn <, > and & into entities or back again — handles named and numeric codes, right in your browser.',
+  },
+  'number-base': {
+    title: 'Number Base Converter – Binary, Hex & More',
+    description:
+      'Convert numbers between binary, octal, decimal and hexadecimal online for free. Every base updates as you type — instant and in your browser, nothing uploaded.',
+  },
+  totp: {
+    title: 'TOTP Generator – 2FA Codes Online, Free',
+    description:
+      'Generate two-factor (TOTP) codes from a Base32 secret online for free. See the current code and countdown — computed in your browser, the secret never leaves.',
+  },
+  hmac: {
+    title: 'HMAC Generator – SHA-256 Signature, Free',
+    description:
+      'Compute a keyed HMAC signature online for free with SHA-256, SHA-384 or SHA-512. Sign API requests and webhooks in your browser — nothing is uploaded.',
+  },
+  timestamp: {
+    title: 'Unix Timestamp Converter – Free Online',
+    description:
+      'Convert Unix timestamps to dates and back online for free, in UTC and local time. Handles seconds and milliseconds — instant and all in your browser.',
+  },
+  'csv-json': {
+    title: 'CSV to JSON Converter – Free, Both Ways',
+    description:
+      'Convert CSV to JSON and JSON to CSV online for free. Header rows become keys and quoted values are handled correctly — right in your browser, nothing uploaded.',
+  },
+  'accessibility-checker': {
+    title: 'Accessibility Checker – Keyboard & WCAG Audit',
+    description:
+      'Audit a public website’s keyboard accessibility online for free. Runs real Tab and focus journeys plus WCAG checks, then exports the evidence as portable JSON.',
+  },
+
+  // Design
+  colors: {
+    title: 'Color Converter – HEX, RGB & HSL, Free',
+    description:
+      'Convert colors between HEX, RGB and HSL online for free, with alpha support. Enter any format and copy the rest instantly — all in your browser, no sign-up.',
+  },
+  contrast: {
+    title: 'Contrast Checker – WCAG AA & AAA, Free',
+    description:
+      'Check color contrast against WCAG AA and AAA online for free. See pass or fail for normal and large text as you adjust — instant and all in your browser.',
+  },
+  palette: {
+    title: 'Color Palette Generator – Free Online',
+    description:
+      'Generate color palettes online for free from one base color — complementary, analogous and triadic harmonies plus tints and shades. Copy any swatch in a click.',
+  },
+  gradient: {
+    title: 'CSS Gradient Generator – Free Online',
+    description:
+      'Build linear and radial CSS gradients online for free. Add color stops, set the angle and copy ready-to-use CSS — visual and instant, right in your browser.',
+  },
+  'color-mixer': {
+    title: 'Color Mixer – Blend Colors Online, Free',
+    description:
+      'Blend two colors online for free and get the even steps between them. Great for gradients, chart scales and shade variants — all in your browser, nothing uploaded.',
+  },
+  blob: {
+    title: 'SVG Blob Generator – Free Organic Shapes',
+    description:
+      'Generate organic SVG blob shapes online for free. Tune the complexity and color, then copy clean SVG or download it — made in your browser for backgrounds and masks.',
+  },
+  'theme-maker': {
+    title: 'Color Theme Maker – Light & Dark CSS Vars',
+    description:
+      'Build a light and dark color theme online for free and export CSS variables. Design both modes together and paste the custom properties — all in your browser.',
+  },
+  'image-palette': {
+    title: 'Color Palette from Image – Free Extractor',
+    description:
+      'Extract the dominant colors from any image online for free. Get a palette of prominent swatches to copy — the image is processed in your browser, never uploaded.',
+  },
+  'color-blindness': {
+    title: 'Color Blindness Simulator – Free Online',
+    description:
+      'Simulate color blindness online for free and preview colors as protanopia, deuteranopia and tritanopia see them. Check your palette stays clear — in your browser.',
+  },
+  'color-name': {
+    title: 'Color Name Finder – Nearest CSS Name, Free',
+    description:
+      'Find the nearest CSS named color for any hex value online for free. Enter a color and get a readable name plus the exact code — instant, right in your browser.',
+  },
+
+  // Privacy
+  'metadata-cleaner': {
+    title: 'Metadata Cleaner – Remove EXIF & GPS, Free',
+    description:
+      'Remove EXIF and GPS metadata from photos online for free before you share them. Strip camera and location data in your browser — the image is never uploaded.',
+  },
+  encrypt: {
+    title: 'Text Encrypt & Decrypt – AES-256, Free',
+    description:
+      'Encrypt and decrypt text with a password online for free using AES-256. Share secure ciphertext anyone with the password can read — all in your browser, no upload.',
+  },
+
+  // Productivity
+  'focus-timer': {
+    title: 'Pomodoro Focus Timer – Free Online',
+    description:
+      'A free online Pomodoro focus timer — work in focused intervals with short breaks to stay productive. Simple, distraction-free and runs right in your browser.',
+  },
+  kanban: {
+    title: 'Kanban Board – Free Online & Private',
+    description:
+      'A free, lightweight online kanban board. Add cards and drag them across columns — everything is saved locally in your browser, with no account and no upload.',
+  },
+
+  // Calculators
+  calculator: {
+    title: 'Notepad Calculator – Calculate as You Type',
+    description:
+      'A free online notepad calculator — write sums line by line and see running results. Reference earlier lines for multi-step maths, all in your browser.',
+  },
+  'unit-converter': {
+    title: 'Unit Converter – Length, Weight & More, Free',
+    description:
+      'Convert length, weight, data, time and temperature online for free. Accurate metric and imperial conversions in every category — instant, right in your browser.',
+  },
+  percentage: {
+    title: 'Percentage Calculator – Free Online',
+    description:
+      'Calculate percentages online for free — percent of a number, percent change and tip splitting. Get answers as you type, all in your browser with no sign-up.',
+  },
+};
+
 export function getToolContent(tool: Tool): ToolContent {
   const bespoke = BESPOKE[tool.id] ?? {};
+  const seo = SEO_META[tool.id];
   return {
     tagline: bespoke.tagline ?? tool.description,
     steps: bespoke.steps ?? [],
     highlights: bespoke.highlights ?? [],
     faqs: bespoke.faqs ?? [],
+    seoTitle: seo?.title,
+    seoDescription: seo?.description,
   };
 }
