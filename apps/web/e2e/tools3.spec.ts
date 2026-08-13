@@ -1,11 +1,9 @@
 import { test, expect } from '@playwright/test';
 
 test('tool pages render only deliberately authored guidance', async ({ page }) => {
-  await page.goto('/uuid');
-  await expect(page.getByTestId('tool-steps')).toHaveCount(0);
-  await expect(page.getByTestId('tool-highlights')).toHaveCount(0);
-  await expect(page.getByTestId('tool-faqs')).toHaveCount(0);
-
+  // Sections render conditionally, per authored content: text-diff has a
+  // walkthrough but no highlights or FAQs, while optimize has all three. (The
+  // empty-everything fallback is covered by the content unit test.)
   await page.goto('/text-diff');
   await expect(page.getByTestId('tool-steps')).toBeVisible();
   await expect(page.getByTestId('tool-highlights')).toHaveCount(0);

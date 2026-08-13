@@ -1,6 +1,6 @@
 ---
 title: "WCAG Color Contrast: What AA and AAA Actually Require"
-description: The WCAG contrast ratios explained in plain terms — the 4.5:1 and 3:1 thresholds, when large text qualifies, the mistakes people make, and how to check your own palette.
+description: WCAG color contrast in plain terms — the 4.5:1 and 3:1 thresholds, when large text qualifies, common mistakes, and how to check your own palette.
 category: Design & Accessibility
 tool: contrast
 date: 2026-07-15

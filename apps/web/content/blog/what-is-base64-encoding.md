@@ -1,6 +1,6 @@
 ---
 title: What Is Base64 Encoding (and Why It's Not Encryption)
-description: Base64 turns binary data into plain text so it can travel through systems built for text. Here's what it does, why it makes data bigger, and why it offers no security at all.
+description: Base64 turns binary data into plain text so it can travel through systems built for text. What it does, why it inflates size, and why it offers no security.
 category: Developer Tools
 tool: base64
 date: 2026-07-08

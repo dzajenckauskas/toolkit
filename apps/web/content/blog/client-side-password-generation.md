@@ -1,6 +1,6 @@
 ---
 title: Why Your Password Generator Should Never Touch a Server
-description: A password generator that sends your request to a server could log the password it just made for you. Here's why client-side generation and real randomness matter.
+description: A password generator that calls a server could log the password it just made for you. Here's why client-side generation and real randomness matter.
 category: Privacy & Security
 tool: password
 date: 2026-08-05
