@@ -21,6 +21,41 @@ Meaningful product, architecture, workflow, and scope changes are recorded here.
   added. Nine launch posts across Privacy & Security, Developer Tools and Design
   & Accessibility (plan in `docs/content/blog-launch-plan.md`). (#44)
 
+- **JWT generator (`/jwt`).** The JWT tool gained a Decode/Generate toggle: a
+  new HMAC signer (HS256/384/512) with JSON header/payload editors, secret, and
+  live-signed token output with copy and download. The header `alg` is forced to
+  the signing algorithm so a token can't misrepresent how it was signed. (#41)
+- **Marketplace crop presets.** `/crop` adds a preset picker (Amazon, Etsy,
+  eBay, Shopify, Instagram square + portrait) that locks both the aspect ratio
+  and an exact output pixel size, superseding the free ratio/export controls
+  while active. (#35)
+- **"New" and "Top" tool badges.** The catalog now shows three tiers — `Soon`
+  (planned), `New` (a date-driven badge that appears for 30 days after a tool's
+  `addedAt` and expires on its own), and `Top` (a curated `featured` flag) — on
+  cards and search rows. (#40)
+- **Breadcrumbs on tool pages.** Every tool page shows an `All tools / Category
+  / Tool` breadcrumb above the fold, replacing the browser-back-only
+  navigation. (#34)
+- **Styled 404 and error boundary.** Added `app/not-found.tsx` and
+  `app/error.tsx` so an unknown route or an uncaught render error shows a styled
+  page inside the app shell with a route back to the catalog, instead of the
+  default Next.js pages. (#39)
+
+### Changed
+
+- **Crop and Optimize accept all image formats.** Both tools now take JPG, PNG
+  and WebP (previously JPEG-only) and preserve the source format on output; the
+  Optimizer disables its lossy compression control for a lossless (PNG-only)
+  batch. Retired the JPEG-only `validation.ts`/`filename.ts` plumbing in favor
+  of the shared `image.ts` helpers. (#33)
+
+### Fixed
+
+- **Transparent images no longer export black.** Converting/resizing/cropping a
+  transparent PNG or WebP to a non-alpha format (JPEG) now fills the background
+  (white by default) before drawing, instead of letting the encoder fill
+  transparency with black. (#36)
+
 - **Accessibility checker (`/accessibility-checker`).** Added a server-assisted accessibility
   investigation tool that reproduces keyboard journeys, runs structural and interaction-risk
   checks, captures screenshots, maps evidence to WCAG/ADA/EAA/Section 508/AODA, and exports portable

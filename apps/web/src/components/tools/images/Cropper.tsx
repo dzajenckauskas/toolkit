@@ -2,25 +2,39 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
-import { validateFile } from '@toolkit/lib/validation';
-import { generateOutputFilename } from '@toolkit/lib/filename';
 import { clipboardImageFiles } from '@toolkit/lib/clipboard';
-import { BALANCED_JPEG_QUALITY, ACCEPTED_EXTENSIONS } from '@toolkit/lib/constants';
+import { BALANCED_JPEG_QUALITY } from '@toolkit/lib/constants';
+import {
+  ACCEPTED_IMAGE_EXTENSIONS,
+  ACCEPTED_IMAGE_MIME,
+  DEFAULT_IMAGE_BACKGROUND,
+  extensionFor,
+  formatHasAlpha,
+  imageFormatForInput,
+  isLossy,
+  mimeFor,
+  outputImageName,
+  validateImageFile,
+  type ImageFormat,
+} from '@toolkit/lib/image';
 import {
   ASPECT_KEYS,
   ASPECT_RATIOS,
   EXPORT_SIZES,
   EXPORT_SIZE_KEYS,
   HANDLES,
+  MARKETPLACE_KEYS,
+  MARKETPLACE_PRESETS,
   applyAspectRatio,
   defaultCrop,
   moveRect,
-  outputSize,
+  presetRatio,
   resizeRect,
-  scaleToLongEdge,
+  resolveOutputSize,
   type AspectKey,
   type ExportSizeKey,
   type Handle,
+  type MarketplaceKey,
   type Rect,
 } from '@toolkit/lib/crop';
 import { Button, HiddenFileInput, Stack, Text } from '@toolkit/ui';
@@ -33,6 +47,7 @@ const ZOOM_LEVELS = [1, 1.5, 2, 3] as const;
 interface Source {
   url: string;
   fileName: string;
+  format: ImageFormat;
   naturalWidth: number;
   naturalHeight: number;
 }
@@ -106,6 +121,7 @@ const RatioFieldset = styled('fieldset')(({ theme }) => ({
   border: `1px solid ${theme.color.border}`,
   borderRadius: theme.radius.md,
   background: theme.color.surface,
+  '&:disabled': { opacity: 0.5 },
   '& legend': {
     padding: `0 ${theme.space(1)}`,
     fontSize: '0.85rem',
@@ -148,7 +164,12 @@ export default function Cropper() {
   const [isDragging, setIsDragging] = useState(false);
   const [ratioKey, setRatioKey] = useState<AspectKey>('free');
   const [exportKey, setExportKey] = useState<ExportSizeKey>('original');
+  const [presetKey, setPresetKey] = useState<MarketplaceKey | null>(null);
   const [zoom, setZoom] = useState(1);
+
+  // A marketplace preset overrides the free aspect ratio and export size: it
+  // locks the crop to the preset's ratio and forces its exact output size.
+  const activeRatio = presetKey ? presetRatio(presetKey) : ASPECT_RATIOS[ratioKey];
 
   const inputRef = useRef<HTMLInputElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
@@ -166,7 +187,7 @@ export default function Cropper() {
 
   const loadFile = useCallback(
     (file: File) => {
-      const validation = validateFile(file);
+      const validation = validateImageFile(file);
       if (!validation.ok) {
         setError(validation.message ?? 'This file cannot be used.');
         return;
@@ -177,7 +198,13 @@ export default function Cropper() {
       setError(null);
       setCrop(null);
       // Dimensions are filled in once the <img> loads.
-      setSource({ url, fileName: file.name, naturalWidth: 0, naturalHeight: 0 });
+      setSource({
+        url,
+        fileName: file.name,
+        format: imageFormatForInput(file.type, file.name),
+        naturalWidth: 0,
+        naturalHeight: 0,
+      });
     },
     [revokeUrl],
   );
@@ -190,17 +217,16 @@ export default function Cropper() {
       setSource((current) => (current ? { ...current, naturalWidth, naturalHeight } : current));
       const bounds = { width: naturalWidth, height: naturalHeight };
       const base = defaultCrop(bounds);
-      const ratio = ASPECT_RATIOS[ratioKey];
-      setCrop(ratio ? applyAspectRatio(base, ratio, bounds) : base);
+      setCrop(activeRatio ? applyAspectRatio(base, activeRatio, bounds) : base);
     },
-    [ratioKey],
+    [activeRatio],
   );
 
   const onImageError = useCallback(() => {
     revokeUrl();
     setSource(null);
     setCrop(null);
-    setError('This image could not be read. It may be corrupt or not a real JPEG.');
+    setError('This image could not be read. It may be corrupt or an unsupported format.');
   }, [revokeUrl]);
 
   // Paste an image anywhere to load it.
@@ -242,10 +268,10 @@ export default function Cropper() {
       setCrop(
         drag.mode === 'move'
           ? moveRect(drag.startRect, dx, dy, bounds)
-          : resizeRect(drag.startRect, drag.mode, dx, dy, bounds, ASPECT_RATIOS[ratioKey]),
+          : resizeRect(drag.startRect, drag.mode, dx, dy, bounds, activeRatio),
       );
     },
-    [source, scale, ratioKey],
+    [source, scale, activeRatio],
   );
 
   const handleRatioChange = useCallback(
@@ -255,6 +281,19 @@ export default function Cropper() {
       if (ratio && source && crop) {
         const bounds = { width: source.naturalWidth, height: source.naturalHeight };
         setCrop(applyAspectRatio(crop, ratio, bounds));
+      }
+    },
+    [source, crop],
+  );
+
+  const handlePresetChange = useCallback(
+    (key: MarketplaceKey | null) => {
+      setPresetKey(key);
+      // Selecting a preset locks the crop box to its ratio; clearing it leaves
+      // the crop as-is and hands control back to the free ratio/export options.
+      if (key && source && crop) {
+        const bounds = { width: source.naturalWidth, height: source.naturalHeight };
+        setCrop(applyAspectRatio(crop, presetRatio(key), bounds));
       }
     },
     [source, crop],
@@ -289,12 +328,18 @@ export default function Cropper() {
 
   const download = useCallback(() => {
     if (!crop || !source || !imgRef.current) return;
-    const out = scaleToLongEdge(outputSize(crop), EXPORT_SIZES[exportKey]);
+    const out = resolveOutputSize(crop, presetKey, EXPORT_SIZES[exportKey]);
     const canvas = document.createElement('canvas');
     canvas.width = out.width;
     canvas.height = out.height;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
+    const { format } = source;
+    // JPEG has no alpha: fill first so a transparent source doesn't go black.
+    if (!formatHasAlpha(format)) {
+      ctx.fillStyle = DEFAULT_IMAGE_BACKGROUND;
+      ctx.fillRect(0, 0, out.width, out.height);
+    }
     ctx.drawImage(
       imgRef.current,
       crop.x,
@@ -312,16 +357,16 @@ export default function Cropper() {
         const url = URL.createObjectURL(blob);
         const anchor = document.createElement('a');
         anchor.href = url;
-        anchor.download = generateOutputFilename(source.fileName, 'cropped');
+        anchor.download = outputImageName(source.fileName, 'cropped', extensionFor(format));
         document.body.appendChild(anchor);
         anchor.click();
         anchor.remove();
         window.setTimeout(() => URL.revokeObjectURL(url), 1000);
       },
-      'image/jpeg',
-      BALANCED_JPEG_QUALITY,
+      mimeFor(format),
+      isLossy(format) ? BALANCED_JPEG_QUALITY : undefined,
     );
-  }, [crop, source, exportKey]);
+  }, [crop, source, exportKey, presetKey]);
 
   const reset = useCallback(() => {
     revokeUrl();
@@ -341,7 +386,7 @@ export default function Cropper() {
     [loadFile],
   );
 
-  const out = crop ? scaleToLongEdge(outputSize(crop), EXPORT_SIZES[exportKey]) : null;
+  const out = crop ? resolveOutputSize(crop, presetKey, EXPORT_SIZES[exportKey]) : null;
   const ready = source !== null && source.naturalWidth > 0 && crop !== null;
 
   return (
@@ -349,7 +394,7 @@ export default function Cropper() {
       <HiddenFileInput
         ref={inputRef}
         type="file"
-        accept={`image/jpeg,${ACCEPTED_EXTENSIONS.join(',')}`}
+        accept={[...ACCEPTED_IMAGE_MIME, ...ACCEPTED_IMAGE_EXTENSIONS].join(',')}
         onChange={onInputChange}
         data-testid="crop-file-input"
       />
@@ -358,7 +403,7 @@ export default function Cropper() {
         {!source ? (
           <ImageDropzone
             active={isDragging}
-            ariaLabel="Add a JPEG image by choosing a file, dropping it, or pasting"
+            ariaLabel="Add an image by choosing a file, dropping it, or pasting"
             onClick={openPicker}
             onDragOver={(event) => {
               event.preventDefault();
@@ -371,9 +416,9 @@ export default function Cropper() {
               const file = event.dataTransfer.files?.[0];
               if (file) loadFile(file);
             }}
-            title="Drop a product photo here"
-            cta="Select a JPEG"
-            hint="Crop it in your browser, then download · paste with Cmd/Ctrl+V"
+            title="Drop an image here"
+            cta="Select an image"
+            hint="JPG, PNG or WebP · crop it in your browser, then download · paste with Cmd/Ctrl+V"
             testId="crop-dropzone"
           />
         ) : null}
@@ -386,7 +431,37 @@ export default function Cropper() {
 
         {source ? (
           <Stack gap={3} align="flex-start">
-            <RatioFieldset data-testid="crop-ratio">
+            <RatioFieldset data-testid="crop-preset">
+              <legend>Marketplace preset</legend>
+              <RatioOptions>
+                <RatioOption>
+                  <input
+                    type="radio"
+                    name="marketplace-preset"
+                    value="none"
+                    checked={presetKey === null}
+                    onChange={() => handlePresetChange(null)}
+                    data-testid="crop-preset-none"
+                  />
+                  None
+                </RatioOption>
+                {MARKETPLACE_KEYS.map((key) => (
+                  <RatioOption key={key}>
+                    <input
+                      type="radio"
+                      name="marketplace-preset"
+                      value={key}
+                      checked={presetKey === key}
+                      onChange={() => handlePresetChange(key)}
+                      data-testid={`crop-preset-${key}`}
+                    />
+                    {MARKETPLACE_PRESETS[key].label}
+                  </RatioOption>
+                ))}
+              </RatioOptions>
+            </RatioFieldset>
+
+            <RatioFieldset data-testid="crop-ratio" disabled={presetKey !== null}>
               <legend>Aspect ratio</legend>
               <RatioOptions>
                 {ASPECT_KEYS.map((key) => (
@@ -405,7 +480,7 @@ export default function Cropper() {
               </RatioOptions>
             </RatioFieldset>
 
-            <RatioFieldset data-testid="crop-export">
+            <RatioFieldset data-testid="crop-export" disabled={presetKey !== null}>
               <legend>Export size (longest edge)</legend>
               <RatioOptions>
                 {EXPORT_SIZE_KEYS.map((key) => (
@@ -503,7 +578,7 @@ export default function Cropper() {
                 disabled={!ready}
                 data-testid="crop-download"
               >
-                Download cropped JPEG
+                Download cropped image
               </Button>
               <Button type="button" variant="ghost" onClick={reset} data-testid="crop-reset">
                 Choose another

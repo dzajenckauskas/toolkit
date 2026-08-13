@@ -4,8 +4,7 @@
  * Kept structurally typed (rather than depending on the exact DataTransfer DOM
  * shape) so it is trivially unit-testable without a real clipboard. The
  * component passes the paste event's `clipboardData`. Only image files are
- * returned; format validation (JPEG-only, for now) happens downstream in
- * `validateFile`, so a pasted PNG still surfaces the normal "JPEG only" error.
+ * returned; format validation happens downstream in `validateImageFile`.
  */
 
 export interface ClipboardItemLike {

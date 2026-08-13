@@ -134,14 +134,20 @@ test('shows a clear per-file error for a corrupt JPEG', async ({ page }) => {
   await expect(error).toContainText(/could not be read|corrupt/i);
 });
 
-test('rejects an unsupported (PNG) file per item', async ({ page }) => {
-  await page.getByTestId('file-input').setInputFiles({
-    name: 'logo.png',
-    mimeType: 'image/png',
-    buffer: Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
-  });
+test('accepts a PNG, keeps the format, and disables the lossy quality control', async ({
+  page,
+}) => {
+  await page.getByTestId('file-input').setInputFiles(resolve(__dirname, 'fixtures/sample.png'));
 
-  const error = page.getByTestId('item-error');
-  await expect(error).toBeVisible();
-  await expect(error).toContainText(/JPEG/);
+  const download = page.getByTestId('item-download');
+  await expect(download).toBeVisible();
+  // Format is preserved: a PNG in stays a PNG out.
+  await expect(download).toHaveAttribute('download', 'sample-optimized.png');
+  await expect(page.getByTestId('item-meta')).toContainText('200×150');
+  await expect(page.getByTestId('item-error')).toHaveCount(0);
+
+  // PNG is lossless, so the compression control doesn't apply (its radios,
+  // disabled via the surrounding fieldset, are not interactive).
+  await expect(page.getByTestId('quality-balanced')).toBeDisabled();
+  await expect(page.getByTestId('quality-note')).toBeVisible();
 });

@@ -76,6 +76,28 @@ test('export size preset rescales the output dimensions', async ({ page }) => {
   expect(await readDims(page)).toEqual({ w: 720, h: 560 });
 });
 
+test('a marketplace preset locks the ratio and forces the exact output size', async ({ page }) => {
+  await page.getByTestId('crop-file-input').setInputFiles(sampleJpeg);
+  await expect(page.getByTestId('crop-box')).toBeVisible();
+
+  // Amazon 2000×2000: square ratio, exact output regardless of the crop rect.
+  await page.getByTestId('crop-preset-amazon-2000').check();
+  expect(await readDims(page)).toEqual({ w: 2000, h: 2000 });
+
+  // The free aspect-ratio and export-size controls are superseded (disabled).
+  await expect(page.getByTestId('crop-ratio-16:9')).toBeDisabled();
+  await expect(page.getByTestId('crop-export-1024')).toBeDisabled();
+
+  // A portrait preset yields its exact non-square size.
+  await page.getByTestId('crop-preset-instagram-1080x1350').check();
+  expect(await readDims(page)).toEqual({ w: 1080, h: 1350 });
+
+  // Clearing the preset re-enables the free controls and drops the forced size.
+  await page.getByTestId('crop-preset-none').check();
+  await expect(page.getByTestId('crop-ratio-16:9')).toBeEnabled();
+  expect(await readDims(page)).not.toEqual({ w: 1080, h: 1350 });
+});
+
 test('zoom magnifies the workspace without changing the crop output', async ({ page }) => {
   await page.getByTestId('crop-file-input').setInputFiles(sampleJpeg);
   await expect(page.getByTestId('crop-box')).toBeVisible();
@@ -100,4 +122,18 @@ test('downloads the cropped image as a JPEG', async ({ page }) => {
   await page.getByTestId('crop-download').click();
   const download = await downloadPromise;
   expect(download.suggestedFilename()).toBe('sample-cropped.jpg');
+});
+
+test('accepts a PNG and preserves the format on download', async ({ page }) => {
+  await page
+    .getByTestId('crop-file-input')
+    .setInputFiles(resolve(__dirname, 'fixtures/sample.png'));
+  await expect(page.getByTestId('crop-box')).toBeVisible();
+  await expect(page.getByTestId('crop-source')).toContainText('200 × 150');
+
+  const downloadPromise = page.waitForEvent('download');
+  await page.getByTestId('crop-download').click();
+  const download = await downloadPromise;
+  // Format preserved: PNG in, PNG out (no forced JPEG).
+  expect(download.suggestedFilename()).toBe('sample-cropped.png');
 });

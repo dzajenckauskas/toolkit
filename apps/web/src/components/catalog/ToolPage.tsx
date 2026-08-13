@@ -53,6 +53,50 @@ const HeroInner = styled('div')({
   textAlign: 'center',
 });
 
+// Breadcrumb trail (All tools / Category / Tool), left-aligned above the
+// centred hero. Real <a> links so it works with keyboard and screen readers;
+// the current page is marked with aria-current and is not a link.
+const Breadcrumb = styled('nav')({
+  position: 'relative',
+  zIndex: 1,
+  marginBottom: '1rem',
+  fontSize: '0.9rem',
+});
+
+const Crumbs = styled('ol')(({ theme }) => ({
+  listStyle: 'none',
+  margin: 0,
+  padding: 0,
+  display: 'flex',
+  flexWrap: 'wrap',
+  alignItems: 'center',
+  gap: theme.space(2),
+  color: theme.color.muted,
+}));
+
+const Crumb = styled('li')(({ theme }) => ({
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: theme.space(2),
+  '&:not(:first-of-type)::before': {
+    content: '"/"',
+    color: theme.color.muted,
+    opacity: 0.55,
+  },
+}));
+
+const CrumbLink = styled(Link)(({ theme }) => ({
+  color: theme.color.muted,
+  fontWeight: 600,
+  textDecoration: 'none',
+  '&:hover': { color: theme.color.text, textDecoration: 'underline' },
+}));
+
+const CrumbCurrent = styled('span')(({ theme }) => ({
+  color: theme.color.text,
+  fontWeight: 600,
+}));
+
 const Eyebrow = styled(Link)(({ theme }) => ({
   display: 'inline-flex',
   alignItems: 'center',
@@ -244,6 +288,23 @@ export function ToolPage({ toolId, children }: { toolId: string; children: React
     <Main>
       <Hero>
         <Shell>
+          <Breadcrumb aria-label="Breadcrumb" data-testid="breadcrumb">
+            <Crumbs>
+              <Crumb>
+                <CrumbLink href="/" data-testid="breadcrumb-home">
+                  All tools
+                </CrumbLink>
+              </Crumb>
+              <Crumb>
+                <CrumbLink href={`/#cat-${tool.category}`} data-testid="breadcrumb-category">
+                  {tool.category}
+                </CrumbLink>
+              </Crumb>
+              <Crumb>
+                <CrumbCurrent aria-current="page">{tool.name}</CrumbCurrent>
+              </Crumb>
+            </Crumbs>
+          </Breadcrumb>
           <HeroInner>
             <Eyebrow href={`/#cat-${tool.category}`}>
               <CategoryIcon category={tool.category} />
