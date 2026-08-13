@@ -240,6 +240,10 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
           ))}
 
           <SectionLabel>More</SectionLabel>
+          <Item href="/blog" onClick={onClose} data-testid="menu-blog">
+            <CategoryIcon category="Text & Documents" />
+            Blog
+          </Item>
           <Item href="/faq" onClick={onClose} data-testid="menu-faq">
             <CategoryIcon category="Text & Documents" />
             FAQ
