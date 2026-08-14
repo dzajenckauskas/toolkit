@@ -71,6 +71,11 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
+const umamiScriptUrl = process.env.UMAMI_SCRIPT_URL;
+const umamiWebsiteId = process.env.UMAMI_WEBSITE_ID;
+// Only load analytics for real production traffic, not local dev or previews.
+const umamiEnabled = process.env.NODE_ENV === 'production' && !!umamiScriptUrl && !!umamiWebsiteId;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
@@ -81,6 +86,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         {/* Set the theme before first paint so a stored dark mode doesn't flash. */}
         <script dangerouslySetInnerHTML={{ __html: NO_FLASH_SCRIPT }} />
+        {umamiEnabled && <script defer src={umamiScriptUrl} data-website-id={umamiWebsiteId} />}
         <EmotionRegistry>
           <AppHeader />
           {children}
