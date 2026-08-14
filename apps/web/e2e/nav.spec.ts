@@ -15,8 +15,48 @@ test('the header brand links home and quick links navigate', async ({ page }) =>
   await expect(page).toHaveURL(/\/$/);
 });
 
+test('an unknown route shows a styled 404 inside the app shell', async ({ page }) => {
+  const res = await page.goto('/no-such-tool-xyz');
+  expect(res?.status()).toBe(404);
+
+  // Styled not-found, not the bare Next.js default, and rendered in the shell.
+  await expect(page.getByTestId('not-found')).toBeVisible();
+  await expect(page.getByTestId('brand-home')).toBeVisible();
+
+  // The catalog link recovers.
+  await page.getByTestId('not-found-home').click();
+  await expect(page).toHaveURL(/\/$/);
+  await expect(page.getByTestId('category-chips')).toBeVisible();
+});
+
+test('the tool page breadcrumb links back to the catalog and category', async ({ page }) => {
+  await page.goto('/optimize');
+
+  const crumb = page.getByTestId('breadcrumb');
+  await expect(crumb).toBeVisible();
+  // Current page is marked and not a link.
+  await expect(crumb.locator('[aria-current="page"]')).toHaveText('Compress image');
+
+  // The category crumb jumps to that section on the home catalog.
+  await expect(page.getByTestId('breadcrumb-category')).toHaveAttribute(
+    'href',
+    '/#cat-Images & Media',
+  );
+
+  // The first crumb is "Home" and returns to the catalog.
+  const home = page.getByTestId('breadcrumb-home');
+  await expect(home).toHaveText('Home');
+  await expect(home).toHaveAttribute('href', '/');
+  await home.click();
+  await expect(page).toHaveURL(/\/$/);
+  await expect(page.getByTestId('category-chips')).toBeVisible();
+});
+
 test('the FAQ, Contact and Terms are reachable and wired correctly', async ({ page }) => {
   await page.goto('/faq');
+  // FAQ has a Home breadcrumb.
+  await expect(page.getByTestId('breadcrumb-home')).toHaveAttribute('href', '/');
+  await expect(page.getByTestId('breadcrumb').locator('[aria-current="page"]')).toHaveText('FAQ');
   // Expanding a question opens its <details> and reveals the answer.
   const item = page.getByTestId('faq-item-1');
   await item.locator('summary').click();
@@ -31,11 +71,17 @@ test('the FAQ, Contact and Terms are reachable and wired correctly', async ({ pa
     'href',
     /^mailto:danielius@zajenckauskas\.lt/,
   );
+  // The Blog link is present in the footer.
+  await expect(page.getByTestId('footer-blog')).toHaveAttribute('href', '/blog');
 
-  // Terms page renders.
+  // Terms page renders, with its own Home breadcrumb.
   await page.getByTestId('footer-terms').click();
   await expect(page).toHaveURL(/\/terms$/);
   await expect(page.getByRole('heading', { name: 'Terms & Conditions' })).toBeVisible();
+  await expect(page.getByTestId('breadcrumb-home')).toHaveAttribute('href', '/');
+  await expect(page.getByTestId('breadcrumb').locator('[aria-current="page"]')).toHaveText(
+    'Terms & Conditions',
+  );
 });
 
 test('the closed mobile drawer is hidden and causes no horizontal overflow', async ({ page }) => {
@@ -98,6 +144,12 @@ test('the mobile drawer fills the viewport and lists individual tools', async ({
 
   // It now lists individual tools (not just category jump-links).
   await expect(page.getByTestId('menu-tool-uuid')).toBeVisible();
+
+  // The "More" section links to the blog.
+  const blog = page.getByTestId('menu-blog');
+  await expect(blog).toBeVisible();
+  await expect(blog).toHaveAttribute('href', '/blog');
+
   await page.getByTestId('menu-tool-uuid').click();
   await expect(page).toHaveURL(/\/uuid$/);
 });

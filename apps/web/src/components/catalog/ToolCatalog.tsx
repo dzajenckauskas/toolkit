@@ -12,6 +12,7 @@ import {
   type ToolCategory,
 } from '@toolkit/tools/registry';
 import { CategoryIcon } from '@/components/layout/CategoryIcon';
+import { ToolBadge } from '@/components/catalog/ToolBadge';
 import { useToolSearch } from '@/components/search/useToolSearch';
 import { ToolResults } from '@/components/search/ToolResults';
 
@@ -110,17 +111,6 @@ const TitleRow = styled('div')({
   gap: '0.5rem',
 });
 
-const Soon = styled('span')(({ theme }) => ({
-  fontSize: '0.7rem',
-  fontWeight: 700,
-  letterSpacing: '0.03em',
-  textTransform: 'uppercase',
-  color: theme.color.muted,
-  border: `1px solid ${theme.color.border}`,
-  borderRadius: theme.radius.pill,
-  padding: '0.1rem 0.5rem',
-}));
-
 const Chips = styled('div')(({ theme }) => ({
   display: 'flex',
   flexWrap: 'wrap',
@@ -170,7 +160,7 @@ function ToolCard({ tool }: { tool: Tool }) {
         <Text as="span" weight={600}>
           {tool.name}
         </Text>
-        {tool.status === 'planned' ? <Soon>Soon</Soon> : null}
+        <ToolBadge tool={tool} />
       </TitleRow>
       <Text tone="muted" size="sm">
         {tool.description}

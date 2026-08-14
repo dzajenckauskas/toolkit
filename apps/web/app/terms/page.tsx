@@ -1,5 +1,6 @@
 import { Heading, Page, Stack, Text } from '@toolkit/ui';
 import { Prose } from '@/components/catalog/LegalDoc';
+import { Breadcrumb } from '@/components/catalog/Breadcrumb';
 import { CONTACT_EMAIL, CONTACT_MAILTO } from '@/lib/site';
 import { pageMetadata } from '@/lib/seo';
 
@@ -14,7 +15,8 @@ const LAST_UPDATED = '10 August 2026';
 
 export default function TermsPage() {
   return (
-    <Page>
+    <Page wide style={{ paddingTop: '1rem' }}>
+      <Breadcrumb trail={[{ label: 'Terms & Conditions' }]} />
       <Stack gap={5}>
         <header>
           <Heading>Terms &amp; Conditions</Heading>

@@ -1,12 +1,8 @@
-import { BALANCED_JPEG_QUALITY } from './constants';
-
 /**
- * Browser-local JPEG optimization via the Canvas API.
- *
- * Approach and limitations are documented in ADR-005 and
- * docs/technical/README.md. In short: decode -> draw to canvas ->
- * re-encode as JPEG at one balanced quality. No network, no dependencies,
- * no server. EXIF metadata is dropped by the canvas re-encode.
+ * Browser-local image decoding via the Canvas API, plus the shared decode/
+ * encode error types. Re-encoding (compress, resize, crop, rotate, convert)
+ * lives in `image.ts`, which builds on `decodeImage` here. No network, no
+ * dependencies, no server.
  *
  * This module is browser-only (it touches document/Image/canvas) and is
  * exercised by the Playwright suite rather than the jsdom unit tests.
@@ -15,11 +11,6 @@ import { BALANCED_JPEG_QUALITY } from './constants';
 export interface DecodedDimensions {
   width: number;
   height: number;
-}
-
-export interface OptimizeResult {
-  blob: Blob;
-  dimensions: DecodedDimensions;
 }
 
 export class ImageDecodeError extends Error {
@@ -70,56 +61,4 @@ export function decodeImage(blob: Blob): Promise<{ image: HTMLImageElement } & D
 
     image.src = url;
   });
-}
-
-/**
- * Re-encode an already-decoded image to a JPEG Blob at the balanced quality.
- * Separated from decodeImage so a caller can reuse dimensions/preview without
- * decoding twice.
- */
-export function encodeJpeg(
-  image: HTMLImageElement,
-  width: number,
-  height: number,
-  quality: number = BALANCED_JPEG_QUALITY,
-): Promise<Blob> {
-  return new Promise((resolve, reject) => {
-    const canvas = document.createElement('canvas');
-    canvas.width = width;
-    canvas.height = height;
-
-    const context = canvas.getContext('2d');
-    if (!context) {
-      reject(new ImageEncodeError());
-      return;
-    }
-
-    context.drawImage(image, 0, 0, width, height);
-
-    canvas.toBlob(
-      (blob) => {
-        if (!blob) {
-          reject(new ImageEncodeError());
-          return;
-        }
-        resolve(blob);
-      },
-      'image/jpeg',
-      quality,
-    );
-  });
-}
-
-/**
- * Full browser-local pipeline: decode the input Blob and re-encode it as a
- * balanced-quality JPEG. Rejects with ImageDecodeError / ImageEncodeError so
- * the UI can show a useful, specific message.
- */
-export async function optimizeJpeg(
-  input: Blob,
-  quality: number = BALANCED_JPEG_QUALITY,
-): Promise<OptimizeResult> {
-  const { image, width, height } = await decodeImage(input);
-  const blob = await encodeJpeg(image, width, height, quality);
-  return { blob, dimensions: { width, height } };
 }

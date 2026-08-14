@@ -4,9 +4,12 @@ import Link from 'next/link';
 import styled from '@emotion/styled';
 import { Heading } from '@toolkit/ui';
 import { CategoryIcon } from '@/components/layout/CategoryIcon';
+import { Breadcrumb } from '@/components/catalog/Breadcrumb';
 import { FaqAccordion } from '@/components/catalog/FaqAccordion';
+import { JsonLd } from '@/components/seo/JsonLd';
 import { TOOLS, type Tool } from '@toolkit/tools/registry';
 import { getToolContent } from '@toolkit/tools/content';
+import { softwareApplicationLd, toolBreadcrumbLd, faqPageLd } from '@/lib/structured-data';
 
 /**
  * Shared landing-page shell for every tool. Bespoke walkthrough, highlight and
@@ -30,7 +33,8 @@ const Shell = styled('div')({
 const Hero = styled('section')(({ theme }) => ({
   position: 'relative',
   overflow: 'hidden',
-  paddingTop: theme.space(10),
+  // Keep the breadcrumb close to the header; the hero content still has room.
+  paddingTop: theme.space(4),
   paddingBottom: theme.space(10),
   // Soft accent glow behind the hero, echoing the reference's lit dropzone.
   '&::before': {
@@ -240,10 +244,27 @@ export function ToolPage({ toolId, children }: { toolId: string; children: React
   const content = getToolContent(tool);
   const related = relatedTools(tool);
 
+  const structuredData = [
+    softwareApplicationLd(tool),
+    toolBreadcrumbLd(tool),
+    ...(content.faqs.length > 0 ? [faqPageLd(content.faqs.map((f) => ({ q: f.q, a: f.a })))] : []),
+  ];
+
   return (
     <Main>
+      <JsonLd data={structuredData} />
       <Hero>
         <Shell>
+          <Breadcrumb
+            trail={[
+              {
+                label: tool.category,
+                href: `/#cat-${tool.category}`,
+                testId: 'breadcrumb-category',
+              },
+              { label: tool.name },
+            ]}
+          />
           <HeroInner>
             <Eyebrow href={`/#cat-${tool.category}`}>
               <CategoryIcon category={tool.category} />
