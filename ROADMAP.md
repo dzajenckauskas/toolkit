@@ -114,8 +114,10 @@ Client-side via Canvas; no new dependencies (ADR-005).
 - [ ] Shared file queue
 - [ ] Shared export settings
 - [ ] Reusable preview component
-- [ ] Preset system
-- [ ] Local preference persistence
+- [x] Preset system — named, reusable settings combinations, saved locally
+      per tool (Resize/Convert/Rotate; see `packages/lib/src/settings.ts`)
+- [x] Local preference persistence — Resize/Convert/Rotate remember their
+      last-used settings across visits, matching the Optimizer pattern
 - [ ] Accessible keyboard workflows
 - [ ] Performance telemetry without collecting user images
 - [ ] **Unified "My Images" workspace** — one place to add images, then route

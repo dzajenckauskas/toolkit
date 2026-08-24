@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { Stack, Text } from '@toolkit/ui';
 import ImageToolShell, { type LoadedImage } from '@/components/tools/shared/ImageToolShell';
+import { PresetControls } from '@/components/tools/shared/PresetControls';
 import {
   extensionFor,
   isLossy,
@@ -11,6 +12,11 @@ import {
   renderResized,
   type ImageFormat,
 } from '@toolkit/lib/image';
+import {
+  loadConvertSettings,
+  saveConvertSettings,
+  type ConvertSettings,
+} from '@toolkit/lib/settings';
 
 const Field = styled('label')(({ theme }) => ({
   display: 'flex',
@@ -24,6 +30,32 @@ const Field = styled('label')(({ theme }) => ({
 export default function ImageConverter() {
   const [format, setFormat] = useState<ImageFormat>('png');
   const [quality, setQuality] = useState(0.9);
+
+  // Restore the last-used format/quality on mount (client-only, so no
+  // hydration mismatch — no file is loaded yet).
+  useEffect(() => {
+    const saved = loadConvertSettings();
+    setFormat(saved.format);
+    setQuality(saved.quality);
+  }, []);
+
+  const settings: ConvertSettings = { format, quality };
+
+  const applyPreset = (preset: ConvertSettings) => {
+    setFormat(preset.format);
+    setQuality(preset.quality);
+    saveConvertSettings(preset);
+  };
+
+  const onFormat = (value: ImageFormat) => {
+    setFormat(value);
+    saveConvertSettings({ format: value, quality });
+  };
+
+  const onQuality = (value: number) => {
+    setQuality(value);
+    saveConvertSettings({ format, quality: value });
+  };
 
   const process = async (image: LoadedImage) => {
     // Convert = redraw at native size into the target format.
@@ -48,7 +80,7 @@ export default function ImageConverter() {
             Convert to
             <select
               value={format}
-              onChange={(event) => setFormat(event.target.value as ImageFormat)}
+              onChange={(event) => onFormat(event.target.value as ImageFormat)}
               data-testid="convert-format"
             >
               <option value="png">PNG</option>
@@ -65,7 +97,7 @@ export default function ImageConverter() {
                 min={10}
                 max={100}
                 value={Math.round(quality * 100)}
-                onChange={(event) => setQuality(Number(event.target.value) / 100)}
+                onChange={(event) => onQuality(Number(event.target.value) / 100)}
                 data-testid="convert-quality"
               />
             </Field>
@@ -74,6 +106,13 @@ export default function ImageConverter() {
               PNG is lossless — no quality setting.
             </Text>
           )}
+
+          <PresetControls
+            tool="convert"
+            settings={settings}
+            onApply={applyPreset}
+            testIdPrefix="convert"
+          />
         </Stack>
       )}
     </ImageToolShell>

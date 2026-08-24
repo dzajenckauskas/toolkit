@@ -1,9 +1,10 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { Stack, Text } from '@toolkit/ui';
 import ImageToolShell, { type LoadedImage } from '@/components/tools/shared/ImageToolShell';
+import { PresetControls } from '@/components/tools/shared/PresetControls';
 import {
   clampSize,
   extensionFor,
@@ -13,6 +14,7 @@ import {
   type ImageFormat,
   type Size,
 } from '@toolkit/lib/image';
+import { loadResizeSettings, saveResizeSettings, type ResizeSettings } from '@toolkit/lib/settings';
 
 const Field = styled('label')(({ theme }) => ({
   display: 'flex',
@@ -48,10 +50,37 @@ export default function ImageResizer() {
   const [keepAspect, setKeepAspect] = useState(true);
   const [format, setFormat] = useState<ImageFormat>('png');
 
+  // Restore the last-used format/aspect-lock on mount (client-only, so no
+  // hydration mismatch — no file is loaded yet, so this triggers no re-render
+  // of the image itself).
+  useEffect(() => {
+    const saved = loadResizeSettings();
+    setFormat(saved.format);
+    setKeepAspect(saved.keepAspect);
+  }, []);
+
   const onLoad = useCallback((image: LoadedImage) => {
     setOriginal({ width: image.width, height: image.height });
     setSize({ width: image.width, height: image.height });
   }, []);
+
+  const settings: ResizeSettings = { format, keepAspect };
+
+  const applyPreset = (preset: ResizeSettings) => {
+    setFormat(preset.format);
+    setKeepAspect(preset.keepAspect);
+    saveResizeSettings(preset);
+  };
+
+  const onFormat = (value: ImageFormat) => {
+    setFormat(value);
+    saveResizeSettings({ format: value, keepAspect });
+  };
+
+  const onKeepAspect = (value: boolean) => {
+    setKeepAspect(value);
+    saveResizeSettings({ format, keepAspect: value });
+  };
 
   const process = async (image: LoadedImage) => {
     const target = size.width > 0 ? size : { width: image.width, height: image.height };
@@ -102,7 +131,7 @@ export default function ImageResizer() {
               Format
               <select
                 value={format}
-                onChange={(event) => setFormat(event.target.value as ImageFormat)}
+                onChange={(event) => onFormat(event.target.value as ImageFormat)}
                 data-testid="resize-format"
               >
                 <option value="png">PNG</option>
@@ -115,7 +144,7 @@ export default function ImageResizer() {
             <input
               type="checkbox"
               checked={keepAspect}
-              onChange={(event) => setKeepAspect(event.target.checked)}
+              onChange={(event) => onKeepAspect(event.target.checked)}
               data-testid="resize-lock"
             />
             Lock aspect ratio
@@ -123,6 +152,12 @@ export default function ImageResizer() {
           <Text weight={600} numeric data-testid="resize-output">
             Output: {size.width} × {size.height} px
           </Text>
+          <PresetControls
+            tool="resize"
+            settings={settings}
+            onApply={applyPreset}
+            testIdPrefix="resize"
+          />
         </Stack>
       )}
     </ImageToolShell>
