@@ -1,8 +1,9 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Button, Stack, Text } from '@toolkit/ui';
 import ImageToolShell, { type LoadedImage } from '@/components/tools/shared/ImageToolShell';
+import { PresetControls } from '@/components/tools/shared/PresetControls';
 import {
   IDENTITY_TRANSFORM,
   extensionFor,
@@ -14,16 +15,35 @@ import {
   type ImageFormat,
   type Transform,
 } from '@toolkit/lib/image';
+import { loadRotateSettings, saveRotateSettings, type RotateSettings } from '@toolkit/lib/settings';
 
 export default function ImageRotator() {
   const [transform, setTransform] = useState<Transform>(IDENTITY_TRANSFORM);
   const [original, setOriginal] = useState({ width: 0, height: 0 });
   const [format, setFormat] = useState<ImageFormat>('png');
 
+  // Restore the last-used output format on mount (client-only, so no
+  // hydration mismatch — the rotation itself always resets per image).
+  useEffect(() => {
+    setFormat(loadRotateSettings().format);
+  }, []);
+
   const onLoad = useCallback((image: LoadedImage) => {
     setTransform(IDENTITY_TRANSFORM);
     setOriginal({ width: image.width, height: image.height });
   }, []);
+
+  const settings: RotateSettings = { format };
+
+  const applyPreset = (preset: RotateSettings) => {
+    setFormat(preset.format);
+    saveRotateSettings(preset);
+  };
+
+  const onFormat = (value: ImageFormat) => {
+    setFormat(value);
+    saveRotateSettings({ format: value });
+  };
 
   const process = async (image: LoadedImage) => {
     const { blob } = await renderTransformed(image.file, transform, format);
@@ -78,7 +98,7 @@ export default function ImageRotator() {
 
           <select
             value={format}
-            onChange={(event) => setFormat(event.target.value as ImageFormat)}
+            onChange={(event) => onFormat(event.target.value as ImageFormat)}
             aria-label="Output format"
             data-testid="rotate-format"
           >
@@ -93,6 +113,13 @@ export default function ImageRotator() {
             {transform.flipH ? ' · flipped H' : ''}
             {transform.flipV ? ' · flipped V' : ''}
           </Text>
+
+          <PresetControls
+            tool="rotate"
+            settings={settings}
+            onApply={applyPreset}
+            testIdPrefix="rotate"
+          />
         </Stack>
       )}
     </ImageToolShell>
