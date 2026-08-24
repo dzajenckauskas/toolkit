@@ -164,7 +164,6 @@ export function BlogArticle({
         <Heading>{title}</Heading>
         <Lead>{description}</Lead>
 
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <Cover
           src={cover.src}
           alt={cover.alt}

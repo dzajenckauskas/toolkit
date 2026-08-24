@@ -474,7 +474,6 @@ export default function Optimizer() {
               {items.map((item) => (
                 <QueueItemRow key={item.id} tone={item.status === 'error' ? 'danger' : 'default'}>
                   {item.previewUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
                     <Thumb src={item.previewUrl} alt={`Preview of ${item.fileName}`} />
                   ) : (
                     <ThumbEmpty aria-hidden="true" />

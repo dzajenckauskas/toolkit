@@ -152,7 +152,6 @@ export default function ImagePalette() {
 
       {url ? (
         <Stack gap={3} align="flex-start">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <Preview src={url} alt="Source" data-testid="imgpal-preview" />
           <Swatches data-testid="imgpal-swatches">
             {colors.map((hex, i) => (

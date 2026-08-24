@@ -52,7 +52,7 @@ Module Federation micro-frontends were deliberately **not** used).
 
 ```
 apps/
-  web/                       Next.js 15 (App Router) — the shell + every tool route
+  web/                       Next.js 16 (App Router) — the shell + every tool route
   accessibility-runner/      Localhost-only Playwright audit service (ADR-010)
 packages/
   ui/                        Emotion theme + typed design-system primitives (ADR-006)
@@ -65,7 +65,7 @@ packages/
   per-page SEO metadata all read from one `registry.ts`. Shipping a tool is: add a pure
   function + tests in `@toolkit/lib`, a component in `apps/web`, a route, and a registry
   entry.
-- **Stack.** Next.js 15 / React 19, **TypeScript in strict mode**
+- **Stack.** Next.js 16 / React 19, **TypeScript in strict mode**
   (`noUncheckedIndexedAccess`, `noUnusedLocals`, …), Emotion CSS-in-JS with a typed
   theme and zero-JS light/dark mode, deployed as a static-optimised app.
 - Packages are consumed from source via `transpilePackages` (no separate build step);

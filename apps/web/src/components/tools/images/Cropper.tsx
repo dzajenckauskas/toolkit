@@ -520,7 +520,6 @@ export default function Cropper() {
 
             <Viewport>
               <Stage style={{ width: displayWidth || undefined }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <StageImage
                   ref={imgRef}
                   src={source.url}

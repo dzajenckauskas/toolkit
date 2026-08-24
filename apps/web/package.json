@@ -7,12 +7,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start -p 3007",
-    "lint": "next lint",
+    "lint": "eslint .",
     "format": "prettier --check .",
     "format:write": "prettier --write .",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run",
-    "test:watch": "vitest",
+    "test": "NODE_OPTIONS=--no-experimental-webstorage vitest run",
+    "test:watch": "NODE_OPTIONS=--no-experimental-webstorage vitest",
     "test:e2e": "playwright test"
   },
   "dependencies": {
@@ -22,12 +22,12 @@
     "@toolkit/tools": "*",
     "@toolkit/ui": "*",
     "geist": "^1.7.2",
-    "next": "^15.1.6",
+    "next": "^16.3.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.49.1",
+    "@playwright/test": "^1.51.1",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
@@ -35,13 +35,13 @@
     "@types/node": "^22.10.7",
     "@types/react": "^19.0.7",
     "@types/react-dom": "^19.0.3",
-    "@vitejs/plugin-react": "^4.3.4",
-    "eslint": "^8.57.1",
-    "eslint-config-next": "^15.1.6",
+    "@vitejs/plugin-react": "^6.1.0",
+    "eslint": "^9.18.0",
+    "eslint-config-next": "^16.3.2",
     "eslint-config-prettier": "^9.1.0",
     "jsdom": "^25.0.1",
     "prettier": "^3.4.2",
     "typescript": "^5.7.3",
-    "vitest": "^2.1.8"
+    "vitest": "^4.1.11"
   }
 }

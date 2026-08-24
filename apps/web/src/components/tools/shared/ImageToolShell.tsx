@@ -169,7 +169,6 @@ export default function ImageToolShell({
 
         {image ? (
           <Stack gap={4} align="flex-start">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
             <Preview
               src={image.url}
               alt={image.file.name}
