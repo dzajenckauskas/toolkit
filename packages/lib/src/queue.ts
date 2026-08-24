@@ -40,13 +40,21 @@ export interface BatchSummary {
   totalSavedPercent: number;
 }
 
-/** Replace the item with `id`, returning a new array (no mutation). */
-export function updateItem(items: QueueItem[], id: string, patch: Partial<QueueItem>): QueueItem[] {
+/**
+ * Replace the item with `id`, returning a new array (no mutation). Generic
+ * over any id-keyed item shape so other per-tool batch queues (see
+ * `batch.ts`) can reuse it instead of reimplementing the same patch logic.
+ */
+export function updateItem<T extends { id: string }>(
+  items: T[],
+  id: string,
+  patch: Partial<T>,
+): T[] {
   return items.map((item) => (item.id === id ? { ...item, ...patch } : item));
 }
 
 /** Remove the item with `id`, returning a new array. */
-export function removeItem(items: QueueItem[], id: string): QueueItem[] {
+export function removeItem<T extends { id: string }>(items: T[], id: string): T[] {
   return items.filter((item) => item.id !== id);
 }
 

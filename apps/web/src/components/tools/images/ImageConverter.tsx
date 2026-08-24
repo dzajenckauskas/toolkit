@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { Stack, Text } from '@toolkit/ui';
-import ImageToolShell, { type LoadedImage } from '@/components/tools/shared/ImageToolShell';
+import BatchImageToolShell from '@/components/tools/shared/BatchImageToolShell';
+import { type LoadedImage } from '@/components/tools/shared/ImageToolShell';
 import { PresetControls } from '@/components/tools/shared/PresetControls';
 import {
   extensionFor,
@@ -57,21 +58,30 @@ export default function ImageConverter() {
     saveConvertSettings({ format, quality: value });
   };
 
-  const process = async (image: LoadedImage) => {
-    // Convert = redraw at native size into the target format.
-    const { blob } = await renderResized(
-      image.file,
-      { width: image.width, height: image.height },
-      format,
-      quality,
-    );
-    return { blob, filename: outputImageName(image.file.name, 'converted', extensionFor(format)) };
-  };
+  // Memoized so its identity only changes when format/quality actually
+  // change — BatchImageToolShell reprocesses the whole queue when it does.
+  const process = useCallback(
+    async (image: LoadedImage) => {
+      // Convert = redraw at native size into the target format.
+      const { blob } = await renderResized(
+        image.file,
+        { width: image.width, height: image.height },
+        format,
+        quality,
+      );
+      return {
+        blob,
+        filename: outputImageName(image.file.name, 'converted', extensionFor(format)),
+      };
+    },
+    [format, quality],
+  );
 
   return (
-    <ImageToolShell
+    <BatchImageToolShell
       process={process}
-      downloadLabel="Download converted image"
+      zipName="converted-images.zip"
+      dropzoneHint="JPG, PNG or WebP · add one or many, or paste with Cmd/Ctrl+V · converted in your browser"
       testIdPrefix="convert"
     >
       {() => (
@@ -115,6 +125,6 @@ export default function ImageConverter() {
           />
         </Stack>
       )}
-    </ImageToolShell>
+    </BatchImageToolShell>
   );
 }

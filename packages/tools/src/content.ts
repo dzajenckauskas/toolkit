@@ -152,15 +152,15 @@ const BESPOKE: Record<string, Partial<ToolContent>> = {
     steps: [
       {
         title: 'Add your image',
-        body: 'Drop in or choose a file. Its current dimensions are shown so you know your starting point.',
+        body: 'Drop a file in, pick one from your device, or paste from the clipboard. You can queue several at once.',
       },
       {
         title: 'Set the size',
         body: 'Enter a width or height. Keep the aspect ratio locked to avoid stretching, or set both for an exact box.',
       },
       {
-        title: 'Download',
-        body: 'Export the resized image instantly — all processing happens on your device.',
+        title: 'Download or ZIP',
+        body: 'Save each resized image, or download the whole batch as a single ZIP — all generated on your device.',
       },
     ],
     faqs: [
@@ -172,6 +172,10 @@ const BESPOKE: Record<string, Partial<ToolContent>> = {
         q: 'Can I enlarge an image?',
         a: 'You can, though enlarging a small image past its native size will soften detail, as with any resize.',
       },
+      {
+        q: 'Can I resize a batch of images at once?',
+        a: 'Yes — add several images and the same target width applies to each, with every file’s own aspect ratio preserved. Download them individually or as a single ZIP.',
+      },
     ],
   },
   convert: {
@@ -179,15 +183,15 @@ const BESPOKE: Record<string, Partial<ToolContent>> = {
     steps: [
       {
         title: 'Add your image',
-        body: 'Drop in or choose a file in any supported format.',
+        body: 'Drop a file in, pick one from your device, or paste from the clipboard. You can queue several at once.',
       },
       {
         title: 'Pick the target format',
         body: 'Choose JPG, PNG or WebP. WebP gives the smallest files; PNG preserves transparency.',
       },
       {
-        title: 'Download',
-        body: 'Save the converted file straight away — the conversion happens on your device.',
+        title: 'Download or ZIP',
+        body: 'Save each converted image, or download the whole batch as a single ZIP — all generated on your device.',
       },
     ],
     faqs: [
@@ -204,12 +208,18 @@ const BESPOKE: Record<string, Partial<ToolContent>> = {
   rotate: {
     tagline: 'Rotate or flip an image in any direction, locally in your browser.',
     steps: [
-      { title: 'Add your image', body: 'Drop in or choose a file to get started.' },
+      {
+        title: 'Add your image',
+        body: 'Drop a file in, pick one from your device, or paste from the clipboard. You can queue several at once.',
+      },
       {
         title: 'Rotate or flip',
         body: 'Turn the image 90° at a time in either direction, or mirror it horizontally or vertically.',
       },
-      { title: 'Download', body: 'Save the corrected image — nothing is uploaded to a server.' },
+      {
+        title: 'Download or ZIP',
+        body: 'Save each rotated image, or download the whole batch as a single ZIP — all generated on your device.',
+      },
     ],
     faqs: [
       {
