@@ -89,7 +89,6 @@ export default function QrGenerator() {
         </Text>
       ) : dataUrl ? (
         <Stack gap={2} align="flex-start">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <Preview src={dataUrl} alt="QR code" data-testid="qr-image" />
           <DownloadLink
             href={dataUrl}

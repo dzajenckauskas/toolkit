@@ -99,7 +99,6 @@ export function BlogIndex({ posts }: { posts: BlogIndexItem[] }) {
       <Grid data-testid="blog-list">
         {posts.map((post) => (
           <Card key={post.slug} href={`/blog/${post.slug}`} data-testid={`blog-card-${post.slug}`}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
             <CardCover
               src={post.cover.src}
               alt={post.cover.alt}
