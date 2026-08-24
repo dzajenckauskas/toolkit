@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { Button, Stack, Text } from '@toolkit/ui';
-import ImageToolShell, { type LoadedImage } from '@/components/tools/shared/ImageToolShell';
+import BatchImageToolShell from '@/components/tools/shared/BatchImageToolShell';
+import { type LoadedImage } from '@/components/tools/shared/ImageToolShell';
 import { PresetControls } from '@/components/tools/shared/PresetControls';
 import {
   IDENTITY_TRANSFORM,
@@ -11,7 +12,6 @@ import {
   renderTransformed,
   rotateCCW,
   rotateCW,
-  rotateSize,
   type ImageFormat,
   type Transform,
 } from '@toolkit/lib/image';
@@ -19,19 +19,18 @@ import { loadRotateSettings, saveRotateSettings, type RotateSettings } from '@to
 
 export default function ImageRotator() {
   const [transform, setTransform] = useState<Transform>(IDENTITY_TRANSFORM);
-  const [original, setOriginal] = useState({ width: 0, height: 0 });
   const [format, setFormat] = useState<ImageFormat>('png');
 
   // Restore the last-used output format on mount (client-only, so no
-  // hydration mismatch — the rotation itself always resets per image).
+  // hydration mismatch — the rotation itself always resets per batch).
   useEffect(() => {
     setFormat(loadRotateSettings().format);
   }, []);
 
-  const onLoad = useCallback((image: LoadedImage) => {
-    setTransform(IDENTITY_TRANSFORM);
-    setOriginal({ width: image.width, height: image.height });
-  }, []);
+  // Reset the rotation once, when the first file of a fresh batch loads —
+  // not on every subsequent "add more", which would discard the user's
+  // in-progress choice for files already in the queue.
+  const onFirstLoad = useCallback(() => setTransform(IDENTITY_TRANSFORM), []);
 
   const settings: RotateSettings = { format };
 
@@ -45,18 +44,22 @@ export default function ImageRotator() {
     saveRotateSettings({ format: value });
   };
 
-  const process = async (image: LoadedImage) => {
-    const { blob } = await renderTransformed(image.file, transform, format);
-    return { blob, filename: outputImageName(image.file.name, 'rotated', extensionFor(format)) };
-  };
-
-  const out = rotateSize(original, transform.quarterTurns);
+  // Memoized so its identity only changes when transform/format actually
+  // change — BatchImageToolShell reprocesses the whole queue when it does.
+  const process = useCallback(
+    async (image: LoadedImage) => {
+      const { blob } = await renderTransformed(image.file, transform, format);
+      return { blob, filename: outputImageName(image.file.name, 'rotated', extensionFor(format)) };
+    },
+    [transform, format],
+  );
 
   return (
-    <ImageToolShell
+    <BatchImageToolShell
       process={process}
-      onLoad={onLoad}
-      downloadLabel="Download image"
+      onFirstLoad={onFirstLoad}
+      zipName="rotated-images.zip"
+      dropzoneHint="JPG, PNG or WebP · add one or many, or paste with Cmd/Ctrl+V · rotated in your browser"
       testIdPrefix="rotate"
     >
       {() => (
@@ -107,9 +110,9 @@ export default function ImageRotator() {
             <option value="webp">WebP</option>
           </select>
 
-          <Text weight={600} numeric data-testid="rotate-output">
-            Output: {out.width} × {out.height} px
-            {transform.quarterTurns ? ` · rotated ${transform.quarterTurns * 90}°` : ''}
+          <Text weight={600} data-testid="rotate-output">
+            Applying:
+            {transform.quarterTurns ? ` rotated ${transform.quarterTurns * 90}°` : ' no rotation'}
             {transform.flipH ? ' · flipped H' : ''}
             {transform.flipV ? ' · flipped V' : ''}
           </Text>
@@ -122,6 +125,6 @@ export default function ImageRotator() {
           />
         </Stack>
       )}
-    </ImageToolShell>
+    </BatchImageToolShell>
   );
 }

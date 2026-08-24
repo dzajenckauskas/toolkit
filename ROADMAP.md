@@ -88,7 +88,7 @@ for that slice only; full multi-format, batch, and controls remain open. See
 - [ ] PNG, JPEG, WebP and AVIF support where practical
 - [ ] Quality controls
 - [ ] Transparency warnings
-- [ ] Batch conversion
+- [x] Batch conversion — multi-file queue + ZIP, via `BatchImageToolShell`
 
 ### Image Resizer
 
@@ -96,7 +96,8 @@ for that slice only; full multi-format, batch, and controls remain open. See
 - [ ] Max width or height
 - [ ] Preserve aspect ratio
 - [ ] Common marketplace presets
-- [ ] Batch resize
+- [x] Batch resize — multi-file queue + ZIP; aspect ratio is recomputed per
+      file, so a mixed-source batch isn't stretched to one file's shape
 
 ### Image Rotate / Flip
 
@@ -106,12 +107,14 @@ Client-side via Canvas; no new dependencies (ADR-005).
 - [ ] Rotate 90° left / right
 - [ ] Arbitrary-angle rotation
 - [ ] Horizontal / vertical flip
-- [ ] Batch rotate/flip
+- [x] Batch rotate/flip — multi-file queue + ZIP, same transform applied to every file
 - [ ] Export settings shared with the other tools
 
 ## Phase 3 — Shared foundations
 
-- [ ] Shared file queue
+- [x] Shared file queue — `packages/lib/src/queue.ts` (Optimizer) generalized
+      with a reusable `updateItem`/`removeItem`; `packages/lib/src/batch.ts`
+      builds the Resize/Convert/Rotate queue model on top of it
 - [ ] Shared export settings
 - [ ] Reusable preview component
 - [x] Preset system — named, reusable settings combinations, saved locally
